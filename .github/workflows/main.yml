@@ -25,4 +25,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
-          files: ./dist/index.js
+          files: |
+            ./dist/index.js
+            ./.template.env
