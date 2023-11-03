@@ -23,7 +23,7 @@ jobs:
       -
         name: 'Rename .env'
         run: |
-          mv .template.env wtf.env
+          mv .template.env .234
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v1
