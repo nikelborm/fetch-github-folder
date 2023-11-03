@@ -1,4 +1,4 @@
-name: Minify Workflow
+name: Release Workflow
 on:
   push:
     branches: [ main ]
@@ -22,4 +22,5 @@ jobs:
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.sha }}
           files: ./dist/index.js
