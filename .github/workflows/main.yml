@@ -23,13 +23,13 @@ jobs:
       -
         name: 'Rename .env'
         run: |
-          mv .template.env .234
+          mv .template.env template.env
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: latest
+          tag_name: latest-${{github.sha}}
           fail_on_unmatched_files: true
           files: |
             ./dist/index.js
-            ./.234
+            ./template.env
