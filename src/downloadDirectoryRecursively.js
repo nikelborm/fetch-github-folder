@@ -13,18 +13,20 @@ import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlob
 *     owner: string,
 *     name: string
 *   },
-*   directoryName: string,
-*   pathToParentDirectory?: string
+*   pathToDirectoryInRepo: string,
 *   commitShaHashOrBranchNameOrTagName?: string,
 * }} param0
 */
 export async function downloadDirectoryRecursively({
   githubAccessToken,
   repo,
-  directoryName,
+  pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
-  pathToParentDirectory = ''
 }) {
+  const directoriesInPath = pathToDirectoryInRepo.replace(/\/*$/, '').split('/');
+  const pathToParentDirectory = directoriesInPath.slice(0, -1).join('/');
+  const directoryName = directoriesInPath.slice(-1)[0];
+
   const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
     githubAccessToken,
     repo,
