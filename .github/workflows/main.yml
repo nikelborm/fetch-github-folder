@@ -1,0 +1,25 @@
+name: Minify Workflow
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: 'Deps: Install'
+        run: |
+          npm install
+      -
+        name: 'Build'
+        run: |
+          ./node_modules/.bin/ncc build ./index.js -o ./dist --no-source-map-register --minify --no-cache
+      -
+        name: 'Release: Upload'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./dist/index.js
