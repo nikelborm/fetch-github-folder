@@ -23,7 +23,7 @@ jobs:
       -
         name: 'Rename .env'
         run: |
-          mv .template.env .env
+          mv .template.env wtf.env
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v1
@@ -32,4 +32,4 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             ./dist/index.js
-            ./.env
+            ./wtf.env
