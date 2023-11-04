@@ -7,8 +7,13 @@
   "scripts": {
     "start": "node --env-file=.env index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "nikelborm",
+    "email": "kolya007.klass@gmail.com",
+    "url": "https://github.com/nikelborm"
+  },
+  "license": "MIT",
+  "keywords": [],
   "dependencies": {
     "@octokit/core": "^5.0.1",
     "@vercel/ncc": "^0.38.1"
