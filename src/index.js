@@ -1,3 +1,6 @@
+// @ts-check
+'use strict';
+
 export { downloadDirectoryContentsMetaInfo } from './downloadDirectoryContentsMetaInfo.js';
 export { downloadDirectoryRecursively } from './downloadDirectoryRecursively.js';
 export { downloadInfoAboutAllBlobsInDirectory } from './downloadInfoAboutAllBlobsInDirectory.js';

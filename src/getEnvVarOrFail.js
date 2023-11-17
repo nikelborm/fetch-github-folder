@@ -1,3 +1,6 @@
+// @ts-check
+'use strict';
+
 /**
  * @param {string} name
  */
