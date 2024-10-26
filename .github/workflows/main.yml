@@ -16,7 +16,7 @@ jobs:
         name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 21
+          node-version: 23
       -
         name: 'Deps: Install'
         run: |
@@ -24,7 +24,7 @@ jobs:
       -
         name: 'Build'
         run: |
-          ./node_modules/.bin/ncc build ./index.js -o ./dist --no-source-map-register --minify --no-cache
+          ./node_modules/.bin/tsc && ./node_modules/.bin/ncc build ./dist/index.js -o ./dist2 --no-source-map-register --minify --no-cache
       -
         name: 'Rename .env'
         run: |
@@ -36,5 +36,5 @@ jobs:
           tag_name: latest-${{github.sha}}
           fail_on_unmatched_files: true
           files: |
-            ./dist/index.js
+            ./dist2/index.js
             ./template.env
