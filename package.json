@@ -1,9 +1,9 @@
 {
-  "name": "superset-prod-init",
-  "version": "1.0.0",
+  "name": "download-github-folder",
+  "version": "0.1.0",
   "type": "module",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "node --env-file=.env index.js"
   },
@@ -15,7 +15,15 @@
   "license": "MIT",
   "keywords": [],
   "dependencies": {
-    "@octokit/core": "^5.0.1",
-    "@vercel/ncc": "^0.38.1"
+    "@octokit/core": "^6.1.2",
+    "@total-typescript/ts-reset": "^0.5.1",
+    "@types/node": "^22.8.1",
+    "@vercel/ncc": "^0.38.1",
+    "change-case": "^5.4.4",
+    "ts-toolbelt": "^9.6.0",
+    "tsafe": "^1.6.6",
+    "tsx": "^4.13.2",
+    "type-fest": "^4.26.1",
+    "typescript": "^5.4.5"
   }
 }
