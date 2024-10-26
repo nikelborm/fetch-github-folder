@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "node --env-file=.env index.js"
+    "start": "tsc && node --env-file=.env ./dist/index.js"
   },
   "author": {
     "name": "nikelborm",

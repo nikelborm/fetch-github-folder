@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "esModuleInterop": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
