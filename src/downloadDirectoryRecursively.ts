@@ -4,13 +4,11 @@ import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMe
 import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlobsInDirectory.js";
 
 export async function downloadDirectoryRecursively({
-  githubAccessToken,
   repo,
   pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
   pathToLocalDirContentsOfRepoDirWillBePutInto,
 }: {
-  githubAccessToken: string,
   repo: {
     owner: string,
     name: string
@@ -31,7 +29,7 @@ export async function downloadDirectoryRecursively({
     `Can't go to parent folder like that: ${pathToDirectoryInRepo}`
   );
 
-  const infoAboutDownloadableDirectory =
+  const target =
     directoriesInPath['length'] === 1 && directoriesInPath[0] === '.'
       ? { directoryToDownload: 'root' as const }
       : directoriesInPath['length'] === 1
@@ -50,27 +48,26 @@ export async function downloadDirectoryRecursively({
       : (() => { throw new Error('Impossible directoriesInPath.length === 0') })();
 
   let gitTreeShaHashOfDirectory =
-    infoAboutDownloadableDirectory.directoryToDownload === 'root'
+    target.directoryToDownload === 'root'
       ? commitShaHashOrBranchNameOrTagName || 'HEAD'
       : await (async () => {
-        const pathToDirectory = infoAboutDownloadableDirectory.directoryToDownload === 'dirDirectlyInRoot'
+        const pathToDirectory = target.directoryToDownload === 'dirDirectlyInRoot'
           ? "."
-          : infoAboutDownloadableDirectory.pathToParentDirectory;
+          : target.pathToParentDirectory;
 
         const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
-          githubAccessToken,
           repo,
           commitShaHashOrBranchNameOrTagName: commitShaHashOrBranchNameOrTagName || 'HEAD',
           pathToDirectory,
         });
 
         const dirElement = parentDirectoryContentsMetaInfo.find(
-          ({ name }) => name === infoAboutDownloadableDirectory.directoryName,
+          ({ name }) => name === target.directoryName,
         );
 
         const fullPathOfDownloadableDirectory = path.join(
           pathToDirectory,
-          infoAboutDownloadableDirectory.directoryName
+          target.directoryName
         );
 
         if (!dirElement)
@@ -83,7 +80,6 @@ export async function downloadDirectoryRecursively({
       })()
 
   const blobs = await downloadInfoAboutAllBlobsInDirectory({
-    githubAccessToken,
     repo,
     gitTreeShaHashOfDirectory
   });

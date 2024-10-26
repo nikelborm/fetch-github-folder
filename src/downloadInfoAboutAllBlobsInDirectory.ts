@@ -1,21 +1,15 @@
-import { Octokit } from "@octokit/core";
+import { octokit } from './octokit.js';
 
 export async function downloadInfoAboutAllBlobsInDirectory({
-  githubAccessToken,
   repo,
   gitTreeShaHashOfDirectory,
 }: {
-  githubAccessToken: string,
   repo: {
     owner: string,
     name: string
   },
   gitTreeShaHashOfDirectory: string,
 }) {
-  const octokit = new Octokit({
-    auth: githubAccessToken
-  });
-
   const { data: { tree: flatTreeOfDirectory } } = await octokit.request(
     'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
     {

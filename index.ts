@@ -4,7 +4,6 @@ import {
 } from "./src/index.js";
 
 await downloadDirectoryRecursively({
-  githubAccessToken: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
   repo: {
     owner: getEnvVarOrFail('GITHUB_REPO_OWNER'),
     name: getEnvVarOrFail('GITHUB_REPO_NAME'),

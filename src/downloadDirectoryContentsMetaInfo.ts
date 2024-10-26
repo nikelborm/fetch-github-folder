@@ -1,12 +1,10 @@
-import { Octokit } from "@octokit/core";
+import { octokit } from './octokit.js';
 
 export async function downloadDirectoryContentsMetaInfo({
-  githubAccessToken,
   repo,
   commitShaHashOrBranchNameOrTagName,
   pathToDirectory
 }: {
-  githubAccessToken: string,
   repo: {
     owner: string,
     name: string
@@ -14,10 +12,6 @@ export async function downloadDirectoryContentsMetaInfo({
   pathToDirectory: string,
   commitShaHashOrBranchNameOrTagName: string,
 }) {
-  const octokit = new Octokit({
-    auth: githubAccessToken
-  });
-
   const { data: contentsOfDirectory } = await octokit.request(
     'GET /repos/{owner}/{repo}/contents/{path}',
     {
