@@ -1,27 +1,21 @@
-// @ts-check
-'use strict';
-
 import fs from 'fs/promises';
 import path from 'path';
-import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMetaInfo.js";
-import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlobsInDirectory.js";
+import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMetaInfo";
+import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlobsInDirectory";
 
-/**
-* @param {{
-*   githubAccessToken: string,
-*   repo: {
-*     owner: string,
-*     name: string
-*   },
-*   pathToDirectoryInRepo: string,
-*   commitShaHashOrBranchNameOrTagName?: string,
-* }} param0
-*/
 export async function downloadDirectoryRecursively({
   githubAccessToken,
   repo,
   pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
+}: {
+  githubAccessToken: string,
+  repo: {
+    owner: string,
+    name: string
+  },
+  pathToDirectoryInRepo: string,
+  commitShaHashOrBranchNameOrTagName?: string | undefined,
 }) {
   const directoriesInPath = pathToDirectoryInRepo.replace(/\/*$/, '').split('/');
   const pathToParentDirectory = directoriesInPath.slice(0, -1).join('/');

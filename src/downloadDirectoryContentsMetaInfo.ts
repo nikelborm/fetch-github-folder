@@ -1,24 +1,18 @@
-// @ts-check
-'use strict';
-
 import { Octokit } from "@octokit/core";
 
-/**
-* @param {{
-*   githubAccessToken: string,
-*   repo: {
-*     owner: string,
-*     name: string
-*   },
-*   pathToDirectory?: string,
-*   commitShaHashOrBranchNameOrTagName?: string,
-* }} param0
-*/
 export async function downloadDirectoryContentsMetaInfo({
   githubAccessToken,
   repo,
   commitShaHashOrBranchNameOrTagName,
   pathToDirectory = ''
+}: {
+  githubAccessToken: string,
+  repo: {
+    owner: string,
+    name: string
+  },
+  pathToDirectory?: string,
+  commitShaHashOrBranchNameOrTagName?: string | undefined,
 }) {
   const octokit = new Octokit({
     auth: githubAccessToken
@@ -30,7 +24,9 @@ export async function downloadDirectoryContentsMetaInfo({
       owner: repo.owner,
       repo: repo.name,
       path: pathToDirectory,
-      ref: commitShaHashOrBranchNameOrTagName,
+      ...(commitShaHashOrBranchNameOrTagName && {
+        ref: commitShaHashOrBranchNameOrTagName
+      }),
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       },

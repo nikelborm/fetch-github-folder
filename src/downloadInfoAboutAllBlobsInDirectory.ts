@@ -1,22 +1,16 @@
-// @ts-check
-'use strict';
-
 import { Octokit } from "@octokit/core";
 
-/**
-* @param {{
-*   githubAccessToken: string,
-*   repo: {
-*     owner: string,
-*     name: string
-*   },
-*   gitTreeShaHashOfDirectory: string,
-* }} param0
-*/
 export async function downloadInfoAboutAllBlobsInDirectory({
   githubAccessToken,
   repo,
   gitTreeShaHashOfDirectory,
+}: {
+  githubAccessToken: string,
+  repo: {
+    owner: string,
+    name: string
+  },
+  gitTreeShaHashOfDirectory: string,
 }) {
   const octokit = new Octokit({
     auth: githubAccessToken
