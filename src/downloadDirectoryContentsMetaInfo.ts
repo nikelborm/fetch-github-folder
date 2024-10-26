@@ -11,8 +11,8 @@ export async function downloadDirectoryContentsMetaInfo({
     owner: string,
     name: string
   },
-  pathToDirectory?: string,
-  commitShaHashOrBranchNameOrTagName?: string | undefined,
+  pathToDirectory: string,
+  commitShaHashOrBranchNameOrTagName: string,
 }) {
   const octokit = new Octokit({
     auth: githubAccessToken
@@ -24,14 +24,14 @@ export async function downloadDirectoryContentsMetaInfo({
       owner: repo.owner,
       repo: repo.name,
       path: pathToDirectory,
-      ...(commitShaHashOrBranchNameOrTagName && {
-        ref: commitShaHashOrBranchNameOrTagName
-      }),
+      ref: commitShaHashOrBranchNameOrTagName,
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       },
     }
-  )
+  );
+
+  // TODO: try, catch and explain 404 normally
 
   if (!Array.isArray(contentsOfDirectory))
     throw new Error(`${pathToDirectory} is not a directory`);
