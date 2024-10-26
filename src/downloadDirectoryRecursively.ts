@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMetaInfo";
-import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlobsInDirectory";
+import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMetaInfo.js";
+import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlobsInDirectory.js";
 
 export async function downloadDirectoryRecursively({
   githubAccessToken,

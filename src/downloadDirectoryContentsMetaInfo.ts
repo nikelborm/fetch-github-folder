@@ -4,7 +4,7 @@ export async function downloadDirectoryContentsMetaInfo({
   githubAccessToken,
   repo,
   commitShaHashOrBranchNameOrTagName,
-  pathToDirectory = ''
+  pathToDirectory
 }: {
   githubAccessToken: string,
   repo: {

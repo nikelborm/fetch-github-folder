@@ -1,7 +1,7 @@
 import {
   downloadDirectoryRecursively,
   getEnvVarOrFail,
-} from "./src";
+} from "./src/index.js";
 
 await downloadDirectoryRecursively({
   githubAccessToken: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
