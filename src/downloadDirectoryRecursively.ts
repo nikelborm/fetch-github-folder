@@ -8,6 +8,7 @@ export async function downloadDirectoryRecursively({
   repo,
   pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
+  pathToLocalDirContentsOfRepoDirWillBePutInto,
 }: {
   githubAccessToken: string,
   repo: {
@@ -15,39 +16,85 @@ export async function downloadDirectoryRecursively({
     name: string
   },
   pathToDirectoryInRepo: string,
+  pathToLocalDirContentsOfRepoDirWillBePutInto: string,
   commitShaHashOrBranchNameOrTagName?: string | undefined,
 }) {
-  const directoriesInPath = pathToDirectoryInRepo.replace(/\/*$/, '').split('/');
-  const pathToParentDirectory = directoriesInPath.slice(0, -1).join('/');
-  const directoryName = directoriesInPath.slice(-1)[0];
+  const directoriesInPath = path
+    .join(pathToDirectoryInRepo) // cleans up the path of stupid shit
+    .replace(/\/*$/, '') // remove trailing slash
+    .split('/');
 
-  const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
-    githubAccessToken,
-    repo,
-    commitShaHashOrBranchNameOrTagName,
-    pathToDirectory: pathToParentDirectory
-  });
+  // few options generally present in directoriesInPath: [nonEmptyString],
+  // [nonEmptyString, nonEmptyString, ...nonEmptyString[]], and ['.']
 
-  const dirElement = parentDirectoryContentsMetaInfo.find(
-    ({ name }) => name === directoryName,
+  if (directoriesInPath[0] === '..') throw new Error(
+    `Can't go to parent folder like that: ${pathToDirectoryInRepo}`
   );
 
-  if (!dirElement)
-    throw new Error(`${directoryName} does not exist inside ${pathToParentDirectory || 'root directory'}`);
+  const infoAboutDownloadableDirectory =
+    directoriesInPath['length'] === 1 && directoriesInPath[0] === '.'
+      ? { directoryToDownload: 'root' as const }
+      : directoriesInPath['length'] === 1
+      ? {
+        directoryToDownload: 'dirDirectlyInRoot' as const,
+        directoryName: directoriesInPath[0] as string
+      }
+      : directoriesInPath['length'] > 1
+      ? {
+        directoryToDownload: 'nestedDir' as const,
+        directoryName: directoriesInPath.at(-1) as string,
+        pathToParentDirectory: directoriesInPath
+          .slice(0, -1) // takes everything except last one
+          .join('/'),
+      }
+      : (() => { throw new Error('Impossible directoriesInPath.length === 0') })();
 
-  if (dirElement.type !== 'dir')
-    throw new Error(`${path.join(pathToParentDirectory, directoryName)} is not a directory`);
+  let gitTreeShaHashOfDirectory =
+    infoAboutDownloadableDirectory.directoryToDownload === 'root'
+      ? commitShaHashOrBranchNameOrTagName || 'HEAD'
+      : await (async () => {
+        const pathToDirectory = infoAboutDownloadableDirectory.directoryToDownload === 'dirDirectlyInRoot'
+          ? "."
+          : infoAboutDownloadableDirectory.pathToParentDirectory;
+
+        const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
+          githubAccessToken,
+          repo,
+          commitShaHashOrBranchNameOrTagName: commitShaHashOrBranchNameOrTagName || 'HEAD',
+          pathToDirectory,
+        });
+
+        const dirElement = parentDirectoryContentsMetaInfo.find(
+          ({ name }) => name === infoAboutDownloadableDirectory.directoryName,
+        );
+
+        const fullPathOfDownloadableDirectory = path.join(
+          pathToDirectory,
+          infoAboutDownloadableDirectory.directoryName
+        );
+
+        if (!dirElement)
+          throw new Error(`${fullPathOfDownloadableDirectory} does not exist.`);
+
+        if (dirElement.type !== 'dir')
+          throw new Error(`${fullPathOfDownloadableDirectory} is not a directory`);
+
+        return dirElement.sha;
+      })()
 
   const blobs = await downloadInfoAboutAllBlobsInDirectory({
     githubAccessToken,
     repo,
-    gitTreeShaHashOfDirectory: dirElement.sha,
+    gitTreeShaHashOfDirectory
   });
   console.table(blobs);
 
   await Promise.all(
     blobs.map(async ({ url, pathInsideDirectory }) => {
-      const relativePathWhereToSaveFile = path.join('./', pathToParentDirectory, directoryName, pathInsideDirectory);
+      const relativePathWhereToSaveFile = path.join(
+        pathToLocalDirContentsOfRepoDirWillBePutInto,
+        pathInsideDirectory
+      );
 
       const response = await fetch(url);
       // @ts-ignore

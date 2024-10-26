@@ -29,6 +29,8 @@ export async function downloadInfoAboutAllBlobsInDirectory({
     }
   );
 
+  // TODO: check if it's a directory I guess
+
   const blobs = flatTreeOfDirectory
     .filter(({ type }) => type === 'blob')
     .map(({ url, path: pathInsideDirectory }) => {
