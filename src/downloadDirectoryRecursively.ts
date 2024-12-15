@@ -7,14 +7,14 @@ export async function downloadDirectoryRecursively({
   repo,
   pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
-  pathToLocalDirContentsOfRepoDirWillBePutInto,
+  pathToLocalDirIntoWhichContentsOfRepoDirWillBePut,
 }: {
   repo: {
     owner: string,
     name: string
   },
   pathToDirectoryInRepo: string,
-  pathToLocalDirContentsOfRepoDirWillBePutInto: string,
+  pathToLocalDirIntoWhichContentsOfRepoDirWillBePut: string,
   commitShaHashOrBranchNameOrTagName?: string | undefined,
 }) {
   const directoriesInPath = path
@@ -88,7 +88,7 @@ export async function downloadDirectoryRecursively({
   await Promise.all(
     blobs.map(async ({ url, pathInsideDirectory }) => {
       const relativePathWhereToSaveFile = path.join(
-        pathToLocalDirContentsOfRepoDirWillBePutInto,
+        pathToLocalDirIntoWhichContentsOfRepoDirWillBePut,
         pathInsideDirectory
       );
 
