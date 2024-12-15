@@ -20,11 +20,10 @@ cd download-github-folder
 # Install dependencies:
 npm install
 # Create .env file:
-cp .template.env .env
+cp template.env .env
 ```
 
 Then [get personal github access token here](https://github.com/settings/tokens)
-
 
 ## Environment Variables
 
@@ -33,10 +32,14 @@ Then [get personal github access token here](https://github.com/settings/tokens)
 - `GITHUB_REPO_NAME`: This is the name of the repository you are trying to download from. In the example above, the repository name is `superset`.
 - `PATH_TO_DIRECTORY_IN_REPO`: This is the path to the directory you want to download. It can be directory that lies inside root of repo like `docker` or it can be some nested directory like `docker/nginx`.
 - `COMMIT_SHA_HASH_OR_BRANCH_NAME_OR_TAG_NAME`: This is the commit SHA hash, branch name, or tag name you want to download from. If you don't specify it, the default branch in the repository will be used.
-- `PATH_TO_LOCAL_DIR_CONTENTS_OF_REPO_DIR_WILL_BE_PUT_INTO`: All files and directories from directory of remote repository will be put in a specific local directory and we specify it's path. If it doesn't exist, it will be automatically created.
-
+- `PATH_TO_LOCAL_DIR_INTO_WHICH_CONTENTS_OF_REPO_DIR_WILL_BE_PUT`: All files and directories from directory of remote repository will be put in a specific local directory and we specify it's path. If it doesn't exist, it will be automatically created.
 
 ## How to use
 
 1. Set env variables in `.env` file
 2. Run `npm start`
+
+## TODO
+
+1. add posibility for quick request of token through browser (script opens a window and runs the request from as user )
+2. make smarter determinator of a main branch ([info](https://chatgpt.com/share/675f3a23-2638-800d-a5ea-3873f01aad0a))

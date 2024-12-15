@@ -26,10 +26,6 @@ jobs:
         run: |
           ./node_modules/.bin/tsc && ./node_modules/.bin/ncc build ./dist/index.js -o ./dist2 --no-source-map-register --minify --no-cache
       -
-        name: 'Rename .env'
-        run: |
-          mv .template.env template.env
-      -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v1
         with:
