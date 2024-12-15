@@ -43,3 +43,6 @@ Then [get personal github access token here](https://github.com/settings/tokens)
 
 1. add posibility for quick request of token through browser (script opens a window and runs the request from as user )
 2. make smarter determinator of a main branch ([info](https://chatgpt.com/share/675f3a23-2638-800d-a5ea-3873f01aad0a))
+3. support downloading not only folders, but also individual files
+4. support creating downloading plans, where user can specify more than one entity (folder/file) to download
+5. support git submodules
