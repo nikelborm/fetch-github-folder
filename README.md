@@ -46,3 +46,4 @@ Then [get personal github access token here](https://github.com/settings/tokens)
 3. support downloading not only folders, but also individual files
 4. support creating downloading plans, where user can specify more than one entity (folder/file) to download
 5. support git submodules
+6. fix shit that files created with different flags than they are in repo (for example scripts missing x flag)
