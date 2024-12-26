@@ -1,14 +1,12 @@
 import { octokit } from './octokit.js';
+import { Repo } from './repo.interface.js';
 
 export async function downloadDirectoryContentsMetaInfo({
   repo,
   gitRef,
   pathToDirectory
 }: {
-  repo: {
-    owner: string,
-    name: string
-  },
+  repo: Repo,
   pathToDirectory: string,
   gitRef: string,
 }) {

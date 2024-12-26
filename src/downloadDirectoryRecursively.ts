@@ -2,8 +2,9 @@ import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import path from 'path';
 import tarFs from 'tar-fs';
-import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMetaInfo.js";
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
+import { getGitTreeRefFromParentTreeRef } from './getGitTreeRefFromParentTreeRef.js';
+import { Repo } from './repo.interface.js';
 
 export async function downloadDirectoryRecursively({
   repo,
@@ -11,17 +12,14 @@ export async function downloadDirectoryRecursively({
   commitShaHashOrBranchNameOrTagName,
   pathToLocalDirIntoWhichContentsOfRepoDirWillBePut,
 }: {
-  repo: {
-    owner: string,
-    name: string
-  },
+  repo: Repo,
   pathToDirectoryInRepo: string,
   pathToLocalDirIntoWhichContentsOfRepoDirWillBePut: string,
   commitShaHashOrBranchNameOrTagName?: string | undefined,
 }) {
   const directoriesInPath = path
-    .join(pathToDirectoryInRepo) // cleans up the path of stupid shit
-    .replace(/\/*$/, '') // remove trailing slash
+    .join(pathToDirectoryInRepo) // cleans up the path of stupid shit, also removes ./ in the beginning
+    .replace(/\/*$/, '') // removes trailing slash
     .split('/');
 
   // few options generally present in directoriesInPath: [nonEmptyString],
@@ -31,53 +29,21 @@ export async function downloadDirectoryRecursively({
     `Can't go to parent folder like that: ${pathToDirectoryInRepo}`
   );
 
-  const target =
-    directoriesInPath['length'] === 1 && directoriesInPath[0] === '.'
-      ? { directoryToDownload: 'root' as const }
-      : directoriesInPath['length'] === 1
-      ? {
-        directoryToDownload: 'dirDirectlyInRoot' as const,
-        directoryName: directoriesInPath[0] as string
-      }
-      : directoriesInPath['length'] > 1
-      ? {
-        directoryToDownload: 'nestedDir' as const,
-        directoryName: directoriesInPath.at(-1) as string,
-        pathToParentDirectory: directoriesInPath
-          .slice(0, -1) // takes everything except last one
-          .join('/'),
-      }
-      : (() => { throw new Error('Impossible directoriesInPath.length === 0') })();
-
   let gitRef = commitShaHashOrBranchNameOrTagName || 'HEAD'
 
-  if (target.directoryToDownload !== 'root') {
-    const pathToDirectory = target.directoryToDownload === 'dirDirectlyInRoot'
-      ? "."
-      : target.pathToParentDirectory;
+  // '.' can only be there only when that's all there is. Path removes all
+  // './', so '.' will never be just left. If it's there, it's very
+  // intentional and no other elements in the path exist.
+  if (directoriesInPath[0] !== '.') {
+    const parentDirectoryPathElements = [...directoriesInPath];
+    const childDirectoryName = parentDirectoryPathElements.pop()!;
 
-    const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
+    gitRef = await getGitTreeRefFromParentTreeRef({
+      parentDirectoryPath: parentDirectoryPathElements.join('/') || '.',
+      childDirectoryName,
+      parentGitRef: gitRef,
       repo,
-      gitRef,
-      pathToDirectory,
     });
-
-    const dirElement = parentDirectoryContentsMetaInfo.find(
-      ({ name }) => name === target.directoryName,
-    );
-
-    const fullPathOfDownloadableDirectory = path.join(
-      pathToDirectory,
-      target.directoryName
-    );
-
-    if (!dirElement)
-      throw new Error(`${fullPathOfDownloadableDirectory} does not exist.`);
-
-    if (dirElement.type !== 'dir')
-      throw new Error(`${fullPathOfDownloadableDirectory} is not a directory`);
-
-    gitRef = dirElement.sha;
   }
 
   await pipeline(

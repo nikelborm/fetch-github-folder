@@ -1,11 +1,9 @@
 import { Readable } from 'stream';
 import { octokit } from './octokit.js';
+import { Repo } from './repo.interface.js';
 
 export async function getReadableTarGzStreamOfRepoDirectory(
-  repo: {
-    owner: string,
-    name: string
-  },
+  repo: Repo,
   gitRef: string
 ) {
   const { data } = await octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {
@@ -15,7 +13,7 @@ export async function getReadableTarGzStreamOfRepoDirectory(
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'
     }
-  }) as { data: ArrayBuffer }// tar.gz
+  }) as { data: ArrayBuffer } // tar.gz
 
   return new Readable({
     read() {

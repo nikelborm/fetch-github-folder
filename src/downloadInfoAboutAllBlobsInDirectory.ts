@@ -1,15 +1,10 @@
 import { octokit } from './octokit.js';
+import { Repo } from './repo.interface.js';
 
-export async function downloadInfoAboutAllBlobsInDirectory({
-  repo,
-  gitTreeShaHashOfDirectory,
-}: {
-  repo: {
-    owner: string,
-    name: string
-  },
+export async function downloadInfoAboutAllBlobsInDirectory(
+  repo: Repo,
   gitTreeShaHashOfDirectory: string,
-}) {
+) {
   const { data: { tree: flatTreeOfDirectory } } = await octokit.request(
     'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
     {
