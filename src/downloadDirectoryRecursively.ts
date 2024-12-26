@@ -10,11 +10,11 @@ export async function downloadDirectoryRecursively({
   repo,
   pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
-  pathToLocalDirIntoWhichContentsOfRepoDirWillBePut,
+  localDirPathToPutInsideRepoDirContents,
 }: {
   repo: Repo,
   pathToDirectoryInRepo: string,
-  pathToLocalDirIntoWhichContentsOfRepoDirWillBePut: string,
+  localDirPathToPutInsideRepoDirContents: string,
   commitShaHashOrBranchNameOrTagName?: string | undefined,
 }) {
   const directoriesInPath = path
@@ -49,7 +49,7 @@ export async function downloadDirectoryRecursively({
   await pipeline(
     await getReadableTarGzStreamOfRepoDirectory(repo, gitRef),
     createGunzip(),
-    tarFs.extract(pathToLocalDirIntoWhichContentsOfRepoDirWillBePut, {
+    tarFs.extract(localDirPathToPutInsideRepoDirContents, {
       map: (header) => {
         // GitHub creates archive with nested dir inside that has all the
         // files we need, so we remove this dir's name from the beginning
