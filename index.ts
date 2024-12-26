@@ -1,6 +1,6 @@
 import {
   downloadDirectoryRecursively,
-  getEnvVarOrFail,
+  getEnvVarOrFail
 } from "./src/index.js";
 
 await downloadDirectoryRecursively({

@@ -1,7 +1,9 @@
-import fs from 'fs/promises';
+import { pipeline } from 'node:stream/promises';
+import { createGunzip } from 'node:zlib';
 import path from 'path';
+import tarFs from 'tar-fs';
 import { downloadDirectoryContentsMetaInfo } from "./downloadDirectoryContentsMetaInfo.js";
-import { downloadInfoAboutAllBlobsInDirectory } from "./downloadInfoAboutAllBlobsInDirectory.js";
+import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
 
 export async function downloadDirectoryRecursively({
   repo,
@@ -47,67 +49,47 @@ export async function downloadDirectoryRecursively({
       }
       : (() => { throw new Error('Impossible directoriesInPath.length === 0') })();
 
-  let gitTreeShaHashOfDirectory =
-    target.directoryToDownload === 'root'
-      ? commitShaHashOrBranchNameOrTagName || 'HEAD'
-      : await (async () => {
-        const pathToDirectory = target.directoryToDownload === 'dirDirectlyInRoot'
-          ? "."
-          : target.pathToParentDirectory;
+  let gitRef = commitShaHashOrBranchNameOrTagName || 'HEAD'
 
-        const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
-          repo,
-          commitShaHashOrBranchNameOrTagName: commitShaHashOrBranchNameOrTagName || 'HEAD',
-          pathToDirectory,
-        });
+  if (target.directoryToDownload !== 'root') {
+    const pathToDirectory = target.directoryToDownload === 'dirDirectlyInRoot'
+      ? "."
+      : target.pathToParentDirectory;
 
-        const dirElement = parentDirectoryContentsMetaInfo.find(
-          ({ name }) => name === target.directoryName,
-        );
+    const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
+      repo,
+      gitRef,
+      pathToDirectory,
+    });
 
-        const fullPathOfDownloadableDirectory = path.join(
-          pathToDirectory,
-          target.directoryName
-        );
+    const dirElement = parentDirectoryContentsMetaInfo.find(
+      ({ name }) => name === target.directoryName,
+    );
 
-        if (!dirElement)
-          throw new Error(`${fullPathOfDownloadableDirectory} does not exist.`);
+    const fullPathOfDownloadableDirectory = path.join(
+      pathToDirectory,
+      target.directoryName
+    );
 
-        if (dirElement.type !== 'dir')
-          throw new Error(`${fullPathOfDownloadableDirectory} is not a directory`);
+    if (!dirElement)
+      throw new Error(`${fullPathOfDownloadableDirectory} does not exist.`);
 
-        return dirElement.sha;
-      })()
+    if (dirElement.type !== 'dir')
+      throw new Error(`${fullPathOfDownloadableDirectory} is not a directory`);
 
-  const blobs = await downloadInfoAboutAllBlobsInDirectory({
-    repo,
-    gitTreeShaHashOfDirectory
-  });
-  console.table(blobs);
+    gitRef = dirElement.sha;
+  }
 
-  await Promise.all(
-    blobs.map(async ({ url, pathInsideDirectory }) => {
-      const relativePathWhereToSaveFile = path.join(
-        pathToLocalDirIntoWhichContentsOfRepoDirWillBePut,
-        pathInsideDirectory
-      );
-
-      const response = await fetch(url);
-      // @ts-ignore
-      const { content } = await response.json();
-
-      if (!content)
-        throw new Error(`Blob ${pathInsideDirectory} does not have content`);
-
-      await fs.mkdir(
-        path.dirname(relativePathWhereToSaveFile),
-        { recursive: true }
-      );
-
-      await fs.writeFile(
-        relativePathWhereToSaveFile,
-        Buffer.from(content, 'base64'),
-      );
+  await pipeline(
+    await getReadableTarGzStreamOfRepoDirectory(repo, gitRef),
+    createGunzip(),
+    tarFs.extract(pathToLocalDirIntoWhichContentsOfRepoDirWillBePut, {
+      map: (header) => {
+        // GitHub creates archive with nested dir inside that has all the
+        // files we need, so we remove this dir's name from the beginning
+        header.name = header.name.replace(/^[^/]*\/(.*)/, '$1');
+        return header;
+      }
     })
-  )
+  );
 }

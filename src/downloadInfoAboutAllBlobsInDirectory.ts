@@ -27,14 +27,17 @@ export async function downloadInfoAboutAllBlobsInDirectory({
 
   const blobs = flatTreeOfDirectory
     .filter(({ type }) => type === 'blob')
-    .map(({ url, path: pathInsideDirectory }) => {
+    .map(({ url, path: pathInsideDirectory, mode: fileMode }) => {
       if (!pathInsideDirectory)
         throw new Error(`Blob does not have a path`);
 
       if (!url)
         throw new Error(`Blob does not have a url`);
 
-      return { pathInsideDirectory, url };
+      if (!fileMode)
+        throw new Error(`Blob does not have a file mode`);
+
+      return { pathInsideDirectory, url, fileMode };
     });
 
   return blobs;

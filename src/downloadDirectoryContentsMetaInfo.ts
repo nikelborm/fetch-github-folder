@@ -2,7 +2,7 @@ import { octokit } from './octokit.js';
 
 export async function downloadDirectoryContentsMetaInfo({
   repo,
-  commitShaHashOrBranchNameOrTagName,
+  gitRef,
   pathToDirectory
 }: {
   repo: {
@@ -10,7 +10,7 @@ export async function downloadDirectoryContentsMetaInfo({
     name: string
   },
   pathToDirectory: string,
-  commitShaHashOrBranchNameOrTagName: string,
+  gitRef: string,
 }) {
   const { data: contentsOfDirectory } = await octokit.request(
     'GET /repos/{owner}/{repo}/contents/{path}',
@@ -18,7 +18,7 @@ export async function downloadDirectoryContentsMetaInfo({
       owner: repo.owner,
       repo: repo.name,
       path: pathToDirectory,
-      ref: commitShaHashOrBranchNameOrTagName,
+      ref: gitRef,
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       },

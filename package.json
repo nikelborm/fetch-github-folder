@@ -9,7 +9,7 @@
   },
   "author": {
     "name": "nikelborm",
-    "email": "kolya007.klass@gmail.com",
+    "email": "evadev@duck.com",
     "url": "https://github.com/nikelborm"
   },
   "license": "MIT",
@@ -18,7 +18,9 @@
     "@octokit/core": "^6.1.2",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^22.8.1",
+    "@types/tar-fs": "^2.0.4",
     "@vercel/ncc": "^0.38.1",
+    "tar-fs": "^3.0.6",
     "tsafe": "^1.6.6",
     "tsx": "^4.13.2",
     "typescript": "^5.4.5"
