@@ -21,6 +21,10 @@
     "rimraf": "^6.0.1",
     "typescript": "^5.4.5"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/nikelborm/download-github-folder.git"
