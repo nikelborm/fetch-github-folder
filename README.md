@@ -1,5 +1,7 @@
 # download-github-folder
 
+[![Release Workflow](https://github.com/nikelborm/download-github-folder/actions/workflows/main.yml/badge.svg)](https://github.com/nikelborm/download-github-folder/actions/workflows/main.yml)
+
 ## What This Project Does
 
 This project allows you to download any folder inside a repo on github.
