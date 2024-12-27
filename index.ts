@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import "@total-typescript/ts-reset";
+
 import {
   downloadDirAndPutIntoFs,
   getEnvVarOrFail

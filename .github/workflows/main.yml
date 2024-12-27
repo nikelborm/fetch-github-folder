@@ -21,10 +21,10 @@ jobs:
         name: 'Deps: Install'
         run: |
           npm install
-      -
-        name: 'Build'
-        run: |
-          npm run build
+      - # builds automatically
+        run: npm publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2
@@ -34,7 +34,3 @@ jobs:
           files: |
             ./dist/minified/index.js
             ./template.env
-      -
-        run: npm publish --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

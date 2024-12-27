@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && node --env-file=.env ./dist/index.js",
+    "prepack": "npm run build",
     "build": "rimraf dist && tsc && ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache"
   },
   "dependencies": {
