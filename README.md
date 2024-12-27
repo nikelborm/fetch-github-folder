@@ -47,3 +47,4 @@ Then [get personal github access token here](https://github.com/settings/tokens)
 4. support creating downloading plans, where user can specify more than one entity (folder/file) to download
 5. support git submodules
 6. add autodeterminator that this is a public repo and we don't need an API key
+7. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
