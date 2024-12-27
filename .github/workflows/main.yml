@@ -7,6 +7,7 @@ jobs:
   build:
     permissions:
       contents: write
+      packages: write
     runs-on: ubuntu-latest
     steps:
       -
@@ -17,12 +18,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23
+          registry-url: https://npm.pkg.github.com
       -
         name: 'Deps: Install'
         run: |
           npm install
-      - # builds automatically
-        run: npm publish --provenance
+      -
+        run: |
+          npm publish --provenance # builds automatically
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
