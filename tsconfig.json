@@ -6,7 +6,9 @@
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "declaration": true,
-    "removeComments": true,
+    "declarationMap": true,
+    // they'll be removed by ncc if needed
+    "removeComments": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,

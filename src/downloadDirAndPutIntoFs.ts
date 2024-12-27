@@ -6,7 +6,7 @@ import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamO
 import { getGitTreeRefFromParentTreeRef } from './getGitTreeRefFromParentTreeRef.js';
 import { Repo } from './repo.interface.js';
 
-export async function downloadDirectoryRecursively({
+export async function downloadDirAndPutIntoFs({
   repo,
   pathToDirectoryInRepo,
   commitShaHashOrBranchNameOrTagName,
@@ -31,9 +31,9 @@ export async function downloadDirectoryRecursively({
 
   let gitRef = commitShaHashOrBranchNameOrTagName || 'HEAD'
 
-  // '.' can only be there only when that's all there is. Path removes all
-  // './', so '.' will never be just left. If it's there, it's very
-  // intentional and no other elements in the path exist.
+  // '.' can only be there only when that's all there is. path.join(...)
+  // removes all './', so '.' will never be just left. If it's there, it's
+  // very intentional and no other elements in the path exist.
   if (directoriesInPath[0] !== '.') {
     const parentDirectoryPathElements = [...directoriesInPath];
     const childDirectoryName = parentDirectoryPathElements.pop()!;

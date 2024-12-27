@@ -2,27 +2,86 @@
   "name": "download-github-folder",
   "version": "0.1.0",
   "type": "module",
-  "description": "",
-  "main": "index.ts",
+  "description": "Download any directory at any depth from any repo on GitHub on any git ref",
+  "license": "MIT",
   "scripts": {
-    "start": "tsc && node --env-file=.env ./dist/index.js"
+    "start": "tsc && node --env-file=.env ./dist/index.js",
+    "build": "rimraf dist && tsc && ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache"
   },
+  "dependencies": {
+    "@octokit/core": "^6.1.2",
+    "tsafe": "^1.6.6",
+    "tar-fs": "^3.0.6"
+  },
+  "devDependencies": {
+    "@total-typescript/ts-reset": "^0.5.1",
+    "@types/node": "^22.8.1",
+    "@types/tar-fs": "^2.0.4",
+    "@vercel/ncc": "^0.38.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.4.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nikelborm/download-github-folder.git"
+  },
+  "main": "./dist/src/index.js",
+  "bin": {
+    "download-github-folder": "dist/minified/index.js",
+    "dgf": "dist/minified/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/nikelborm/download-github-folder/issues",
+    "email": "evadev@duck.com"
+  },
+  "files": [
+    "dist",
+    ".github/FUNDING.yml",
+    "template.env"
+  ],
+  "homepage": "https://github.com/nikelborm/download-github-folder#readme",
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./index": "./dist/src/index.js",
+    "./index.js": "./dist/src/index.js",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "github",
+    "nodejs",
+    "javascript",
+    "git",
+    "octokit",
+    "github-api",
+    "npm",
+    "folder",
+    "scraper",
+    "downloader",
+    "node",
+    "typescript",
+    "script",
+    "download",
+    "directory",
+    "node-js",
+    "octokit-js"
+  ],
   "author": {
     "name": "nikelborm",
     "email": "evadev@duck.com",
     "url": "https://github.com/nikelborm"
   },
-  "license": "MIT",
-  "keywords": [],
-  "dependencies": {
-    "@octokit/core": "^6.1.2",
-    "@total-typescript/ts-reset": "^0.5.1",
-    "@types/node": "^22.8.1",
-    "@types/tar-fs": "^2.0.4",
-    "@vercel/ncc": "^0.38.1",
-    "tar-fs": "^3.0.6",
-    "tsafe": "^1.6.6",
-    "tsx": "^4.13.2",
-    "typescript": "^5.4.5"
-  }
+  "contributors": [
+    {
+      "name": "nikelborm",
+      "email": "evadev@duck.com",
+      "url": "https://github.com/nikelborm"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "nikelborm",
+      "email": "evadev@duck.com",
+      "url": "https://github.com/nikelborm"
+    }
+  ]
 }

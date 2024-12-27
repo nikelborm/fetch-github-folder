@@ -24,7 +24,7 @@ jobs:
       -
         name: 'Build'
         run: |
-          ./node_modules/.bin/tsc && ./node_modules/.bin/ncc build ./dist/index.js -o ./dist2 --no-source-map-register --minify --no-cache
+          npm run build
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v1
@@ -32,5 +32,5 @@ jobs:
           tag_name: latest-${{github.sha}}
           fail_on_unmatched_files: true
           files: |
-            ./dist2/index.js
+            ./dist/minified/index.js
             ./template.env

@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 import {
-  downloadDirectoryRecursively,
+  downloadDirAndPutIntoFs,
   getEnvVarOrFail
 } from "./src/index.js";
 
-await downloadDirectoryRecursively({
+await downloadDirAndPutIntoFs({
   repo: {
     owner: getEnvVarOrFail('GITHUB_REPO_OWNER'),
     name: getEnvVarOrFail('GITHUB_REPO_NAME'),
