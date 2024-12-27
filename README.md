@@ -14,7 +14,7 @@ You need to have installed latest node, git, npm
 
 1. [Generate `Personal access token (classic)` with `read:packages` scope](https://github.com/settings/tokens/new?description=Install%20packages%20from%20GitHub%20NPM%20registry&scopes=read:packages&default_expires_at=none)
 2. Save the token
-3. Run `npm login --scope=nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com` (read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token))
+3. Run `npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com` (read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token))
 4. Enter your username when asked
 5. Paste the token as password value
 6. Then run `npm i @nikelborm/download-github-folder` to install the package

@@ -1,6 +1,6 @@
 {
   "name": "@nikelborm/download-github-folder",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
