@@ -1,12 +1,12 @@
 {
   "name": "fetch-github-folder",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
   "scripts": {
     "start": "tsc && node --env-file=.env ./dist/index.js",
-    "build": "rimraf dist && tsc && ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache"
+    "build": "rimraf dist && tsc && ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache && chmod +x ./dist/index.js ./dist/minified/index.js"
   },
   "dependencies": {
     "@octokit/core": "^6.1.2",
