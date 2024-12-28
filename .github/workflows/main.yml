@@ -19,16 +19,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23
-          registry-url: https://npm.pkg.github.com
       -
         name: 'Deps: Install'
         run: |
           npm install
       -
+        name: 'Build'
         run: |
-          npm publish --provenance # builds automatically
+          npm run build
+          which jq
+          exit 1
+      -
+        name: 'Publish to GitHub''s NPM registry'
+        run: |
+          npm config set registry=https://npm.pkg.github.com/
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: 'Publish to default NPM registry'
+        run: |
+          npm config set registry=https://registry.npmjs.org/
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2

@@ -1,12 +1,11 @@
 {
-  "name": "@nikelborm/download-github-folder",
-  "version": "0.1.5",
+  "name": "fetch-github-folder",
+  "version": "0.0.1",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
   "scripts": {
     "start": "tsc && node --env-file=.env ./dist/index.js",
-    "prepack": "npm run build",
     "build": "rimraf dist && tsc && ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache"
   },
   "dependencies": {
@@ -24,28 +23,28 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://npm.pkg.github.com",
     "provenance": true
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/nikelborm/download-github-folder.git"
+    "url": "git+ssh://git@github.com/nikelborm/fetch-github-folder.git"
   },
   "main": "./dist/src/index.js",
   "bin": {
-    "download-github-folder": "dist/minified/index.js",
-    "dgf": "dist/minified/index.js"
+    "fetch-github-folder": "dist/index.js",
+    "fgf": "dist/index.js"
   },
   "bugs": {
-    "url": "https://github.com/nikelborm/download-github-folder/issues",
+    "url": "https://github.com/nikelborm/fetch-github-folder/issues",
     "email": "evadev@duck.com"
   },
   "files": [
     "dist",
+    "!dist/minified",
     ".github/FUNDING.yml",
     "template.env"
   ],
-  "homepage": "https://github.com/nikelborm/download-github-folder#readme",
+  "homepage": "https://github.com/nikelborm/fetch-github-folder#readme",
   "exports": {
     ".": "./dist/src/index.js",
     "./index": "./dist/src/index.js",
@@ -54,22 +53,17 @@
   },
   "keywords": [
     "github",
-    "nodejs",
-    "javascript",
     "git",
     "octokit",
     "github-api",
-    "npm",
     "folder",
     "scraper",
     "downloader",
-    "node",
-    "typescript",
-    "script",
     "download",
-    "directory",
-    "node-js",
-    "octokit-js"
+    "extract",
+    "tarball",
+    "targz",
+    "directory"
   ],
   "author": {
     "name": "nikelborm",
