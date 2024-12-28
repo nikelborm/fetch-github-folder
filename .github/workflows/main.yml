@@ -31,8 +31,8 @@ jobs:
       -
         name: 'Publish to default NPM registry'
         run: |
-          cat ~/.npmrc
-          exit 0
+          npm config list --json
+          exit 1
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
