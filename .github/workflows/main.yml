@@ -27,22 +27,20 @@ jobs:
         name: 'Build'
         run: |
           npm run build
-          which jq
-          exit 1
+      -
+        name: 'Publish to default NPM registry'
+        run: |
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
+          sed -i 's/"name": "fetch-github-folder"/"name": "@nikelborm/fetch-github-folder"/' package.json
           npm config set registry=https://npm.pkg.github.com/
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: 'Publish to default NPM registry'
-        run: |
-          npm config set registry=https://registry.npmjs.org/
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2
