@@ -31,7 +31,7 @@ jobs:
       -
         name: 'Publish to default NPM registry'
         run: |
-          npm config list --json
+          cat /home/runner/work/_temp/.npmrc
           exit 1
           npm publish
         env:
