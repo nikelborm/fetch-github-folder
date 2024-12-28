@@ -30,18 +30,19 @@ jobs:
       -
         name: 'Publish to default NPM registry'
         run: |
-          echo -e '//registry.npmjs.org/:_authToken=${TOKEN}\nregistry=https://registry.npmjs.org/' > /home/runner/work/_temp/.npmrc
+          echo -e '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}\nregistry=https://registry.npmjs.org/\nalways-auth=true' > /home/runner/work/_temp/.npmrc
+          npm config list
           npm publish
         env:
-          TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
-          echo -e '//npm.pkg.github.com/:_authToken=${TOKEN}\n@nikelborm:registry=https://npm.pkg.github.com/' > /home/runner/work/_temp/.npmrc
+          echo -e '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}\n@nikelborm:registry=https://npm.pkg.github.com/\nalways-auth=true' > /home/runner/work/_temp/.npmrc
           sed -i 's/"name": "fetch-github-folder"/"name": "@nikelborm/fetch-github-folder"/' package.json
           npm publish
         env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2
