@@ -1,6 +1,6 @@
 {
   "name": "fetch-github-folder",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
@@ -41,6 +41,7 @@
   "files": [
     "dist",
     "!dist/minified",
+    "!**/*.tsbuildinfo",
     ".github/FUNDING.yml",
     "template.env"
   ],
