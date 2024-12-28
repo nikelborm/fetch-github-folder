@@ -1,6 +1,6 @@
 {
   "name": "fetch-github-folder",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
