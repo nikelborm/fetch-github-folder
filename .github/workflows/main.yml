@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23
-          registry-url: 'https://npm.pkg.github.com/'
       -
         name: 'Deps: Install'
         run: |
@@ -31,19 +30,18 @@ jobs:
       -
         name: 'Publish to default NPM registry'
         run: |
-          cat /home/runner/work/_temp/.npmrc
-          exit 1
+          echo -e '//registry.npmjs.org/:_authToken=${TOKEN}\nregistry=https://registry.npmjs.org/' > /home/runner/work/_temp/.npmrc
           npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
+          echo -e '//npm.pkg.github.com/:_authToken=${TOKEN}\n@nikelborm:registry=https://npm.pkg.github.com/' > /home/runner/work/_temp/.npmrc
           sed -i 's/"name": "fetch-github-folder"/"name": "@nikelborm/fetch-github-folder"/' package.json
-          npm config set registry=https://npm.pkg.github.com/
           npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2
