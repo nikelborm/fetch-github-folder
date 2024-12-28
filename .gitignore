@@ -2,4 +2,4 @@
 tmp
 node_modules
 dist
-download-github-folder-*
+fetch-github-folder-*
