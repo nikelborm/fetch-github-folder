@@ -12,7 +12,7 @@ export async function getGitTreeRefFromParentTreeRef({
   parentDirectoryPath: string,
   childDirectoryName: string,
   parentGitRef: string,
-}) {
+}): Promise<string> {
   const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
     repo,
     gitRef: parentGitRef,

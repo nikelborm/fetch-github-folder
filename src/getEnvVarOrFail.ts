@@ -1,4 +1,4 @@
-export function getEnvVarOrFail(name: string) {
+export function getEnvVarOrFail(name: string): string {
   const envVar = process.env[name];
 
   if (!envVar)

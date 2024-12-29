@@ -5,7 +5,8 @@ import { Repo } from './repo.interface.js';
 export async function getReadableTarGzStreamOfRepoDirectory(
   repo: Repo,
   gitRef: string
-) {
+): Promise<Readable> {
+  // TODO: add to octokit type information
   const { data } = await octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {
     owner: repo.owner,
     repo: repo.name,

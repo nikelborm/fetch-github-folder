@@ -1,5 +1,7 @@
 import { octokit } from './octokit.js';
 import { Repo } from './repo.interface.js';
+import type { components } from '@octokit/openapi-types';
+
 
 export async function downloadDirectoryContentsMetaInfo({
   repo,
@@ -9,7 +11,7 @@ export async function downloadDirectoryContentsMetaInfo({
   repo: Repo,
   pathToDirectory: string,
   gitRef: string,
-}) {
+}): Promise<components['schemas']['content-directory']> {
   const { data: contentsOfDirectory } = await octokit.request(
     'GET /repos/{owner}/{repo}/contents/{path}',
     {
