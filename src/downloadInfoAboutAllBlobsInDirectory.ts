@@ -4,7 +4,11 @@ import { Repo } from './repo.interface.js';
 export async function downloadInfoAboutAllBlobsInDirectory(
   repo: Repo,
   gitTreeShaHashOfDirectory: string,
-) {
+): Promise<{
+  pathInsideDirectory: string;
+  url: string;
+  fileMode: string;
+}[]> {
   const { data: { tree: flatTreeOfDirectory } } = await octokit.request(
     'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
     {

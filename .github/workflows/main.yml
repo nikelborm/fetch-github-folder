@@ -43,6 +43,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
+        name: 'Publish to JSR''s NPM registry'
+        run: npx jsr publish
+      -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2
         with:

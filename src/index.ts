@@ -5,5 +5,5 @@ export * from './getEnvVarOrFail.js';
 export * from './getGitTreeRefFromParentTreeRef.js';
 export * from './getReadableTarGzStreamOfRepoDirectory.js';
 export * from './logObjectNicely.js';
-export * from './octokit.js';
+// no octokit export intentionally
 export * from './repo.interface.js';
