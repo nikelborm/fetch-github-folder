@@ -45,6 +45,7 @@ jobs:
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
           file_pattern: 'jsr.json package-lock.json'
+          commit_message: Auto-updated NPM package files
       -
         name: 'Publish to JSR''s NPM registry'
         run: |
