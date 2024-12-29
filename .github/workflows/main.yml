@@ -36,7 +36,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Publish to JSR''s NPM registry'
-        run: npx jsr publish --provenance
+        run: npx jsr publish
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
