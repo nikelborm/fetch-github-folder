@@ -35,6 +35,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
+        name: 'Publish to JSR''s NPM registry'
+        run: npx jsr publish --provenance
+      -
         name: 'Publish to GitHub''s NPM registry'
         run: |
           sed -i 's/registry.npmjs.org/npm.pkg.github.com/' /home/runner/work/_temp/.npmrc
@@ -42,9 +45,6 @@ jobs:
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: 'Publish to JSR''s NPM registry'
-        run: npx jsr publish
       -
         name: 'Release: Upload'
         uses: softprops/action-gh-release@v2
