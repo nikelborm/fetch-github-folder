@@ -6,7 +6,8 @@ export async function getReadableTarGzStreamOfRepoDirectory(
   repo: Repo,
   gitRef: string
 ): Promise<Readable> {
-  // TODO: add to octokit type information
+  // TODO: PR to octokit that tarball returns ArrayBuffer instead od unknown
+
   const { data } = await octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {
     owner: repo.owner,
     repo: repo.name,
