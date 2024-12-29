@@ -36,7 +36,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Publish to JSR''s NPM registry'
-        run: npx jsr publish
+        run: npx jsr publish --allow-dirty # in case when package-lock.json gone stale
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
