@@ -1,5 +1,7 @@
 .env
 tmp
+temp.json
 node_modules
 dist
+_
 fetch-github-folder-*

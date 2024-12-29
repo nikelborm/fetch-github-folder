@@ -36,12 +36,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
         name: 'Publish to JSR''s NPM registry'
-        run: npx jsr publish --allow-dirty # in case when package-lock.json gone stale
+        run: |
+          jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
+          jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
+          npx jsr publish --allow-dirty # in case when package-lock.json gone stale
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
           sed -i 's/registry.npmjs.org/npm.pkg.github.com/' /home/runner/work/_temp/.npmrc
-          sed -i 's/"name": "fetch-github-folder"/"name": "@nikelborm\/fetch-github-folder"/' package.json
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
