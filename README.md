@@ -12,20 +12,36 @@ You need to have installed latest node, git, npm
 
 ## Installation
 
-### From default NPM registry
+### From [default NPM registry](https://www.npmjs.com/package/fetch-github-folder)
 
 ```bash
 npm i fetch-github-folder
 ```
 
-### From GitHub NPM Registry
+### From [JSR](https://jsr.io/@nikelborm/fetch-github-folder)
+
+```bash
+npx jsr add @nikelborm/fetch-github-folder
+```
+
+### From [GitHub's NPM registry](https://github.com/nikelborm/fetch-github-folder/pkgs/npm/fetch-github-folder)
 
 1. [Generate `Personal access token (classic)` with `read:packages` scope](https://github.com/settings/tokens/new?description=Install%20packages%20from%20GitHub%20NPM%20registry&scopes=read:packages&default_expires_at=none)
 2. Save the token
-3. Run `npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com` (read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token))
+3. Login to Github's NPM registry (yes you need to do it, even if the package is public):
+
+    ```bash
+    npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com
+    ```
+
+    You can also read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
 4. Enter your username when asked
 5. Paste the token as password value
-6. Then run `npm i @nikelborm/fetch-github-folder` to install the package
+6. Then install the package by executing:
+
+    ```bash
+    npm i @nikelborm/fetch-github-folder
+    ```
 
 ### For local development
 
