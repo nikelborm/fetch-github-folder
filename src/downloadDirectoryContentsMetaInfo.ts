@@ -1,9 +1,11 @@
-import { octokit } from './octokit.js';
+import { RequestError } from "@octokit/request-error";
+import { Effect as E, pipe } from 'effect';
+import { UnknownException } from 'effect/Cause';
+import { tryMapPromise } from 'effect/Effect';
+import { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
-import type { components } from '@octokit/openapi-types';
 
-
-export async function downloadDirectoryContentsMetaInfo({
+export const downloadDirectoryContentsMetaInfo = ({
   repo,
   gitRef,
   pathToDirectory
@@ -11,24 +13,27 @@ export async function downloadDirectoryContentsMetaInfo({
   repo: Repo,
   pathToDirectory: string,
   gitRef: string,
-}): Promise<components['schemas']['content-directory']> {
-  const { data: contentsOfDirectory } = await octokit.request(
-    'GET /repos/{owner}/{repo}/contents/{path}',
-    {
-      owner: repo.owner,
-      repo: repo.name,
-      path: pathToDirectory,
-      ref: gitRef,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      },
-    }
-  );
-
-  // TODO: try, catch and explain 404 normally
-
-  if (!Array.isArray(contentsOfDirectory))
-    throw new Error(`${pathToDirectory} is not a directory`);
-
-  return contentsOfDirectory
-}
+}) => pipe(
+  OctokitTag,
+  tryMapPromise({
+    try: (octokit) => octokit.request(
+      'GET /repos/{owner}/{repo}/contents/{path}',
+      {
+        owner: repo.owner,
+        repo: repo.name,
+        path: pathToDirectory,
+        ref: gitRef,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+      }
+    ),
+    catch: (error) => (error instanceof RequestError)
+      ? error
+      : new UnknownException(error, "Failed to request contents at the path inside GitHub repo")
+  }),
+  E.flatMap(({ data }) => Array.isArray(data)
+    ? E.succeed(data)
+    : E.fail(new Error(`${pathToDirectory} is not a directory`))
+  )
+);

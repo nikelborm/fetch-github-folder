@@ -1,8 +1,9 @@
-import path from 'path';
+import { Effect as E, pipe } from 'effect';
+import { Path } from "@effect/platform";
 import { downloadDirectoryContentsMetaInfo } from './downloadDirectoryContentsMetaInfo.js';
 import { Repo } from './repo.interface.js';
 
-export async function getGitTreeRefFromParentTreeRef({
+export const getGitTreeRefFromParentTreeRef = ({
   repo,
   parentDirectoryPath,
   parentGitRef,
@@ -12,29 +13,33 @@ export async function getGitTreeRefFromParentTreeRef({
   parentDirectoryPath: string,
   childDirectoryName: string,
   parentGitRef: string,
-}): Promise<string> {
-  const parentDirectoryContentsMetaInfo = await downloadDirectoryContentsMetaInfo({
-    repo,
-    gitRef: parentGitRef,
-    pathToDirectory: parentDirectoryPath,
-  });
+}) => pipe(
+  E.all([
+    Path.Path,
+    downloadDirectoryContentsMetaInfo({
+      repo,
+      gitRef: parentGitRef,
+      pathToDirectory: parentDirectoryPath,
+    })
+  ]),
+  E.flatMap(([path, parentDirectoryContentsMetaInfo]) => {
+    const dirElement = parentDirectoryContentsMetaInfo.find(
+      ({ name }) => name === childDirectoryName,
+    );
 
-  const dirElement = parentDirectoryContentsMetaInfo.find(
-    ({ name }) => name === childDirectoryName,
-  );
+    const fullPathOfDownloadableDirectory = path.join(
+      parentDirectoryPath,
+      childDirectoryName
+    );
 
-  const fullPathOfDownloadableDirectory = path.join(
-    parentDirectoryPath,
-    childDirectoryName
-  );
+    if (!dirElement)
+      return E.fail(new Error(`${fullPathOfDownloadableDirectory} does not exist.`));
 
-  if (!dirElement)
-    throw new Error(`${fullPathOfDownloadableDirectory} does not exist.`);
+    if (dirElement.type !== 'dir')
+      return E.fail(new Error(`${fullPathOfDownloadableDirectory} is not a directory.`));
 
-  if (dirElement.type !== 'dir')
-    throw new Error(`${fullPathOfDownloadableDirectory} is not a directory`);
+    const childTreeRef = dirElement.sha
 
-  const childTreeRef = dirElement.sha
-
-  return childTreeRef;
-}
+    return E.succeed(childTreeRef);
+  }),
+);

@@ -1,6 +1,7 @@
-import { Octokit } from '@octokit/core';
-import { getEnvVarOrFail } from './getEnvVarOrFail.js';
+import { Octokit as OctokitClient } from '@octokit/core';
+import { Context } from 'effect';
 
-export const octokit = new Octokit({
-  auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
-});
+export class OctokitTag extends Context.Tag("OctokitService")<
+  OctokitTag,
+  OctokitClient
+>() {}
