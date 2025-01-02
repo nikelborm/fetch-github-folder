@@ -6,10 +6,14 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && node --env-file=.env ./dist/index.js",
-    "build": "rimraf dist && tsc && ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache && chmod +x ./dist/index.js ./dist/minified/index.js"
+    "build": "./scripts/build.sh"
   },
   "dependencies": {
+    "@effect/cli": "^0.51.0",
+    "@effect/platform-node": "^0.68.0",
     "@octokit/core": "^6.1.2",
+    "effect": "^3.12.0",
+    "outdent": "^0.8.0",
     "tar-fs": "^3.0.6"
   },
   "devDependencies": {

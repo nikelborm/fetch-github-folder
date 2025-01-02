@@ -2,18 +2,76 @@
 
 import "@total-typescript/ts-reset";
 
-import {
-  downloadDirAndPutIntoFs,
-  getEnvVarOrFail
-} from "./src/index.js";
+import { Args, Command } from '@effect/cli';
+import { NodeContext, NodeRuntime } from '@effect/platform-node';
+import { Octokit as OctokitClient } from '@octokit/core';
+import { Effect, pipe } from 'effect';
+import { downloadDirAndPutIntoFs, OctokitTag } from "./src/index.js";
 
-await downloadDirAndPutIntoFs({
-  repo: {
-    owner: getEnvVarOrFail('GITHUB_REPO_OWNER'),
-    name: getEnvVarOrFail('GITHUB_REPO_NAME'),
-  },
-  pathToDirectoryInRepo: getEnvVarOrFail('PATH_TO_DIRECTORY_IN_REPO'),
-  localDirPathToPutInsideRepoDirContents:
-    getEnvVarOrFail('LOCAL_DIR_PATH_TO_PUT_INSIDE_REPO_DIR_CONTENTS'),
-  commitShaHashOrBranchNameOrTagName: process.env['COMMIT_SHA_HASH_OR_BRANCH_NAME_OR_TAG_NAME'],
+// Those values updated automatically. If you edit names of constants or
+// move them to a different file, update ./scripts/build.sh
+const PACKAGE_VERSION = "0.1.4";
+const PACKAGE_NAME = "fetch-github-folder";
+
+const pathToDirectoryInRepo = pipe(
+  Args.text({ name: 'pathToDirectoryInRepo' }),
+  Args.withDescription("Path to directory in repo"),
+);
+
+const repoOwner = pipe(
+  Args.text({ name: "repoOwner" }),
+  Args.withDescription("Repo owner's username"),
+);
+
+const repoName = pipe(
+  Args.text({ name: "repoName" }),
+  Args.withDescription("Repo's name"),
+);
+
+const localDirPathToPutInsideRepoDirContents = pipe(
+  Args.path({ name: "localDirPathToPutInsideRepoDirContents" }),
+  Args.withDescription("Local dir path to put inside repo dir contents"),
+);
+
+const gitRef = pipe(
+  Args.text({ name: "gitRef" }),
+  Args.withDefault('HEAD'),
+  Args.withDescription("Commit sha hash or branch name or tag name"),
+);
+
+const appCommand = Command.make("fetch-github-folder", {
+  repoOwner,
+  repoName,
+  pathToDirectoryInRepo,
+  localDirPathToPutInsideRepoDirContents,
+  gitRef,
+}, (x) =>
+  downloadDirAndPutIntoFs({
+    repo: {
+      owner: x.repoOwner,
+      name: x.repoName,
+    },
+    pathToDirectoryInRepo: x.pathToDirectoryInRepo,
+    localDirPathToPutInsideRepoDirContents:
+      x.localDirPathToPutInsideRepoDirContents,
+    gitRef: x.gitRef,
+  })
+);
+
+
+const cli = Command.run(appCommand, {
+  // those values will be filled automatically from package.json
+  name: PACKAGE_NAME,
+  version: PACKAGE_VERSION,
 });
+
+
+pipe(
+  process.argv,
+  cli,
+  Effect.provide(NodeContext.layer),
+  Effect.provideService(OctokitTag, new OctokitClient({
+    // auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
+  })),
+  NodeRuntime.runMain
+);

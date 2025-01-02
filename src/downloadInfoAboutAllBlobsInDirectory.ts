@@ -1,43 +1,50 @@
-import { octokit } from './octokit.js';
+import { RequestError } from "@octokit/request-error";
+import { Effect as E, pipe, Schema as S } from 'effect';
+import { UnknownException } from 'effect/Cause';
+import { ParseError } from 'effect/ParseResult';
+import { decodeUnknownEither, NonEmptyTrimmedString, Struct } from 'effect/Schema';
+import { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
 
-export async function downloadInfoAboutAllBlobsInDirectory(
+export const downloadInfoAboutAllBlobsInDirectory = (
   repo: Repo,
-  gitTreeShaHashOfDirectory: string,
-): Promise<{
+  gitTreeShaHashOfDirectory: string
+): E.Effect<readonly Readonly<{
   pathInsideDirectory: string;
   url: string;
   fileMode: string;
-}[]> {
-  const { data: { tree: flatTreeOfDirectory } } = await octokit.request(
-    'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
-    {
-      owner: repo.owner,
-      repo: repo.name,
-      tree_sha: gitTreeShaHashOfDirectory,
-      recursive: 'true',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      },
-    }
-  );
+}>[], RequestError | UnknownException | ParseError, OctokitTag> => pipe(
+  OctokitTag,
+  E.tryMapPromise({
+    try: async (octokit) => {
+      const { data: { tree } } = await octokit.request(
+        'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
+        {
+          owner: repo.owner,
+          repo: repo.name,
+          tree_sha: gitTreeShaHashOfDirectory,
+          recursive: 'true',
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          },
+        }
+      );
 
+      return tree.filter(({ type }) => type === 'blob');
+    },
+    catch: (error) => (error instanceof RequestError)
+      ? error
+      : new UnknownException(error, "Failed to request git trees from GitHub")
+  }),
   // TODO: check if it's a directory I guess
+  // TODO: try, catch and explain 404 normally
+  E.flatMap(decodeBlobs)
+);
 
-  const blobs = flatTreeOfDirectory
-    .filter(({ type }) => type === 'blob')
-    .map(({ url, path: pathInsideDirectory, mode: fileMode }) => {
-      if (!pathInsideDirectory)
-        throw new Error(`Blob does not have a path`);
+const BlobsSchema = Struct({
+  pathInsideDirectory: NonEmptyTrimmedString,
+  url: NonEmptyTrimmedString,
+  fileMode: NonEmptyTrimmedString,
+}).pipe(S.Array);
 
-      if (!url)
-        throw new Error(`Blob does not have a url`);
-
-      if (!fileMode)
-        throw new Error(`Blob does not have a file mode`);
-
-      return { pathInsideDirectory, url, fileMode };
-    });
-
-  return blobs;
-}
+const decodeBlobs = decodeUnknownEither(BlobsSchema, { exact: true });

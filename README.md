@@ -66,7 +66,7 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 - `GITHUB_REPO_OWNER`: This is the username of the owner of the repository you are trying to download from. For example, if the repository's URL is `https://github.com/apache/superset`, the owner is `apache`.
 - `GITHUB_REPO_NAME`: This is the name of the repository you are trying to download from. In the example above, the repository name is `superset`.
 - `PATH_TO_DIRECTORY_IN_REPO`: This is the path to the directory you want to download. It can be directory that lies inside root of repo like `docker` or it can be some nested directory like `docker/nginx`.
-- `COMMIT_SHA_HASH_OR_BRANCH_NAME_OR_TAG_NAME`: This is the commit SHA hash, branch name, or tag name you want to download from. If you don't specify it, the default branch in the repository will be used.
+- `GIT_REF`: This is the commit SHA hash, branch name, or tag name you want to download from. If you don't specify it, the default branch in the repository will be used.
 - `LOCAL_DIR_PATH_TO_PUT_INSIDE_REPO_DIR_CONTENTS`: All files and directories from directory of remote repository will be put into a specific local directory and we specify it's path. If it doesn't exist, it will be automatically created.
 
 ## How to use
