@@ -2,10 +2,15 @@
 
 import "@total-typescript/ts-reset";
 
-import { Args, Command } from '@effect/cli';
-import { NodeContext, NodeRuntime } from '@effect/platform-node';
+
+import { text, withDescription, withDefault } from '@effect/cli/Args';
+import { make, run } from '@effect/cli/Command';
+import { layer as NodeFileSystemLayer } from '@effect/platform-node/NodeFileSystem';
+import { layer as NodePathLayer } from '@effect/platform-node/NodePath';
+import { layer as NodeTerminalLayer } from '@effect/platform-node/NodeTerminal';
+import { runMain } from '@effect/platform-node/NodeRuntime';
 import { Octokit as OctokitClient } from '@octokit/core';
-import { pipe } from 'effect';
+import { pipe } from 'effect/Function';
 import { provide, provideService } from 'effect/Effect';
 import { downloadDirAndPutIntoFs, OctokitTag } from "./src/index.js";
 
@@ -15,32 +20,32 @@ const PACKAGE_VERSION = "0.1.4";
 const PACKAGE_NAME = "fetch-github-folder";
 
 const pathToDirectoryInRepo = pipe(
-  Args.text({ name: 'pathToDirectoryInRepo' }),
-  Args.withDescription("Path to directory in repo"),
+  text({ name: 'pathToDirectoryInRepo' }),
+  withDescription("Path to directory in repo"),
 );
 
 const repoOwner = pipe(
-  Args.text({ name: "repoOwner" }),
-  Args.withDescription("Repo owner's username"),
+  text({ name: "repoOwner" }),
+  withDescription("Repo owner's username"),
 );
 
 const repoName = pipe(
-  Args.text({ name: "repoName" }),
-  Args.withDescription("Repo's name"),
+  text({ name: "repoName" }),
+  withDescription("Repo's name"),
 );
 
 const localDirPathToPutInsideRepoDirContents = pipe(
-  Args.path({ name: "localDirPathToPutInsideRepoDirContents" }),
-  Args.withDescription("Local dir path to put inside repo dir contents"),
+  text({ name: "localDirPathToPutInsideRepoDirContents" }),
+  withDescription("Local dir path to put inside repo dir contents"),
 );
 
 const gitRef = pipe(
-  Args.text({ name: "gitRef" }),
-  Args.withDefault('HEAD'),
-  Args.withDescription("Commit sha hash or branch name or tag name"),
+  text({ name: "gitRef" }),
+  withDefault('HEAD'),
+  withDescription("Commit sha hash or branch name or tag name"),
 );
 
-const appCommand = Command.make("fetch-github-folder", {
+const appCommand = make("fetch-github-folder", {
   repoOwner,
   repoName,
   pathToDirectoryInRepo,
@@ -60,7 +65,7 @@ const appCommand = Command.make("fetch-github-folder", {
 );
 
 
-const cli = Command.run(appCommand, {
+const cli = run(appCommand, {
   // those values will be filled automatically from package.json
   name: PACKAGE_NAME,
   version: PACKAGE_VERSION,
@@ -70,9 +75,11 @@ const cli = Command.run(appCommand, {
 pipe(
   process.argv,
   cli,
-  provide(NodeContext.layer),
+  provide(NodeFileSystemLayer),
+  provide(NodePathLayer),
+  provide(NodeTerminalLayer),
   provideService(OctokitTag, new OctokitClient({
     // auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
   })),
-  NodeRuntime.runMain
+  runMain
 );

@@ -2,6 +2,7 @@
 tmp
 temp.json
 node_modules
+stats.html
 dist
 _
 fetch-github-folder-*

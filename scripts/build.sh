@@ -11,7 +11,5 @@ sed -i "s/\(const PACKAGE_VERSION\).*/\1 = $(jq '.version' package.json);/" ./fe
 sed -i "s/\(const PACKAGE_NAME\).*/\1 = $(jq '.name' package.json);/" ./fetch-github-folder.ts
 tsc
 mkdir -p ./dist/minified
-# rollup ./dist/fetch-github-folder.js --format es --file ./dist/minified/fetch-github-folder.js
-ncc build ./dist/fetch-github-folder.js -o ./dist/minified --no-source-map-register --minify --no-cache
-mv ./dist/minified/index.js ./dist/minified/fetch-github-folder.js
+rollup -c ./rollup.config.js
 chmod +x ./dist/fetch-github-folder.js ./dist/minified/fetch-github-folder.js

@@ -1,15 +1,15 @@
-import { NodeStream } from '@effect/platform-node';
 import { RequestError } from "@octokit/request-error";
-import { pipe } from 'effect';
+import { pipe } from 'effect/Function';
 import { UnknownException } from 'effect/Cause';
 import {
   fail,
   flatMap,
-  succeed,
+  try as tryEffect,
   tryMapPromise,
 } from 'effect/Effect';
 import { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
+import { Readable } from 'node:stream';
 
 export const getReadableTarGzStreamOfRepoDirectory = (
   repo: Repo,
@@ -31,8 +31,12 @@ export const getReadableTarGzStreamOfRepoDirectory = (
   }),
   // TODO: PR to octokit that tarball returns ArrayBuffer instead of unknown
   flatMap(({ data }) => data instanceof ArrayBuffer
-    ? succeed(new Uint8Array(data))
+    ? tryEffect(() => new Readable({
+      read() {
+        this.push(Buffer.from(data));
+        this.push(null);
+      }
+    }))
     : fail(new Error(`Octokit returned something that's not ArrayBuffer`))
   ),
-  NodeStream.toReadable
 );

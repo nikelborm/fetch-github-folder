@@ -1,7 +1,7 @@
 import type { Octokit as OctokitClient } from '@octokit/core';
-import { Context } from 'effect';
+import { Tag } from 'effect/Context';
 
-export class OctokitTag extends Context.Tag("OctokitService")<
+export class OctokitTag extends Tag("OctokitService")<
   OctokitTag,
   OctokitClient
 >() {}
