@@ -27,7 +27,7 @@ jobs:
       -
         name: 'Build'
         run: |
-          npm run build
+          npm exec -c ./scripts/build.sh
       -
         name: 'Publish to default NPM registry'
         run: |
@@ -44,7 +44,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
-          file_pattern: 'jsr.json package-lock.json'
+          file_pattern: 'jsr.json package-lock.json index.ts'
           commit_message: Auto-updated NPM package files
       -
         name: 'Publish to JSR''s NPM registry'
