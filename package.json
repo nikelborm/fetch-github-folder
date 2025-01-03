@@ -5,7 +5,7 @@
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node --env-file=.env ./dist/index.js",
+    "start": "tsc && node --env-file=.env ./dist/fetch-github-folder.js",
     "build": "./scripts/build.sh"
   },
   "dependencies": {
@@ -34,8 +34,8 @@
   },
   "main": "./dist/src/index.js",
   "bin": {
-    "fetch-github-folder": "dist/index.js",
-    "fgf": "dist/index.js"
+    "fetch-github-folder": "dist/fetch-github-folder.js",
+    "fgf": "dist/fetch-github-folder.js"
   },
   "bugs": {
     "url": "https://github.com/nikelborm/fetch-github-folder/issues",

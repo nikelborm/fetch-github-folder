@@ -44,7 +44,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
-          file_pattern: 'jsr.json package-lock.json index.ts'
+          file_pattern: 'jsr.json package-lock.json fetch-github-folder.ts'
           commit_message: Auto-updated NPM package files
       -
         name: 'Publish to JSR''s NPM registry'
@@ -64,5 +64,5 @@ jobs:
           tag_name: latest-${{github.sha}}
           fail_on_unmatched_files: true
           files: |
-            ./dist/minified/index.js
+            ./dist/minified/fetch-github-folder.js
             ./template.env

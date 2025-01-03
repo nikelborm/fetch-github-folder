@@ -7,8 +7,8 @@ command -v ncc >/dev/null 2>&1 || { echo "ncc is required but not installed."; e
 
 rimraf dist
 
-sed -i "s/\(const PACKAGE_VERSION\).*/\1 = $(jq '.version' package.json);/" ./index.ts
-sed -i "s/\(const PACKAGE_NAME\).*/\1 = $(jq '.name' package.json);/" ./index.ts
+sed -i "s/\(const PACKAGE_VERSION\).*/\1 = $(jq '.version' package.json);/" ./fetch-github-folder.ts
+sed -i "s/\(const PACKAGE_NAME\).*/\1 = $(jq '.name' package.json);/" ./fetch-github-folder.ts
 tsc
-ncc build ./dist/index.js -o ./dist/minified --no-source-map-register --minify --no-cache
-chmod +x ./dist/index.js ./dist/minified/index.js
+ncc build ./dist/fetch-github-folder.js -o ./dist/minified --no-source-map-register --minify --no-cache
+chmod +x ./dist/fetch-github-folder.js ./dist/minified/fetch-github-folder.js
