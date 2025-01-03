@@ -13,7 +13,7 @@ import { downloadDirAndPutIntoFs, OctokitTag } from "./src/index.js";
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh
-const PACKAGE_VERSION = "0.1.5";
+const PACKAGE_VERSION = "0.1.6";
 const PACKAGE_NAME = "fetch-github-folder";
 
 const pathToDirectoryInRepo = pipe(
