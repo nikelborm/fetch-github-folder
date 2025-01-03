@@ -1,5 +1,10 @@
-import { Effect as E, pipe } from 'effect';
 import { Path } from "@effect/platform";
+import {
+  fail,
+  flatten,
+  gen,
+  succeed,
+} from 'effect/Effect';
 import { downloadDirectoryContentsMetaInfo } from './downloadDirectoryContentsMetaInfo.js';
 import { Repo } from './repo.interface.js';
 
@@ -11,7 +16,7 @@ export const getGitTreeRefFromParentTreeRef = ({
   repo: Repo,
   cleanPath: string,
   parentGitRef: string,
-}) => E.gen(function* () {
+}) => gen(function* () {
   const path = yield* Path.Path;
 
   const parentDirectoryContentsMetaInfo = yield* downloadDirectoryContentsMetaInfo({
@@ -28,12 +33,12 @@ export const getGitTreeRefFromParentTreeRef = ({
   );
 
   if (!dirElement)
-    return E.fail(new Error(`${cleanPath} does not exist.`));
+    return fail(new Error(`${cleanPath} does not exist.`));
 
   if (dirElement.type !== 'dir')
-    return E.fail(new Error(`${cleanPath} is not a directory.`));
+    return fail(new Error(`${cleanPath} is not a directory.`));
 
   const childTreeRef = dirElement.sha
 
-  return E.succeed(childTreeRef);
-}).pipe(E.flatten)
+  return succeed(childTreeRef);
+}).pipe(flatten)

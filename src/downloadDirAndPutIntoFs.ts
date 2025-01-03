@@ -1,11 +1,19 @@
 import { Path } from "@effect/platform";
-import { Effect as E, pipe } from "effect";
+import { pipe } from "effect";
+import {
+  fail,
+  flatMap,
+  flatten,
+  gen,
+  succeed,
+  tryMapPromise,
+} from "effect/Effect";
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
-import tarFs from 'tar-fs';
+import { extract } from 'tar-fs';
 import { getGitTreeRefFromParentTreeRef } from './getGitTreeRefFromParentTreeRef.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
-import { Repo } from './repo.interface.js';
+import type { Repo } from './repo.interface.js';
 
 export const downloadDirAndPutIntoFs = ({
   repo,
@@ -23,14 +31,14 @@ export const downloadDirAndPutIntoFs = ({
     pathToDirectoryInRepo,
     gitRef,
   }),
-  E.flatMap((newGitRef) =>
+  flatMap((newGitRef) =>
     getReadableTarGzStreamOfRepoDirectory(repo, newGitRef)
   ),
-  E.tryMapPromise({
+  tryMapPromise({
     try: (tarGzStream) => pipeline(
       tarGzStream,
       createGunzip(),
-      tarFs.extract(localDirPathToPutInsideRepoDirContents, {
+      extract(localDirPathToPutInsideRepoDirContents, {
         map: (header) => {
           // GitHub creates archive with nested dir inside that has all the
           // files we need, so we remove this dir's name from the beginning
@@ -54,7 +62,7 @@ const getNewGitTreeHashIfDirIsNested = ({
   repo: Repo,
   pathToDirectoryInRepo: string,
   gitRef: string,
-}) => E.gen(function *() {
+}) => gen(function *() {
   const path = yield* Path.Path;
 
   // dot can be there only when that's all there is. path.join(...)
@@ -63,10 +71,10 @@ const getNewGitTreeHashIfDirIsNested = ({
   const cleanPath = path.join(pathToDirectoryInRepo);
 
   if (['.', './'].includes(cleanPath))
-    return E.succeed(gitRef);
+    return succeed(gitRef);
 
   if (/^\.\..*/.test(cleanPath))
-    return E.fail(new Error(
+    return fail(new Error(
       `Can't go higher than the root of the repo: ${pathToDirectoryInRepo}`
     ));
 
@@ -75,4 +83,4 @@ const getNewGitTreeHashIfDirIsNested = ({
     parentGitRef: gitRef,
     repo,
   })
-}).pipe(E.flatten);
+}).pipe(flatten);

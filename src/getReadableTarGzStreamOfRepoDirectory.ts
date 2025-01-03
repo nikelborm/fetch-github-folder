@@ -1,10 +1,15 @@
+import { NodeStream } from '@effect/platform-node';
 import { RequestError } from "@octokit/request-error";
-import { Effect as E, pipe } from 'effect';
+import { pipe } from 'effect';
 import { UnknownException } from 'effect/Cause';
-import { tryMapPromise } from 'effect/Effect';
+import {
+  fail,
+  flatMap,
+  succeed,
+  tryMapPromise,
+} from 'effect/Effect';
 import { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
-import { NodeStream } from '@effect/platform-node';
 
 export const getReadableTarGzStreamOfRepoDirectory = (
   repo: Repo,
@@ -25,9 +30,9 @@ export const getReadableTarGzStreamOfRepoDirectory = (
       : new UnknownException(error, "Failed to request tarball from GitHub")
   }),
   // TODO: PR to octokit that tarball returns ArrayBuffer instead of unknown
-  E.flatMap(({ data }) => data instanceof ArrayBuffer
-    ? E.succeed(new Uint8Array(data))
-    : E.fail(new Error(`Octokit returned something that's not ArrayBuffer`))
+  flatMap(({ data }) => data instanceof ArrayBuffer
+    ? succeed(new Uint8Array(data))
+    : fail(new Error(`Octokit returned something that's not ArrayBuffer`))
   ),
   NodeStream.toReadable
 );
