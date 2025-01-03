@@ -20,6 +20,8 @@ npm i fetch-github-folder
 
 ### From [JSR](https://jsr.io/@nikelborm/fetch-github-folder)
 
+Unfortunately JSR doesn't support publishing executables yet, so you can install only script library with functions that will allow you to fetch github folder from other scripts.
+
 ```bash
 npx jsr add @nikelborm/fetch-github-folder
 ```
@@ -76,7 +78,7 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 
 ## TODO
 
-1. add posibility for quick request of token through browser (script opens a window and runs the request from as user )
+1. add possibility for quick request of token through browser (script opens a window and runs the request from as user )
 2. make smarter determinator of a main branch ([info](https://chatgpt.com/share/675f3a23-2638-800d-a5ea-3873f01aad0a))
 3. support downloading not only folders, but also individual files
 4. support creating downloading plans, where user can specify more than one entity (folder/file) to download

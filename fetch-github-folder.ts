@@ -5,7 +5,8 @@ import "@total-typescript/ts-reset";
 import { Args, Command } from '@effect/cli';
 import { NodeContext, NodeRuntime } from '@effect/platform-node';
 import { Octokit as OctokitClient } from '@octokit/core';
-import { Effect, pipe } from 'effect';
+import { pipe } from 'effect';
+import { provide, provideService } from 'effect/Effect';
 import { downloadDirAndPutIntoFs, OctokitTag } from "./src/index.js";
 
 // Those values updated automatically. If you edit names of constants or
@@ -69,8 +70,8 @@ const cli = Command.run(appCommand, {
 pipe(
   process.argv,
   cli,
-  Effect.provide(NodeContext.layer),
-  Effect.provideService(OctokitTag, new OctokitClient({
+  provide(NodeContext.layer),
+  provideService(OctokitTag, new OctokitClient({
     // auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
   })),
   NodeRuntime.runMain

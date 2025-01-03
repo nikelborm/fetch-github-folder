@@ -1,7 +1,12 @@
 import { RequestError } from "@octokit/request-error";
-import { Effect as E, pipe } from 'effect';
+import { pipe } from 'effect';
 import { UnknownException } from 'effect/Cause';
-import { tryMapPromise } from 'effect/Effect';
+import {
+  fail,
+  flatMap,
+  succeed,
+  tryMapPromise,
+} from 'effect/Effect';
 import { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
 
@@ -32,8 +37,8 @@ export const downloadDirectoryContentsMetaInfo = ({
       ? error
       : new UnknownException(error, "Failed to request contents at the path inside GitHub repo")
   }),
-  E.flatMap(({ data }) => Array.isArray(data)
-    ? E.succeed(data)
-    : E.fail(new Error(`${pathToDirectory} is not a directory`))
+  flatMap(({ data }) => Array.isArray(data)
+    ? succeed(data)
+    : fail(new Error(`${pathToDirectory} is not a directory`))
   )
 );

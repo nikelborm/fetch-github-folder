@@ -47,5 +47,9 @@
         "name": "typescript-strict-plugin",
       }
     ]
-  }
+  },
+  "include": [
+    "./fetch-github-folder.ts",
+    "./src/index.ts"
+  ]
 }
