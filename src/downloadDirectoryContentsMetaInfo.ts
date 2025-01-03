@@ -6,8 +6,10 @@ import {
   flatMap,
   succeed,
   tryMapPromise,
+  type Effect
 } from 'effect/Effect';
 import { OctokitTag } from './octokit.js';
+import type { components } from '@octokit/openapi-types';
 import { Repo } from './repo.interface.js';
 
 export const downloadDirectoryContentsMetaInfo = ({
@@ -18,7 +20,11 @@ export const downloadDirectoryContentsMetaInfo = ({
   repo: Repo,
   pathToDirectory: string,
   gitRef: string,
-}) => pipe(
+}): Effect<
+  components['schemas']['content-directory'],
+  RequestError | Error | UnknownException,
+  OctokitTag
+> => pipe(
   OctokitTag,
   tryMapPromise({
     try: (octokit) => octokit.request(

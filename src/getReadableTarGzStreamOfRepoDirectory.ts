@@ -6,6 +6,7 @@ import {
   flatMap,
   try as tryEffect,
   tryMapPromise,
+  type Effect
 } from 'effect/Effect';
 import { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
@@ -14,7 +15,7 @@ import { Readable } from 'node:stream';
 export const getReadableTarGzStreamOfRepoDirectory = (
   repo: Repo,
   gitRef: string
-) => pipe(
+): Effect<Readable, Error | RequestError | UnknownException, OctokitTag> => pipe(
   OctokitTag,
   tryMapPromise({
     try: (octokit) => octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {
