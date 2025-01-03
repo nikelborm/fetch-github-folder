@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-import "@total-typescript/ts-reset";
-
-
 import { text, withDescription, withDefault } from '@effect/cli/Args';
 import { make, run } from '@effect/cli/Command';
 import { layer as NodeFileSystemLayer } from '@effect/platform-node/NodeFileSystem';

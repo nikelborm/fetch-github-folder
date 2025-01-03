@@ -50,6 +50,7 @@
   },
   "include": [
     "./fetch-github-folder.ts",
+    "./reset.d.ts",
     "./src/index.ts"
   ]
 }
