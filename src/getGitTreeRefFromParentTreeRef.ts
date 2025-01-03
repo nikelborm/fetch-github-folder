@@ -1,4 +1,4 @@
-import { Path } from "@effect/platform";
+import { Path } from "@effect/platform/Path";
 import {
   fail,
   flatten,
@@ -17,7 +17,7 @@ export const getGitTreeRefFromParentTreeRef = ({
   cleanPath: string,
   parentGitRef: string,
 }) => gen(function* () {
-  const path = yield* Path.Path;
+  const path = yield* Path;
 
   const parentDirectoryContentsMetaInfo = yield* downloadDirectoryContentsMetaInfo({
     repo,
