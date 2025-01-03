@@ -4,9 +4,13 @@ import {
   flatten,
   gen,
   succeed,
+  type Effect
 } from 'effect/Effect';
 import { downloadDirectoryContentsMetaInfo } from './downloadDirectoryContentsMetaInfo.js';
 import { Repo } from './repo.interface.js';
+import type { RequestError } from '@octokit/request-error';
+import type { UnknownException } from 'effect/Cause';
+import type { OctokitTag } from './octokit.js';
 
 export const getGitTreeRefFromParentTreeRef = ({
   repo,
@@ -16,7 +20,11 @@ export const getGitTreeRefFromParentTreeRef = ({
   repo: Repo,
   cleanPath: string,
   parentGitRef: string,
-}) => gen(function* () {
+}): Effect<
+  string,
+  RequestError | Error | UnknownException,
+  OctokitTag | Path
+> => gen(function* () {
   const path = yield* Path;
 
   const parentDirectoryContentsMetaInfo = yield* downloadDirectoryContentsMetaInfo({

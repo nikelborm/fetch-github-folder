@@ -14,6 +14,10 @@ import { extract } from 'tar-fs';
 import { getGitTreeRefFromParentTreeRef } from './getGitTreeRefFromParentTreeRef.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
 import type { Repo } from './repo.interface.js';
+import type { OctokitTag } from './octokit.js';
+import type { UnknownException } from 'effect/Cause';
+import type { RequestError } from '@octokit/request-error';
+import type { Effect } from 'effect/Effect';
 
 export const downloadDirAndPutIntoFs = ({
   repo,
@@ -25,7 +29,7 @@ export const downloadDirAndPutIntoFs = ({
   pathToDirectoryInRepo: string,
   localDirPathToPutInsideRepoDirContents: string,
   gitRef?: string | undefined,
-}) => pipe(
+}): Effect<void, RequestError | UnknownException | Error, OctokitTag | Path> => pipe(
   getNewGitTreeHashIfDirIsNested({
     repo,
     pathToDirectoryInRepo,
