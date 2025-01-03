@@ -5,3 +5,4 @@ node_modules
 dist
 _
 fetch-github-folder-*
+stats.html

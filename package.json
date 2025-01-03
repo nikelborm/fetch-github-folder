@@ -10,6 +10,11 @@
   },
   "dependencies": {
     "@octokit/core": "^6.1.2",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.29.1",
+    "rollup-plugin-visualizer": "^5.13.1",
     "tar-fs": "^3.0.6"
   },
   "devDependencies": {
