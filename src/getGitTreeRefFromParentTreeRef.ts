@@ -5,41 +5,35 @@ import { Repo } from './repo.interface.js';
 
 export const getGitTreeRefFromParentTreeRef = ({
   repo,
-  parentDirectoryPath,
   parentGitRef,
-  childDirectoryName,
+  cleanPath,
 }: {
   repo: Repo,
-  parentDirectoryPath: string,
-  childDirectoryName: string,
+  cleanPath: string,
   parentGitRef: string,
-}) => pipe(
-  E.all([
-    Path.Path,
-    downloadDirectoryContentsMetaInfo({
-      repo,
-      gitRef: parentGitRef,
-      pathToDirectory: parentDirectoryPath,
-    })
-  ]),
-  E.flatMap(([path, parentDirectoryContentsMetaInfo]) => {
-    const dirElement = parentDirectoryContentsMetaInfo.find(
-      ({ name }) => name === childDirectoryName,
-    );
+}) => E.gen(function* () {
+  const path = yield* Path.Path;
 
-    const fullPathOfDownloadableDirectory = path.join(
-      parentDirectoryPath,
-      childDirectoryName
-    );
+  const parentDirectoryContentsMetaInfo = yield* downloadDirectoryContentsMetaInfo({
+    repo,
+    gitRef: parentGitRef,
+    pathToDirectory: path.dirname(cleanPath),
+  });
 
-    if (!dirElement)
-      return E.fail(new Error(`${fullPathOfDownloadableDirectory} does not exist.`));
+  const childDirectoryName = path.basename(cleanPath);
 
-    if (dirElement.type !== 'dir')
-      return E.fail(new Error(`${fullPathOfDownloadableDirectory} is not a directory.`));
+  // TODO: check for collisions if there will be different directories with the same name
+  const dirElement = parentDirectoryContentsMetaInfo.find(
+    ({ name }) => name === childDirectoryName,
+  );
 
-    const childTreeRef = dirElement.sha
+  if (!dirElement)
+    return E.fail(new Error(`${cleanPath} does not exist.`));
 
-    return E.succeed(childTreeRef);
-  }),
-);
+  if (dirElement.type !== 'dir')
+    return E.fail(new Error(`${cleanPath} is not a directory.`));
+
+  const childTreeRef = dirElement.sha
+
+  return E.succeed(childTreeRef);
+}).pipe(E.flatten)

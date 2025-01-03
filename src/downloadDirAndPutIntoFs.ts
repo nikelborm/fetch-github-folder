@@ -1,5 +1,5 @@
 import { Path } from "@effect/platform";
-import { Effect as E } from "effect";
+import { Effect as E, pipe } from "effect";
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import tarFs from 'tar-fs';
@@ -17,27 +17,11 @@ export const downloadDirAndPutIntoFs = ({
   pathToDirectoryInRepo: string,
   localDirPathToPutInsideRepoDirContents: string,
   gitRef?: string | undefined,
-}) => Path.Path.pipe(
-  E.flatMap(path => {
-    // dot can be there only when that's all there is. path.join(...)
-    // removes all './', so '.' will never be just left by themself. If it's
-    // there, it's very intentional and no other elements in the path exist.
-    const cleanPath = path.join(pathToDirectoryInRepo);
-
-    if (['.', './'].includes(cleanPath))
-      return E.succeed(gitRef);
-
-    if (/^\.\..*/.test(cleanPath))
-      return E.fail(new Error(
-        `Can't go higher than the root of the repo: ${pathToDirectoryInRepo}`
-      ));
-
-    return getGitTreeRefFromParentTreeRef({
-      parentDirectoryPath: path.dirname(cleanPath),
-      childDirectoryName: path.basename(cleanPath),
-      parentGitRef: gitRef,
-      repo,
-    })
+}) => pipe(
+  getNewGitTreeHashIfDirIsNested({
+    repo,
+    pathToDirectoryInRepo,
+    gitRef,
   }),
   E.flatMap((newGitRef) =>
     getReadableTarGzStreamOfRepoDirectory(repo, newGitRef)
@@ -61,3 +45,34 @@ export const downloadDirAndPutIntoFs = ({
     )
   }),
 )
+
+const getNewGitTreeHashIfDirIsNested = ({
+  repo,
+  pathToDirectoryInRepo,
+  gitRef,
+}: {
+  repo: Repo,
+  pathToDirectoryInRepo: string,
+  gitRef: string,
+}) => E.gen(function *() {
+  const path = yield* Path.Path;
+
+  // dot can be there only when that's all there is. path.join(...)
+  // removes all './', so '.' will never be just left by themself. If it's
+  // there, it's very intentional and no other elements in the path exist.
+  const cleanPath = path.join(pathToDirectoryInRepo);
+
+  if (['.', './'].includes(cleanPath))
+    return E.succeed(gitRef);
+
+  if (/^\.\..*/.test(cleanPath))
+    return E.fail(new Error(
+      `Can't go higher than the root of the repo: ${pathToDirectoryInRepo}`
+    ));
+
+  return getGitTreeRefFromParentTreeRef({
+    cleanPath,
+    parentGitRef: gitRef,
+    repo,
+  })
+}).pipe(E.flatten);
