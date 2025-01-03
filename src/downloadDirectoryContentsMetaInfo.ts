@@ -1,5 +1,5 @@
 import { RequestError } from "@octokit/request-error";
-import { pipe } from 'effect';
+import { pipe } from 'effect/Function';
 import { UnknownException } from 'effect/Cause';
 import {
   fail,

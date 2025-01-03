@@ -1,5 +1,5 @@
-import { Path } from "@effect/platform";
-import { pipe } from "effect";
+import { Path } from "@effect/platform/Path";
+import { pipe } from 'effect/Function';
 import {
   fail,
   flatMap,
@@ -63,7 +63,7 @@ const getNewGitTreeHashIfDirIsNested = ({
   pathToDirectoryInRepo: string,
   gitRef: string,
 }) => gen(function *() {
-  const path = yield* Path.Path;
+  const path = yield* Path;
 
   // dot can be there only when that's all there is. path.join(...)
   // removes all './', so '.' will never be just left by themself. If it's
