@@ -7,8 +7,8 @@
 [![JSR Scope](https://jsr.io/badges/@nikelborm)](https://jsr.io/@nikelborm)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/nikelborm/fetch-github-folder)
 ![GitHub top language](https://img.shields.io/github/languages/top/nikelborm/fetch-github-folder)
-<!-- ![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder) -->
 ![NPM License](https://img.shields.io/npm/l/fetch-github-folder)
+<!-- ![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder) -->
 
 ## What This Project Does
 
