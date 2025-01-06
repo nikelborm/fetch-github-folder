@@ -1,7 +1,14 @@
 # fetch-github-folder
 
-[![npm version](https://badge.fury.io/js/fetch-github-folder.svg)](https://badge.fury.io/js/fetch-github-folder)
 [![Release Workflow](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml)
+[![npm version](https://badge.fury.io/js/fetch-github-folder.svg)](https://badge.fury.io/js/fetch-github-folder)
+[![JSR](https://jsr.io/badges/@nikelborm/fetch-github-folder)](https://jsr.io/@nikelborm/fetch-github-folder)
+[![JSR Score](https://jsr.io/badges/@nikelborm/fetch-github-folder/score)](https://jsr.io/@nikelborm/fetch-github-folder)
+[![JSR Scope](https://jsr.io/badges/@nikelborm)](https://jsr.io/@nikelborm)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/nikelborm/fetch-github-folder)
+![GitHub top language](https://img.shields.io/github/languages/top/nikelborm/fetch-github-folder)
+<!-- ![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder) -->
+![NPM License](https://img.shields.io/npm/l/fetch-github-folder)
 
 ## What This Project Does
 
