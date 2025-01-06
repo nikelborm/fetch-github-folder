@@ -6,7 +6,7 @@ import {
   succeed,
   type Effect
 } from 'effect/Effect';
-import { downloadDirectoryContentsMetaInfo } from './downloadDirectoryContentsMetaInfo.js';
+import { downloadPathContentsMetaInfo } from './downloadPathContentsMetaInfo.js';
 import { Repo } from './repo.interface.js';
 import type { RequestError } from '@octokit/request-error';
 import type { UnknownException } from 'effect/Cause';
@@ -27,16 +27,18 @@ export const getGitTreeRefFromParentTreeRef = ({
 > => gen(function* () {
   const path = yield* Path;
 
-  const parentDirectoryContentsMetaInfo = yield* downloadDirectoryContentsMetaInfo({
+  const parentDirectoryContentsMetaInfo = yield* downloadPathContentsMetaInfo({
     repo,
     gitRef: parentGitRef,
-    pathToDirectory: path.dirname(cleanPath),
+    path: path.dirname(cleanPath),
   });
 
   const childDirectoryName = path.basename(cleanPath);
 
   // TODO: check for collisions if there will be different directories with the same name
+  // @ts-ignore
   const dirElement = parentDirectoryContentsMetaInfo.find(
+    // @ts-ignore
     ({ name }) => name === childDirectoryName,
   );
 

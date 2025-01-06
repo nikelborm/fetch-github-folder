@@ -1,5 +1,6 @@
 # fetch-github-folder
 
+[![npm version](https://badge.fury.io/js/fetch-github-folder.svg)](https://badge.fury.io/js/fetch-github-folder)
 [![Release Workflow](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml)
 
 ## What This Project Does

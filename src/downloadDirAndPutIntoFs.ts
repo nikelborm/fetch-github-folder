@@ -78,8 +78,8 @@ const getNewGitTreeHashIfDirIsNested = ({
     return succeed(gitRef);
 
   if (/^\.\..*/.test(cleanPath))
-    return fail(new Error(
-      `Can't go higher than the root of the repo: ${pathToDirectoryInRepo}`
+    return fail(new AttemptedToGetDataAboveRepoRoot(
+      pathToDirectoryInRepo
     ));
 
   return getGitTreeRefFromParentTreeRef({
@@ -88,3 +88,11 @@ const getNewGitTreeHashIfDirIsNested = ({
     repo,
   })
 }).pipe(flatten);
+
+export class AttemptedToGetDataAboveRepoRoot extends Error {
+  public readonly _tag = 'AttemptedToGetDataAboveRepoRoot';
+
+  constructor(public readonly problematicPath: string) {
+    super('Error: Can\'t request contents that lie higher than the root of the repo')
+  }
+}

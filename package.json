@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && node --env-file=.env ./dist/fetch-github-folder.js",
+    "scratchpad": "tsc && node --env-file=.env ./dist/scratchpad.js",
     "build": "./scripts/build.sh"
   },
   "dependencies": {
