@@ -1,6 +1,6 @@
 import { RequestError } from "@octokit/request-error";
 import { UnknownException } from 'effect/Cause';
-import { gen, tryMapPromise, tryPromise } from 'effect/Effect';
+import { succeed, gen, tryMapPromise, tryPromise } from 'effect/Effect';
 import {
   Array as ArraySchema,
   decodeUnknownEither,
@@ -65,7 +65,10 @@ export const getPathContentsMetaInfo = ({
         });
 
       const stream = yield* ParseToReadableStream(
-        Buffer.from(response.content, response.encoding)
+        succeed(Buffer.from(
+          response.content,
+          response.encoding
+        ))
       );
       return {
         ...base,

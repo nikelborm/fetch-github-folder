@@ -1,7 +1,6 @@
 import { it } from "@effect/vitest";
 import { Octokit } from '@octokit/core';
-import { Effect } from 'effect';
-import { flip, map, provideService } from 'effect/Effect';
+import { flip, map, provideService, Effect } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import {
   getPathContentsMetaInfo,
@@ -11,10 +10,10 @@ import {
   GitHubApiRepoIsEmpty,
   OctokitTag
 } from './index.js';
-import { Repo } from './repo.interface.js';
+import type { Repo } from './repo.interface.js';
 
 type EffectReadyErrors = (
-  ReturnType<typeof getPathContentsMetaInfo> extends Effect.Effect<unknown, infer U, unknown>
+  ReturnType<typeof getPathContentsMetaInfo> extends Effect<unknown, infer U, unknown>
     ? Extract<U, { _tag: unknown }>
     : never
 );
@@ -47,7 +46,8 @@ const expectError = <const T extends EffectReadyErrors>({
       OctokitTag,
       new Octokit({ auth: authToken })
     )
-  )
+  ),
+  { concurrent: true }
 );
 
 

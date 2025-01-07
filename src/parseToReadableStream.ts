@@ -1,24 +1,25 @@
-import { fail, succeed } from 'effect/Effect';
+import { Effect, gen } from 'effect/Effect';
 import { Readable } from 'node:stream';
+import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
-export const ParseToReadableStream =
-  (data: unknown) => (data instanceof ArrayBuffer || data instanceof Buffer)
-    ? succeed(new Readable({
-      read() {
-        this.push(data);
-        this.push(null);
-      }
-    }))
-    : data instanceof Readable
-    ? succeed(data)
-    : fail(new FailedToParseResponseToReadableStream())
+export const ParseToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
+  gen(function* () {
+    const data = yield* self;
 
+    if (data instanceof ArrayBuffer || data instanceof Buffer)
+      return new Readable({
+        read() {
+          this.push(data);
+          this.push(null);
+        }
+      });
 
-export class FailedToParseResponseToReadableStream extends Error {
-  readonly _tag: string;
+    if (data instanceof Readable) return data;
 
-  constructor() {
-    super('Failed to parse data to readable stream')
-    this._tag = this.constructor.name;
-  }
-}
+    return yield * new FailedToParseDataToReadableStream()
+  })
+
+export class FailedToParseDataToReadableStream extends TaggedErrorVerifyingCause()(
+  'FailedToParseDataToReadableStream',
+  'Failed to parse data to readable stream',
+) {}
