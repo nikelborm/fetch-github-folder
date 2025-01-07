@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/core';
 import { pipe } from 'effect/Function';
 import { provide, provideService, runPromise, succeed } from 'effect/Effect';
-import { downloadPathContentsMetaInfo, LogObjectNicely, OctokitTag } from './src/index.js';
+import { getPathContentsMetaInfo, LogObjectNicely, OctokitTag } from './src/index.js';
 import { Effect } from 'effect';
 import { NodeTerminal } from '@effect/platform-node';
 
@@ -9,7 +9,7 @@ import { NodeTerminal } from '@effect/platform-node';
 
 await runPromise(
   pipe (
-    downloadPathContentsMetaInfo({
+    getPathContentsMetaInfo({
       gitRef: 'HEAD',
       // path: 'docker/entrypoints/docker-ci.sh',
       path: 'levelParent/levelChild/temp2.txt',

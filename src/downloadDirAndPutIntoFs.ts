@@ -75,7 +75,7 @@ const getNewGitTreeHashIfDirIsNested = ({
   if (['.', './'].includes(cleanPath)) return gitRef;
 
   if (/^\.\..*/.test(cleanPath))
-    yield* new AttemptedToGetDataAboveRepoRoot({
+    return yield* new AttemptedToGetDataAboveRepoRoot({
       problematicPath: pathToDirectoryInRepo
     });
 

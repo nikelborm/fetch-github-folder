@@ -1,6 +1,6 @@
 import { RequestError } from "@octokit/request-error";
 import { UnknownException } from 'effect/Cause';
-import { gen, tryPromise } from 'effect/Effect';
+import { gen, tryMapPromise, tryPromise } from 'effect/Effect';
 import {
   Array as ArraySchema,
   decodeUnknownEither,
@@ -23,6 +23,7 @@ import { OctokitTag } from './octokit.js';
 import { ParseToReadableStream } from './parseToReadableStream.js';
 import { Repo } from './repo.interface.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import { pipe } from 'effect';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -34,51 +35,19 @@ import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 //   OctokitTag
 // >
 
-export const downloadPathContentsMetaInfo = ({
+export const getPathContentsMetaInfo = ({
   repo,
-  gitRef = 'HEAD',
+  gitRef,
   path
 }: {
   repo: Repo,
   path: string,
   gitRef?: string | undefined,
 }) => gen(function* () {
-    const octokit = yield* OctokitTag;
-
-    const { data: unparsedContents } = yield* tryPromise({
-      try: (signal) => octokit.request(
-        'GET /repos/{owner}/{repo}/contents/{path}',
-        {
-          owner: repo.owner,
-          repo: repo.name,
-          path,
-          ref: gitRef,
-          request: { signal },
-          mediaType: { format: 'object' },
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          },
-        }
-      ),
-      catch: (error) =>
-        error instanceof RequestError
-          ? (error.status === 404 && (error.response?.data as any)?.message === 'This repository is empty.'
-            ? new GitHubApiRepoIsEmpty(error)
-            : error.status === 404
-            ? new GitHubApiRepoDoesNotExistsOrPermissionsInsufficient(error)
-            : error.status === 401
-            ? new GitHubApiBadCredentials(error)
-            : error.status === 403
-            ? new GitHubApiAuthRatelimited(error)
-            : error.status === 429
-            ? new GitHubApiRatelimited(error)
-            : error.status >= 500
-            ? new GitHubApiGeneralServerError(error)
-            : error.status >= 400
-            ? new GitHubApiGeneralUserError(error)
-            : error
-          )
-          : new UnknownException(error, "Failed to request contents at the path inside GitHub repo")
+    const { data: unparsedContents } = yield* requestPathContentsMetaInfoFromGitHubAPI({
+      repo,
+      gitRef,
+      path
     });
 
     const response = yield* decodeResponse(unparsedContents);
@@ -101,8 +70,8 @@ export const downloadPathContentsMetaInfo = ({
       return {
         ...base,
         content: stream,
-        meta: "This file is less than 1 MB and was sent automatically" as const
-      };
+        meta: "This file is less than 1 MB and was sent automatically"
+      } as const;
     } else if (response.size >= /* >? */ MB && response.size < /* <=? */ 100 * MB) {
       // From GitHub API documentation:
       // Between 1-100 MB: Only the raw or object custom media types are
@@ -121,13 +90,13 @@ export const downloadPathContentsMetaInfo = ({
 
       return {
         ...base,
-        meta: "This file can be downloaded as a blob" as const
-      }
+        meta: "This file can be downloaded as a blob"
+      } as const
     } else {
       return {
         ...base,
-        meta: "This file can be downloaded as a git-LFS object" as const
-      }
+        meta: "This file can be downloaded as a git-LFS object"
+      } as const
     }
 });
 
@@ -177,3 +146,47 @@ export class InconsistentEncodingWithSize extends TaggedErrorVerifyingCause<{
         : ''
     } for file with size ${ctx.size} bytes`,
 ) {}
+
+const requestPathContentsMetaInfoFromGitHubAPI = ({
+  repo,
+  gitRef,
+  path
+}: {
+  repo: Repo,
+  path: string,
+  gitRef?: string | undefined,
+}) => OctokitTag.pipe(tryMapPromise({
+  try: (octokit, signal) => octokit.request(
+    'GET /repos/{owner}/{repo}/contents/{path}',
+    {
+      owner: repo.owner,
+      repo: repo.name,
+      path,
+      ...(gitRef && { ref: gitRef }),
+      request: { signal },
+      mediaType: { format: 'object' },
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      },
+    }
+  ),
+  catch: (error) => error instanceof RequestError
+    ? (
+      error.status === 404 && (error.response?.data as any)?.message === 'This repository is empty.'
+        ? new GitHubApiRepoIsEmpty(error)
+        : error.status === 404
+        ? new GitHubApiRepoDoesNotExistsOrPermissionsInsufficient(error)
+        : error.status === 401
+        ? new GitHubApiBadCredentials(error)
+        : error.status === 403
+        ? new GitHubApiAuthRatelimited(error)
+        : error.status === 429
+        ? new GitHubApiRatelimited(error)
+        : error.status >= 500
+        ? new GitHubApiGeneralServerError(error)
+        : error.status >= 400
+        ? new GitHubApiGeneralUserError(error)
+        : error
+    )
+    : new UnknownException(error, "Failed to request contents at the path inside GitHub repo")
+}))

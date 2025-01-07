@@ -2,7 +2,7 @@ import { Path } from "@effect/platform/Path";
 import type { RequestError } from '@octokit/request-error';
 import type { UnknownException } from 'effect/Cause';
 import { fail, gen, type Effect } from 'effect/Effect';
-import { downloadPathContentsMetaInfo } from './downloadPathContentsMetaInfo.js';
+import { getPathContentsMetaInfo } from './downloadPathContentsMetaInfo.js';
 import type { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
@@ -25,7 +25,7 @@ export const getGitTreeRefFromParentTreeRef = ({
 }) => gen(function* () {
   const path = yield* Path;
 
-  const parentDirectoryContentsMetaInfo = yield* downloadPathContentsMetaInfo({
+  const parentDirectoryContentsMetaInfo = yield* getPathContentsMetaInfo({
     repo,
     gitRef: parentGitRef,
     path: path.dirname(cleanPath),
@@ -41,12 +41,12 @@ export const getGitTreeRefFromParentTreeRef = ({
   );
 
   if (!dirElement)
-    yield* new PathInsideTheRepoDoesNotExist({
+    return yield* new PathInsideTheRepoDoesNotExist({
       path: cleanPath
     });
 
   if (dirElement.type !== 'dir')
-    yield* new PathInsideOTheRepoIsNotADirectory({
+    return yield* new PathInsideOTheRepoIsNotADirectory({
       path: cleanPath
     });
 

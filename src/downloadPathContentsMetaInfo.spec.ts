@@ -4,7 +4,7 @@ import { Effect } from 'effect';
 import { flip, map, provideService } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import {
-  downloadPathContentsMetaInfo,
+  getPathContentsMetaInfo,
   GitHubApiBadCredentials,
   GitHubApiGeneralUserError,
   GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
@@ -14,7 +14,7 @@ import {
 import { Repo } from './repo.interface.js';
 
 type EffectReadyErrors = (
-  ReturnType<typeof downloadPathContentsMetaInfo> extends Effect.Effect<unknown, infer U, unknown>
+  ReturnType<typeof getPathContentsMetaInfo> extends Effect.Effect<unknown, infer U, unknown>
     ? Extract<U, { _tag: unknown }>
     : never
 );
@@ -36,7 +36,7 @@ const expectError = <const T extends EffectReadyErrors>({
 }) => it.effect(
   `Should throw ${ExpectedErrorClass.name} when ${when}`,
   (ctx) => pipe(
-    downloadPathContentsMetaInfo({
+    getPathContentsMetaInfo({
       gitRef,
       path,
       repo
