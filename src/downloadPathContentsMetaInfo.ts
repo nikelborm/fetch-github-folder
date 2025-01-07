@@ -1,23 +1,28 @@
 import { RequestError } from "@octokit/request-error";
-import { RuntimeException, UnknownException } from 'effect/Cause';
+import { UnknownException } from 'effect/Cause';
+import { gen, tryPromise } from 'effect/Effect';
 import {
-  fail,
-  flatMap,
-  gen,
-  map,
-  tap,
-  tryMapPromise,
-  tryPromise,
-  type Effect
-} from 'effect/Effect';
-import { pipe } from 'effect/Function';
-import { ParseError } from 'effect/ParseResult';
-import { Array as ArraySchema, Number as SchemaNumber, decodeUnknownEither, Literal, String as SchemaString, Struct, Union } from 'effect/Schema';
-import { GitHubApiAuthRatelimited, GitHubApiBadCredentials, GitHubApiCommonErrors, GitHubApiGeneralServerError, GitHubApiGeneralUserError, GitHubApiRatelimited, GitHubApiRepoDoesNotExistsOrPermissionsInsufficient, GitHubApiRepoIsEmpty } from './errors.js';
+  Array as ArraySchema,
+  decodeUnknownEither,
+  Literal,
+  Number as SchemaNumber,
+  String as SchemaString,
+  Struct,
+  Union
+} from 'effect/Schema';
+import {
+  GitHubApiAuthRatelimited,
+  GitHubApiBadCredentials,
+  GitHubApiGeneralServerError,
+  GitHubApiGeneralUserError,
+  GitHubApiRatelimited,
+  GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  GitHubApiRepoIsEmpty
+} from './errors.js';
 import { OctokitTag } from './octokit.js';
-import { Repo } from './repo.interface.js';
-import { LogObjectNicely } from './logObjectNicely.js';
 import { ParseToReadableStream } from './parseToReadableStream.js';
+import { Repo } from './repo.interface.js';
+import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -85,12 +90,10 @@ export const downloadPathContentsMetaInfo = ({
 
     if (response.size < /* <=? */ MB) {
       if (response.encoding === "none")
-        return yield* fail(
-          new InconsistentEncodingWithSize(
-            { actual: encoding },
-            response.size
-          )
-        );
+        return yield* new InconsistentEncodingWithSize({
+          size: response.size,
+          encoding: { actual: encoding }
+        });
 
       const stream = yield* ParseToReadableStream(
         Buffer.from(response.content, response.encoding)
@@ -108,12 +111,13 @@ export const downloadPathContentsMetaInfo = ({
       // the encoding field will be "none". To get the contents of these
       // larger files, use the raw media type.
       if (response.encoding === "base64")
-        return yield* fail(
-          new InconsistentEncodingWithSize(
-            { actual: encoding, expected: "none" },
-            response.size
-          )
-        );
+        return yield* new InconsistentEncodingWithSize({
+          size: response.size,
+          encoding: {
+            actual: encoding,
+            expected: "none"
+          }
+        });
 
       return {
         ...base,
@@ -159,21 +163,17 @@ const decodeResponse = decodeUnknownEither(
   { exact: true }
 );
 
-export class InconsistentEncodingWithSize extends Error {
-  readonly _tag: string;
-
-  constructor(
-    readonly encoding: Readonly<{
-      actual: string,
-      expected?: string,
-    }>,
-    readonly size: number
-  ) {
-    super(`Got "${encoding.actual}" encoding ${
-      "expected" in encoding
-        ? `while expecting "${encoding.expected}" encoding`
+export class InconsistentEncodingWithSize extends TaggedErrorVerifyingCause<{
+  encoding: {
+    actual: string,
+    expected?: string,
+  },
+  size: number
+}>()(
+  'InconsistentEncodingWithSize',
+  (ctx) => `Got "${ctx.encoding.actual}" encoding ${
+      "expected" in ctx.encoding
+        ? `while expecting "${ctx.encoding.expected}" encoding`
         : ''
-    } for file with size ${size} bytes`)
-    this._tag = this.constructor.name;
-  }
-}
+    } for file with size ${ctx.size} bytes`,
+) {}

@@ -3,44 +3,44 @@ import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 export class GitHubApiGeneralServerError extends TaggedErrorVerifyingCause()(
   'GitHubApiGeneralServerError',
+  'GitHub API Error: Bad server',
   RequestError,
-  'GitHub API Error: Bad server'
 ) {}
 
 export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
   'GitHubApiGeneralUserError',
+  'GitHub API Error: Bad user, invalid request',
   RequestError,
-  'GitHub API Error: Bad user, invalid request'
 ) {}
 
 export class GitHubApiRepoDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause()(
   'GitHubApiRepoDoesNotExistsOrPermissionsInsufficient',
+  'GitHub API Error: Repo does not exists or you do not have permissions to access it',
   RequestError,
-  'GitHub API Error: Repo does not exists or you do not have permissions to access it'
 ) {}
 
 export class GitHubApiRepoIsEmpty extends TaggedErrorVerifyingCause()(
   'GitHubApiRepoIsEmpty',
+  'GitHub API Error: This Repo is empty',
   RequestError,
-  'GitHub API Error: This Repo is empty'
 ) {}
 
 export class GitHubApiBadCredentials extends TaggedErrorVerifyingCause()(
   'GitHubApiBadCredentials',
+  'GitHub API Error: Token you\'re using is invalid.',
   RequestError,
-  'GitHub API Error: Token you\'re using is invalid.'
 ) {}
 
 export class GitHubApiAuthRatelimited extends TaggedErrorVerifyingCause()(
   'GitHubApiAuthRatelimited',
+  'GitHub API Error: Too many invalid auth attempts. Chillout pal',
   RequestError,
-  'GitHub API Error: Too many invalid auth attempts. Chillout pal'
 ) {}
 
 export class GitHubApiRatelimited extends TaggedErrorVerifyingCause()(
   'GitHubApiRatelimited',
+  'GitHub API Error: Too many requests. Chillout pal',
   RequestError,
-  'GitHub API Error: Too many requests. Chillout pal'
 ) {}
 
 export type GitHubApiCommonErrors =

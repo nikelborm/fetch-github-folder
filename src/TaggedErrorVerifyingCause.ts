@@ -1,42 +1,60 @@
 import { YieldableError } from 'effect/Cause';
+import type { Readonly } from "ts-toolbelt/out/Object/Readonly.d.ts";
 import { TaggedError } from 'effect/Data';
+import { isFunction } from 'effect/Predicate';
 import { Equals } from 'effect/Types';
 
 export const TaggedErrorVerifyingCause = <
   Context extends Record<string, any> = {}
 >() => <
-  const ErrorName extends string = string,
-  ExpectedCauseClass extends new(...args: any[]) => Error = new(...args: any[]) => Error,
-  ContextArg = Equals<Context, {}> extends true ? void : Context,
+  const ErrorName extends string,
+  ExpectedCauseClass extends (new(...args: any[]) => Error) | undefined,
+  ConstructorArgs extends ([ExpectedCauseClass] extends [Exclude<ExpectedCauseClass, undefined>]
+    ? [
+      cause: InstanceType<ExpectedCauseClass>,
+      ctx: ContextArg
+    ]
+    : [ctx: ContextArg]),
+  ContextArg = Prettify<
+    Equals<Context, {}> extends true
+      ? void
+      : Readonly<Context, string, 'deep'>
+  >,
 >(
   errorName: ErrorName,
-  expectedCauseClass: ExpectedCauseClass,
-  customMessage: string
+  customMessage: string | ((...args: ConstructorArgs) => string),
+  expectedCauseClass?: ExpectedCauseClass,
 ): {
-  new (
-    cause: InstanceType<ExpectedCauseClass>,
-    ctx: ContextArg
-  ): YieldableError & Readonly<{
+  new (...args: ConstructorArgs): YieldableError & Readonly<{
     message: string;
     _tag: ErrorName;
     name: ErrorName;
-    cause: InstanceType<ExpectedCauseClass>;
+    cause: InstanceType<Exclude<ExpectedCauseClass, undefined>>;
   } & Context>
 } => {
-  const CustomTaggedErrorClass = TaggedError(errorName)<{
-    message: string
-  }>;
+  const CustomTaggedErrorClass = TaggedError(errorName)<any>;
 
   class Base extends CustomTaggedErrorClass {
-    constructor(cause: unknown, ctx: ContextArg) {
-      if (!(cause instanceof expectedCauseClass))
+    constructor(...args: ConstructorArgs) {
+      if(!(args[0] instanceof expectedCauseClass!))
         throw new Error(`Provided cause of incorrect type to ${
           errorName
-        } class. Expected cause class: "${expectedCauseClass.name}"`);
+        } class. Expected cause class: "${expectedCauseClass!.name}"`);
 
-      super({ message: customMessage, cause, name: errorName, ...ctx });
+      super({
+        name: errorName,
+        message: isFunction(customMessage)
+          ? (customMessage as any)(args[0], args[1])
+          : customMessage,
+        ...(!!expectedCauseClass && { cause: args[0] }),
+        ...(args[~~!!expectedCauseClass])
+      });
     }
   }
 
   return Base as any;
 }
+
+type Prettify<T> = T extends object
+  ? { [K in keyof T]: Prettify<T[K]> }
+  : T;

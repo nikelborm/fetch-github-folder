@@ -18,6 +18,7 @@ import type { OctokitTag } from './octokit.js';
 import type { UnknownException } from 'effect/Cause';
 import type { RequestError } from '@octokit/request-error';
 import type { Effect } from 'effect/Effect';
+import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 export const downloadDirAndPutIntoFs = ({
   repo,
@@ -74,26 +75,23 @@ const getNewGitTreeHashIfDirIsNested = ({
   // there, it's very intentional and no other elements in the path exist.
   const cleanPath = path.join(pathToDirectoryInRepo);
 
-  if (['.', './'].includes(cleanPath))
-    return succeed(gitRef);
+  if (['.', './'].includes(cleanPath)) return gitRef;
 
   if (/^\.\..*/.test(cleanPath))
-    return fail(new AttemptedToGetDataAboveRepoRoot(
-      pathToDirectoryInRepo
-    ));
+    yield* new AttemptedToGetDataAboveRepoRoot({
+      problematicPath: pathToDirectoryInRepo
+    });
 
-  return getGitTreeRefFromParentTreeRef({
+  return yield* getGitTreeRefFromParentTreeRef({
     cleanPath,
     parentGitRef: gitRef,
     repo,
   })
-}).pipe(flatten);
+});
 
-export class AttemptedToGetDataAboveRepoRoot extends Error {
-  readonly _tag: string;
-
-  constructor(public readonly problematicPath: string) {
-    super('Error: Can\'t request contents that lie higher than the root of the repo')
-    this._tag = this.constructor.name;
-  }
-}
+export class AttemptedToGetDataAboveRepoRoot extends TaggedErrorVerifyingCause<{
+  problematicPath: string
+}>()(
+  'AttemptedToGetDataAboveRepoRoot',
+  'Error: Can\'t request contents that lie higher than the root of the repo'
+) {}
