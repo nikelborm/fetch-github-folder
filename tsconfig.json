@@ -51,6 +51,7 @@
   "include": [
     "./fetch-github-folder.ts",
     "./scratchpad.ts",
+    "./tests/*",
     "./reset.d.ts",
     "./src/index.ts"
   ]

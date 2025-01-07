@@ -1,16 +1,10 @@
 import { Path } from "@effect/platform/Path";
-import {
-  fail,
-  flatten,
-  gen,
-  succeed,
-  type Effect
-} from 'effect/Effect';
-import { downloadPathContentsMetaInfo } from './downloadPathContentsMetaInfo.js';
-import { Repo } from './repo.interface.js';
 import type { RequestError } from '@octokit/request-error';
 import type { UnknownException } from 'effect/Cause';
+import { fail, gen, type Effect } from 'effect/Effect';
+import { downloadPathContentsMetaInfo } from './downloadPathContentsMetaInfo.js';
 import type { OctokitTag } from './octokit.js';
+import { Repo } from './repo.interface.js';
 
 export const getGitTreeRefFromParentTreeRef = ({
   repo,
@@ -43,12 +37,12 @@ export const getGitTreeRefFromParentTreeRef = ({
   );
 
   if (!dirElement)
-    return fail(new Error(`${cleanPath} does not exist.`));
+    return yield* fail(new Error(`${cleanPath} does not exist.`));
 
   if (dirElement.type !== 'dir')
-    return fail(new Error(`${cleanPath} is not a directory.`));
+    return yield* fail(new Error(`${cleanPath} is not a directory.`));
 
   const childTreeRef = dirElement.sha
 
-  return succeed(childTreeRef);
-}).pipe(flatten)
+  return childTreeRef;
+})

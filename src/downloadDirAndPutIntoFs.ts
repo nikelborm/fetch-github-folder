@@ -90,9 +90,10 @@ const getNewGitTreeHashIfDirIsNested = ({
 }).pipe(flatten);
 
 export class AttemptedToGetDataAboveRepoRoot extends Error {
-  public readonly _tag = 'AttemptedToGetDataAboveRepoRoot';
+  readonly _tag: string;
 
   constructor(public readonly problematicPath: string) {
     super('Error: Can\'t request contents that lie higher than the root of the repo')
+    this._tag = this.constructor.name;
   }
 }
