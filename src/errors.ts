@@ -1,66 +1,52 @@
-import type { RequestError } from '@octokit/request-error';
+import { RequestError } from '@octokit/request-error';
+import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
-export class GitHubApiGeneralServerError extends Error {
-  readonly _tag: string;
+export class GitHubApiGeneralServerError extends TaggedErrorVerifyingCause(
+  'GitHubApiGeneralServerError',
+  RequestError,
+  'GitHub API Error: Bad server'
+) {}
 
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: Bad server')
-    this._tag = this.constructor.name;
-  }
-}
+export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause(
+  'GitHubApiGeneralUserError',
+  RequestError,
+  'GitHub API Error: Bad user, invalid request'
+) {}
 
-export class GitHubApiGeneralUserError extends Error {
-  readonly _tag: string;
-  // don't try again
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: Bad user, invalid request')
-    this._tag = this.constructor.name;
-  }
-}
+export class GitHubApiRepoDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause(
+  'GitHubApiRepoDoesNotExistsOrPermissionsInsufficient',
+  RequestError,
+  'GitHub API Error: Repo does not exists or you do not have permissions to access it'
+) {}
 
-export class GitHubApiRepoDoesNotExistsOrPermissionsInsufficient extends Error {
-  readonly _tag: string;
+export class GitHubApiRepoIsEmpty extends TaggedErrorVerifyingCause(
+  'GitHubApiRepoIsEmpty',
+  RequestError,
+  'GitHub API Error: This Repo is empty'
+) {}
 
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: Repo does not exists or you do not have permissions to access it')
-    this._tag = this.constructor.name;
-  }
-}
+export class GitHubApiBadCredentials extends TaggedErrorVerifyingCause(
+  'GitHubApiBadCredentials',
+  RequestError,
+  'GitHub API Error: Token you\'re using is invalid.'
+) {}
 
-export class GitHubApiRepoIsEmpty extends Error {
-  readonly _tag: string;
+export class GitHubApiAuthRatelimited extends TaggedErrorVerifyingCause(
+  'GitHubApiAuthRatelimited',
+  RequestError,
+  'GitHub API Error: Too many invalid auth attempts. Chillout pal'
+) {}
 
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: This Repo is empty')
-    this._tag = this.constructor.name;
-  }
-}
+export class GitHubApiRatelimited extends TaggedErrorVerifyingCause(
+  'GitHubApiRatelimited',
+  RequestError,
+  'GitHub API Error: Too many requests. Chillout pal'
+) {}
 
-export class GitHubApiBadCredentials extends Error {
-  readonly _tag: string;
-
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: Token you\'re using is invalid.')
-    this._tag = this.constructor.name;
-  }
-}
-
-export class GitHubApiAuthRatelimited extends Error {
-  readonly _tag: string;
-
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: Too many invalid auth attempts. Chillout pal')
-    this._tag = this.constructor.name;
-  }
-}
-
-export class GitHubApiRatelimited extends Error {
-  readonly _tag: string;
-
-  constructor(override readonly cause: RequestError) {
-    super('GitHub API Error: Too many requests. Chillout pal')
-    this._tag = this.constructor.name;
-  }
-}
-
-export type GitHubApiCommonErrors = RequestError | GitHubApiGeneralServerError | GitHubApiGeneralUserError | GitHubApiBadCredentials | GitHubApiAuthRatelimited | GitHubApiRatelimited;
+export type GitHubApiCommonErrors =
+  | RequestError
+  | GitHubApiGeneralServerError
+  | GitHubApiGeneralUserError
+  | GitHubApiBadCredentials
+  | GitHubApiAuthRatelimited
+  | GitHubApiRatelimited

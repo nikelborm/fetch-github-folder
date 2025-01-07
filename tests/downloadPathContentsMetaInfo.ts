@@ -1,4 +1,4 @@
-import { expect, it } from "@effect/vitest";
+import { it } from "@effect/vitest";
 import { Octokit } from '@octokit/core';
 import { Effect } from 'effect';
 import { flip, map, provideService } from 'effect/Effect';
@@ -34,15 +34,15 @@ const expectError = <const T extends EffectReadyErrors>({
   gitRef?: string | undefined,
   path: string
 }) => it.effect(
-  `Should throw ${new ExpectedErrorClass()._tag} when ${when}`,
-  () => pipe(
+  `Should throw ${ExpectedErrorClass.name} when ${when}`,
+  (ctx) => pipe(
     downloadPathContentsMetaInfo({
       gitRef,
       path,
       repo
     }),
     flip,
-    map(e => expect(e).toBeInstanceOf(ExpectedErrorClass)),
+    map(e => ctx.expect(e).toBeInstanceOf(ExpectedErrorClass)),
     provideService(
       OctokitTag,
       new Octokit({ auth: authToken })
@@ -51,63 +51,63 @@ const expectError = <const T extends EffectReadyErrors>({
 );
 
 
-// expectError({
-//   when: "asked for empty repo",
-//   ExpectedErrorClass: GitHubApiRepoIsEmpty,
-//   path: 'levelParent/levelChild/temp2.txt',
-//   repo: {
-//     owner: 'fetch-gh-folder-tests',
-//     name: 'empty-repo',
-//   },
-// })
+expectError({
+  when: "asked for empty repo",
+  ExpectedErrorClass: GitHubApiRepoIsEmpty,
+  path: 'levelParent/levelChild/temp2.txt',
+  repo: {
+    owner: 'fetch-gh-folder-tests',
+    name: 'empty-repo',
+  },
+})
 
-// expectError({
-//   when: "provided bad auth token",
-//   ExpectedErrorClass: GitHubApiBadCredentials,
-//   path: '',
-//   repo: {
-//     owner: 'asd',
-//     name: 'ssd',
-//   },
-//   authToken: 'bad auth token'
-// })
+expectError({
+  when: "provided bad auth token",
+  ExpectedErrorClass: GitHubApiBadCredentials,
+  path: '',
+  repo: {
+    owner: 'asd',
+    name: 'ssd',
+  },
+  authToken: 'bad auth token'
+})
 
-// expectError({
-//   when: "asked for a private repo",
-//   ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
-//   path: '',
-//   repo: {
-//     owner: 'fetch-gh-folder-tests',
-//     name: 'real-private-repo',
-//   }
-// })
+expectError({
+  when: "asked for a private repo",
+  ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  path: '',
+  repo: {
+    owner: 'fetch-gh-folder-tests',
+    name: 'real-private-repo',
+  }
+})
 
-// expectError({
-//   when: "asked for nonexistent repo",
-//   ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
-//   path: '',
-//   repo: {
-//     owner: 'fetch-gh-folder-tests',
-//     name: 'llllllllllllllllllllllllllll',
-//   },
-// })
+expectError({
+  when: "asked for nonexistent repo",
+  ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  path: '',
+  repo: {
+    owner: 'fetch-gh-folder-tests',
+    name: 'llllllllllllllllllllllllllll',
+  },
+})
 
-// expectError({
-//   when: "asked for nonexistent owner",
-//   ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
-//   path: '',
-//   repo: {
-//     owner: 'llllllllllllllllllllllllllll',
-//     name: 'llllllllllllllllllllllllllll',
-//   },
-// })
+expectError({
+  when: "asked for nonexistent owner",
+  ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  path: '',
+  repo: {
+    owner: 'llllllllllllllllllllllllllll',
+    name: 'llllllllllllllllllllllllllll',
+  },
+})
 
 expectError({
   when: "given broken path",
   ExpectedErrorClass: GitHubApiGeneralUserError,
-  path: ',,,,,',
+  path: '///',
   repo: {
     owner: 'fetch-gh-folder-tests',
-    name: 'real-public-repo',
+    name: 'public-repo',
   },
 })
