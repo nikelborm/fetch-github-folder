@@ -10,8 +10,8 @@ import {
   GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
   GitHubApiRepoIsEmpty,
   OctokitTag
-} from '../src/index.js';
-import { Repo } from '../src/repo.interface.js';
+} from './index.js';
+import { Repo } from './repo.interface.js';
 
 type EffectReadyErrors = (
   ReturnType<typeof downloadPathContentsMetaInfo> extends Effect.Effect<unknown, infer U, unknown>

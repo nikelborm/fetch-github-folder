@@ -5,6 +5,14 @@ import { fail, gen, type Effect } from 'effect/Effect';
 import { downloadPathContentsMetaInfo } from './downloadPathContentsMetaInfo.js';
 import type { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
+import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+
+
+// : Effect<
+//   string,
+//   RequestError | Error | UnknownException,
+//   OctokitTag | Path
+// >
 
 export const getGitTreeRefFromParentTreeRef = ({
   repo,
@@ -14,11 +22,7 @@ export const getGitTreeRefFromParentTreeRef = ({
   repo: Repo,
   cleanPath: string,
   parentGitRef: string,
-}): Effect<
-  string,
-  RequestError | Error | UnknownException,
-  OctokitTag | Path
-> => gen(function* () {
+}) => gen(function* () {
   const path = yield* Path;
 
   const parentDirectoryContentsMetaInfo = yield* downloadPathContentsMetaInfo({
@@ -37,12 +41,31 @@ export const getGitTreeRefFromParentTreeRef = ({
   );
 
   if (!dirElement)
-    return yield* fail(new Error(`${cleanPath} does not exist.`));
+    yield* new PathInsideTheRepoDoesNotExist({
+      path: cleanPath
+    });
 
   if (dirElement.type !== 'dir')
-    return yield* fail(new Error(`${cleanPath} is not a directory.`));
+    yield* new PathInsideOTheRepoIsNotADirectory({
+      path: cleanPath
+    });
 
   const childTreeRef = dirElement.sha
 
   return childTreeRef;
 })
+
+
+export class PathInsideTheRepoDoesNotExist extends TaggedErrorVerifyingCause<{
+  path: string
+}>()(
+  'PathInsideOfTheRepoDoesNotExist',
+  (ctx) => `${ctx.path} does not exist.`,
+) {}
+
+export class PathInsideOTheRepoIsNotADirectory extends TaggedErrorVerifyingCause<{
+  path: string
+}>()(
+  'PathInsideOTheRepoIsNotADirectory',
+  (ctx) => `${ctx.path} is not a directory.`,
+) {}

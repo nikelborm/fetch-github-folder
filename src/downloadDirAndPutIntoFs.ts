@@ -1,23 +1,20 @@
 import { Path } from "@effect/platform/Path";
-import { pipe } from 'effect/Function';
+import type { RequestError } from '@octokit/request-error';
+import type { UnknownException } from 'effect/Cause';
+import type { Effect } from 'effect/Effect';
 import {
-  fail,
   flatMap,
-  flatten,
   gen,
-  succeed,
-  tryMapPromise,
+  tryMapPromise
 } from "effect/Effect";
+import { pipe } from 'effect/Function';
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
 import { getGitTreeRefFromParentTreeRef } from './getGitTreeRefFromParentTreeRef.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
-import type { Repo } from './repo.interface.js';
 import type { OctokitTag } from './octokit.js';
-import type { UnknownException } from 'effect/Cause';
-import type { RequestError } from '@octokit/request-error';
-import type { Effect } from 'effect/Effect';
+import type { Repo } from './repo.interface.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 export const downloadDirAndPutIntoFs = ({
