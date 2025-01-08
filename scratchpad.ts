@@ -9,7 +9,8 @@ import { TapLogBoth } from './src/TapLogBoth.js';
 await runPromise(
   pipe(
     getPathContentsMetaInfo({
-      path: "",
+      path: "1023kb+1023b_file.txt",
+      gitRef: "6ca2b300cae4d49dbbd938060702c264b5ef055b",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',

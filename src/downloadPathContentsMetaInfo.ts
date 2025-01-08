@@ -15,6 +15,7 @@ import {
   GitHubApiBadCredentials,
   GitHubApiGeneralServerError,
   GitHubApiGeneralUserError,
+  GitHubApiNoCommitFoundForGitRef,
   GitHubApiRatelimited,
   GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
   GitHubApiRepoIsEmpty
@@ -69,7 +70,7 @@ export const getPathContentsMetaInfo = ({
 
   const { content, encoding, sha, ...base } = response;
 
-  if (response.size < /* <=? */ MB) {
+  if (response.size < MB) {
     if (response.encoding === "none")
       return yield* new InconsistentEncodingWithSize({
         size: response.size,
@@ -88,14 +89,14 @@ export const getPathContentsMetaInfo = ({
       content: stream,
       meta: "This file is less than 1 MB and was sent automatically"
     } as const;
-  } else if (response.size >= /* >? */ MB && response.size < /* <=? */ 100 * MB) {
+  } else if (response.size >= MB && response.size < /* <=? */ 100 * MB) {
     // From GitHub API documentation:
     // Between 1-100 MB: Only the raw or object custom media types are
     // supported. Both will work as normal, except that when using the
     // object media type, the content field will be an empty string and
     // the encoding field will be "none". To get the contents of these
     // larger files, use the raw media type.
-    if (response.encoding === "base64")
+    if (response.encoding !== "none")
       return yield* new InconsistentEncodingWithSize({
         size: response.size,
         encoding: {
@@ -192,6 +193,8 @@ const requestPathContentsMetaInfoFromGitHubAPI = ({
     ? (
       error.status === 404 && (error.response?.data as any)?.message === 'This repository is empty.'
         ? new GitHubApiRepoIsEmpty(error)
+        : gitRef && error.status === 404 && (error.response?.data as any)?.message?.startsWith('No commit found for the ref')
+        ? new GitHubApiNoCommitFoundForGitRef(error, { gitRef })
         : error.status === 404
         ? new GitHubApiRepoDoesNotExistsOrPermissionsInsufficient(error)
         : error.status === 401

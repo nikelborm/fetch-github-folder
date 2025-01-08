@@ -1,13 +1,15 @@
-import { it } from "@effect/vitest";
+import { it, assert,  } from "@effect/vitest";
+import * as tsafe from "tsafe";
+
 import { Octokit } from '@octokit/core';
 import { Effect, flip, map, provideService, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { deepStrictEqual } from 'node:assert';
 import { text } from 'node:stream/consumers';
 import {
   getPathContentsMetaInfo,
   GitHubApiBadCredentials,
   GitHubApiGeneralUserError,
+  GitHubApiNoCommitFoundForGitRef,
   GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
   GitHubApiRepoIsEmpty,
   OctokitTag
@@ -110,17 +112,29 @@ expectError({
   },
 })
 
+expectError({
+  when: "given broken git ref",
+  ExpectedErrorClass: GitHubApiNoCommitFoundForGitRef,
+  path: '',
+  gitRef: "807070987097809870987",
+  repo: {
+    owner: 'fetch-gh-folder-tests',
+    name: 'public-repo',
+  },
+})
+
 it.effect(
   `Should return root directory`,
   (ctx) => pipe(
     getPathContentsMetaInfo({
       path: "",
+      gitRef: "aa01ad6b31edbfa41d18187215e7b9a35be34a1b",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',
       }
     }),
-    map(e => deepStrictEqual(e, {
+    map(e => assert.deepStrictEqual(e, {
       type: 'dir',
       treeSha: '90a3d3cc0f107b11eb06c8148086de65eb86b676',
       entries: [
@@ -144,11 +158,11 @@ it.effect(
 
 
 it.effect(
-  `Should return file directly in root directory`,
+  `Should return little inlined file directly in root directory`,
   (ctx) => pipe(
     getPathContentsMetaInfo({
       path: "README.md",
-      gitRef: "90a3d3cc0f107b11eb06c8148086de65eb86b676",
+      gitRef: "aa01ad6b31edbfa41d18187215e7b9a35be34a1b",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',
@@ -156,12 +170,13 @@ it.effect(
     }),
     tryMapPromise({
       try: async (info) => {
-        if (info.type !== 'file') return;
-        if (info.meta !== 'This file is less than 1 MB and was sent automatically') return;
+        tsafe.assert(tsafe.is<Extract<typeof info, {
+          meta: 'This file is less than 1 MB and was sent automatically'
+        }>>(info));
 
         const { content, ...rest } = info;
 
-        deepStrictEqual(
+        assert.deepStrictEqual(
           {
             ...rest,
             content: await text(content)
@@ -174,6 +189,91 @@ it.effect(
             blobSha: 'e0581c6516af41608a222765cfb582f0bf89ed47',
             meta: 'This file is less than 1 MB and was sent automatically',
             content: "# public-repo"
+          }
+        );
+      },
+      catch: (e) => e
+    }),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);
+
+
+it.effect(
+  `Should return inlined file with size 1 byte less than 1mb placed directly in root directory`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "1023kb+1023b_file.txt",
+      gitRef: "6ca2b300cae4d49dbbd938060702c264b5ef055b",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    tryMapPromise({
+      try: async (info) => {
+        tsafe.assert(tsafe.is<Extract<typeof info, {
+          meta: 'This file is less than 1 MB and was sent automatically'
+        }>>(info));
+
+        const { content, ...rest } = info;
+
+        assert.deepStrictEqual(
+          {
+            ...rest,
+            content: await text(content)
+          },
+          {
+            type: 'file',
+            size: 1024 * 1024 - 1,
+            name: '1023kb+1023b_file.txt',
+            path: '1023kb+1023b_file.txt',
+            blobSha: '4ef7ad24ca43c487151fc6a194eb40fb715bf689',
+            meta: 'This file is less than 1 MB and was sent automatically',
+            content: "a".repeat(1024 * 1024 - 1)
+          }
+        );
+      },
+      catch: (e) => e
+    }),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);
+
+it.effect(
+  `Should not inline file with 1mb size placed directly in root directory and return just meta info`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "1mb_file.txt",
+      gitRef: "23e21cefbce47d06e2da77f16d7916588787b26d",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    tryMapPromise({
+      try: async (info) => {
+        tsafe.assert(tsafe.is<Extract<typeof info, {
+          meta: 'This file can be downloaded as a blob'
+        }>>(info));
+
+        assert.deepStrictEqual(
+          info,
+          {
+            type: 'file',
+            size: 1024 * 1024,
+            name: '1mb_file.txt',
+            path: '1mb_file.txt',
+            blobSha: '7c7377879f52df073befeb0cb7df4d1a4b6b7563',
+            meta: 'This file can be downloaded as a blob'
           }
         );
       },

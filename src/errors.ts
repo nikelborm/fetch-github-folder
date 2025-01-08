@@ -25,6 +25,14 @@ export class GitHubApiRepoIsEmpty extends TaggedErrorVerifyingCause()(
   RequestError,
 ) {}
 
+export class GitHubApiNoCommitFoundForGitRef extends TaggedErrorVerifyingCause<{
+  gitRef: string;
+}>()(
+  'GitHubApiNoCommitFoundForGitRef',
+  'GitHub API Error: No commit found for this git ref',
+  RequestError,
+) {}
+
 export class GitHubApiBadCredentials extends TaggedErrorVerifyingCause()(
   'GitHubApiBadCredentials',
   'GitHub API Error: Token you\'re using is invalid.',
