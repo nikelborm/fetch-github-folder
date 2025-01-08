@@ -1,7 +1,9 @@
 import { it } from "@effect/vitest";
 import { Octokit } from '@octokit/core';
-import { flip, map, provideService, Effect } from 'effect/Effect';
+import { Effect, flip, map, provideService, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
+import { deepStrictEqual } from 'node:assert';
+import { text } from 'node:stream/consumers';
 import {
   getPathContentsMetaInfo,
   GitHubApiBadCredentials,
@@ -35,11 +37,7 @@ const expectError = <const T extends EffectReadyErrors>({
 }) => it.effect(
   `Should throw ${ExpectedErrorClass.name} when ${when}`,
   (ctx) => pipe(
-    getPathContentsMetaInfo({
-      gitRef,
-      path,
-      repo
-    }),
+    getPathContentsMetaInfo({ gitRef, path, repo }),
     flip,
     map(e => ctx.expect(e).toBeInstanceOf(ExpectedErrorClass)),
     provideService(
@@ -111,3 +109,80 @@ expectError({
     name: 'public-repo',
   },
 })
+
+it.effect(
+  `Should return root directory`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    map(e => deepStrictEqual(e, {
+      type: 'dir',
+      treeSha: '90a3d3cc0f107b11eb06c8148086de65eb86b676',
+      entries: [
+        {
+          type: 'file',
+          size: 13,
+          name: 'README.md',
+          path: 'README.md',
+          sha: 'e0581c6516af41608a222765cfb582f0bf89ed47'
+        }
+      ],
+      meta: 'This is root directory of the repo'
+    })),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);
+
+
+it.effect(
+  `Should return file directly in root directory`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "README.md",
+      gitRef: "90a3d3cc0f107b11eb06c8148086de65eb86b676",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    tryMapPromise({
+      try: async (info) => {
+        if (info.type !== 'file') return;
+        if (info.meta !== 'This file is less than 1 MB and was sent automatically') return;
+
+        const { content, ...rest } = info;
+
+        deepStrictEqual(
+          {
+            ...rest,
+            content: await text(content)
+          },
+          {
+            type: 'file',
+            size: 13,
+            name: 'README.md',
+            path: 'README.md',
+            blobSha: 'e0581c6516af41608a222765cfb582f0bf89ed47',
+            meta: 'This file is less than 1 MB and was sent automatically',
+            content: "# public-repo"
+          }
+        );
+      },
+      catch: (e) => e
+    }),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);

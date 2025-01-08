@@ -24,6 +24,7 @@ import { ParseToReadableStream } from './parseToReadableStream.js';
 import { Repo } from './repo.interface.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 import { pipe } from 'effect';
+import { TapLogBoth } from './TapLogBoth.js';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -44,64 +45,78 @@ export const getPathContentsMetaInfo = ({
   path: string,
   gitRef?: string | undefined,
 }) => gen(function* () {
-    const { data: unparsedContents } = yield* requestPathContentsMetaInfoFromGitHubAPI({
-      repo,
-      gitRef,
-      path
-    });
+  const { data: unparsedContents } = yield* requestPathContentsMetaInfoFromGitHubAPI({
+    repo,
+    gitRef,
+    path
+  });
 
-    const response = yield* decodeResponse(unparsedContents);
-    const MB = 1024 * 1024;
+  yield* succeed(unparsedContents).pipe(TapLogBoth);
 
-    if (response.type !== "file") return response;
+  const response = yield* decodeResponse(unparsedContents);
 
-    const { content, encoding, ...base } = response;
+  const MB = 1024 * 1024;
 
-    if (response.size < /* <=? */ MB) {
-      if (response.encoding === "none")
-        return yield* new InconsistentEncodingWithSize({
-          size: response.size,
-          encoding: { actual: encoding }
-        });
+  if (response.type === "dir") {
+    if (!response.name && !response.path) return {
+      type: "dir",
+      treeSha: response.sha,
+      entries: response.entries,
+      meta: "This is root directory of the repo"
+    } as const
+    return response;
+  }
 
-      const stream = yield* ParseToReadableStream(
-        succeed(Buffer.from(
-          response.content,
-          response.encoding
-        ))
-      );
-      return {
-        ...base,
-        content: stream,
-        meta: "This file is less than 1 MB and was sent automatically"
-      } as const;
-    } else if (response.size >= /* >? */ MB && response.size < /* <=? */ 100 * MB) {
-      // From GitHub API documentation:
-      // Between 1-100 MB: Only the raw or object custom media types are
-      // supported. Both will work as normal, except that when using the
-      // object media type, the content field will be an empty string and
-      // the encoding field will be "none". To get the contents of these
-      // larger files, use the raw media type.
-      if (response.encoding === "base64")
-        return yield* new InconsistentEncodingWithSize({
-          size: response.size,
-          encoding: {
-            actual: encoding,
-            expected: "none"
-          }
-        });
+  const { content, encoding, sha, ...base } = response;
 
-      return {
-        ...base,
-        meta: "This file can be downloaded as a blob"
-      } as const
-    } else {
-      return {
-        ...base,
-        meta: "This file can be downloaded as a git-LFS object"
-      } as const
-    }
-});
+  if (response.size < /* <=? */ MB) {
+    if (response.encoding === "none")
+      return yield* new InconsistentEncodingWithSize({
+        size: response.size,
+        encoding: { actual: encoding }
+      });
+
+    const stream = yield* ParseToReadableStream(
+      succeed(Buffer.from(
+        response.content,
+        response.encoding
+      ))
+    );
+    return {
+      ...base,
+      blobSha: sha,
+      content: stream,
+      meta: "This file is less than 1 MB and was sent automatically"
+    } as const;
+  } else if (response.size >= /* >? */ MB && response.size < /* <=? */ 100 * MB) {
+    // From GitHub API documentation:
+    // Between 1-100 MB: Only the raw or object custom media types are
+    // supported. Both will work as normal, except that when using the
+    // object media type, the content field will be an empty string and
+    // the encoding field will be "none". To get the contents of these
+    // larger files, use the raw media type.
+    if (response.encoding === "base64")
+      return yield* new InconsistentEncodingWithSize({
+        size: response.size,
+        encoding: {
+          actual: encoding,
+          expected: "none"
+        }
+      });
+
+    return {
+      ...base,
+      blobSha: sha,
+      meta: "This file can be downloaded as a blob"
+    } as const
+  } else {
+    return {
+      ...base,
+      blobSha: sha,
+      meta: "This file can be downloaded as a git-LFS object"
+    } as const
+  }
+}).pipe(TapLogBoth);
 
 const GitSomethingFields = {
   size: SchemaNumber,

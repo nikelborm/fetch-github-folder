@@ -1,31 +1,21 @@
-import { Octokit } from '@octokit/core';
-import { pipe } from 'effect/Function';
-import { provide, provideService, runPromise, succeed } from 'effect/Effect';
-import { getPathContentsMetaInfo, LogObjectNicely, OctokitTag } from './src/index.js';
-import { Effect } from 'effect';
 import { NodeTerminal } from '@effect/platform-node';
-
+import { Octokit } from '@octokit/core';
+import { provide, provideService, runPromise } from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import { getPathContentsMetaInfo, OctokitTag } from './src/index.js';
+import { TapLogBoth } from './src/TapLogBoth.js';
 
 
 await runPromise(
-  pipe (
+  pipe(
     getPathContentsMetaInfo({
-      gitRef: 'HEAD',
-      // path: 'docker/entrypoints/docker-ci.sh',
-      path: 'levelParent/levelChild/temp2.txt',
+      path: "",
       repo: {
-        // owner: 'apache',
-        // name: 'superset',
-
-        // owner: 'nikelborm',
-        // name: 'nikelborm',
-
-        owner: 'nikelborm',
-        name: 'empty-repo-api-test',
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
       }
     }),
-    Effect.tap(LogObjectNicely),
-    Effect.tapError(LogObjectNicely),
+    TapLogBoth,
     provideService(
       OctokitTag,
       new Octokit({
@@ -33,6 +23,5 @@ await runPromise(
       })
     ),
     provide(NodeTerminal.layer),
-
   )
 )
