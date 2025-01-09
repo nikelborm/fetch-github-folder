@@ -13,6 +13,7 @@
 > [!CAUTION]
 >
 > This project currently is not stable, but I'm actively working on writing tests and handling edge cases, such as support for Git-LFS and other.
+> Check out the `dev` branch to see the latest updates! 😉
 
 ## What This Project Does
 

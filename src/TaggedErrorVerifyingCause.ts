@@ -4,8 +4,6 @@ import type { Readonly } from "ts-toolbelt/out/Object/Readonly.d.ts";
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
 
-type asd = Equals<unknown, any>;
-type sadd2 = unknown extends object ? true : false;
 // This is a helper because typescript starts going crazy sometimes
 export type GetSimpleFormError<T> = T extends object ? {
   [K in keyof T as Exclude<
@@ -45,7 +43,7 @@ export const TaggedErrorVerifyingCause = <
   customMessage: string | ((...args: ConstructorArgs) => string),
   expectedCauseClass?: ExpectedCauseClass,
 ): {
-  new (...args: ConstructorArgs): Omit<YieldableError, 'cause'> & Readonly<{
+  new (...args: ConstructorArgs): YieldableError & Readonly<{
     message: string;
     _tag: ErrorName;
     name: ErrorName;

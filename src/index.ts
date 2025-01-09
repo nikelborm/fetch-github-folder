@@ -1,5 +1,5 @@
 export * from './downloadDirAndPutIntoFs.js';
-export * from './downloadPathContentsMetaInfo.js';
+export * from './getPathContentsMetaInfo.js';
 export * from './downloadInfoAboutAllBlobsInDirectory.js';
 export * from './errors.js';
 export * from './getGitTreeRefFromParentTreeRef.js';
