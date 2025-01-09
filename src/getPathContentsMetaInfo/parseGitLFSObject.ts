@@ -4,7 +4,6 @@ import { ParseError } from 'effect/ParseResult';
 import { decodeUnknownEither, NonEmptyTrimmedString, NumberFromString, Struct } from 'effect/Schema';
 import { GetSimpleFormError, TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 
-
 export const parseGitLFSObject = ({
   contentAsBuffer,
   expectedContentSize,
@@ -125,7 +124,7 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
     value: (typeof GitLFSInfoSchema)['Type']
   } | {
     meta: 'Failed to parse'
-    error: GetSimpleFormError<FailedToParseGitLFSInfo>
+    error: FailedToParseGitLFSInfo
   }
 }>()(
   'InconsistentExpectedAndRealContentSize',
