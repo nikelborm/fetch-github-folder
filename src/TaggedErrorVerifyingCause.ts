@@ -6,7 +6,15 @@ import { Equals } from 'effect/Types';
 
 // This is a helper because typescript starts going crazy sometimes
 export type GetSimpleFormError<T> = T extends object ? {
-  [K in keyof T as Exclude<K, Exclude<keyof YieldableError, 'name' | 'message' | 'stack' | 'cause'> | symbol | 'issue'>]: GetSimpleFormError<T[K]>;
+  [K in keyof T as Exclude<
+    K,
+    | Exclude<
+      keyof YieldableError,
+      'name' | 'message' | 'stack' | 'cause'
+    >
+    | symbol
+    | 'issue'
+  >]: GetSimpleFormError<T[K]>;
 } : T
 
 export const TaggedErrorVerifyingCause = <
@@ -50,15 +58,15 @@ export const TaggedErrorVerifyingCause = <
 
   class Base extends CustomTaggedErrorClass {
     constructor(...args: ConstructorArgs) {
-      if(!(args[0] instanceof expectedCauseClass!))
+      if(expectedCauseClass && !(args[0] instanceof expectedCauseClass))
         throw new Error(`Provided cause of incorrect type to ${
           errorName
-        } class. Expected cause class: "${expectedCauseClass!.name}"`);
+        } class. Expected cause class: "${expectedCauseClass.name}"`);
 
       super({
         name: errorName,
         message: isFunction(customMessage)
-          ? (customMessage as any)(args[0], args[1])
+          ? customMessage.call(void 0, ...args)
           : customMessage,
         ...(!!expectedCauseClass && { cause: args[0] }),
         ...(args[~~!!expectedCauseClass])
