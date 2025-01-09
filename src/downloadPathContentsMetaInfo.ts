@@ -1,10 +1,12 @@
 import { RequestError } from "@octokit/request-error";
 import { UnknownException } from 'effect/Cause';
-import { succeed, gen, tryMapPromise, tryPromise } from 'effect/Effect';
+import { succeed, gen, tryMapPromise, tryPromise, catchTag, flip } from 'effect/Effect';
 import {
   Array as ArraySchema,
   decodeUnknownEither,
   Literal,
+  NonEmptyTrimmedString,
+  NumberFromString,
   Number as SchemaNumber,
   String as SchemaString,
   Struct,
@@ -23,9 +25,11 @@ import {
 import { OctokitTag } from './octokit.js';
 import { ParseToReadableStream } from './parseToReadableStream.js';
 import { Repo } from './repo.interface.js';
-import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
-import { pipe } from 'effect';
+import { GetSimpleFormError, Prettify, TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import { Either, pipe } from 'effect';
 import { TapLogBoth } from './TapLogBoth.js';
+import { ParseError } from 'effect/ParseResult';
+import { isLeft, isRight, mapLeft } from 'effect/Either';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -46,15 +50,21 @@ export const getPathContentsMetaInfo = ({
   path: string,
   gitRef?: string | undefined,
 }) => gen(function* () {
-  const { data: unparsedContents } = yield* requestPathContentsMetaInfoFromGitHubAPI({
+  const { data: unparsedData } = yield* requestPathContentsMetaInfoFromGitHubAPI({
     repo,
     gitRef,
     path
   });
 
-  yield* succeed(unparsedContents).pipe(TapLogBoth);
+  yield* succeed(unparsedData).pipe(TapLogBoth);
 
-  const response = yield* decodeResponse(unparsedContents);
+  const response = yield* decodeResponse(unparsedData).pipe(catchTag(
+    'ParseError',
+    parseError => new FailedToParseResponseFromRepoContentsAPI(
+      parseError,
+      { unparsedData }
+    )
+  ));
 
   const MB = 1024 * 1024;
 
@@ -77,12 +87,66 @@ export const getPathContentsMetaInfo = ({
         encoding: { actual: encoding }
       });
 
-    const stream = yield* ParseToReadableStream(
-      succeed(Buffer.from(
-        response.content,
-        response.encoding
-      ))
+    const contentAsBuffer = Buffer.from(response.content, response.encoding);
+    const contentAsString = contentAsBuffer.toString("utf8");
+
+    const parsingResult = mapLeft(
+      decodeGitLFSInfoSchema(
+        contentAsString.match(gitLFSInfoRegexp)?.groups
+      ),
+      cause => new FailedToParseGitLFSInfo(
+        cause,
+        { rawInfo: contentAsString }
+      )
     );
+
+    const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
+    const gitLFSInfoSizeAlignsWithResponseSize = (
+      isRight(parsingResult)
+      && (parsingResult.right.size === response.size)
+    );
+    const gitLFSInfoStringIsOfCorrectLength = (
+      contentAsBuffer.byteLength >= 126
+      && contentAsBuffer.byteLength <= 137
+    );
+
+    const thisIsGitLFSObject = matchedByRegexpAndParsedByEffectSchema
+      && gitLFSInfoSizeAlignsWithResponseSize
+      && gitLFSInfoStringIsOfCorrectLength;
+
+    const shouldFailIfItIsNotGitLFS = contentAsBuffer.byteLength !== response.size;
+
+    if (thisIsGitLFSObject) {
+      return {
+        gitLFSInfo: parsingResult.right
+      };
+    } else if (shouldFailIfItIsNotGitLFS)
+      // If we weren't successful in parsing it as git LFS object
+      // announcement using RegExp and Effect.Schema, we just do a basic size
+      // consistency check. The check implements the second marker of it
+      // being a Git LFS object as a backup to checking "content" to just
+      // look like a Git LFS object. If reported by API "size" field is
+      // different from actual size of "content" field, it means either our
+      // schema with regexp fucked up, or GitHub API did. If it doesn't
+      // throw, it means there's no reason to assume it's a Git LFS object.
+      return yield* new InconsistentExpectedAndRealContentSize({
+        path: response.path,
+        actual: contentAsBuffer.byteLength,
+        expected: response.size,
+        gitLFSInfo: parsingResult.pipe(Either.match({
+          onLeft: left => ({
+            meta: 'Failed to parse',
+            error: left
+          }),
+          onRight: right => ({
+            meta: 'Parsed successfully',
+            value: right
+          }),
+        }))
+      })
+
+    const stream = yield* ParseToReadableStream(succeed(contentAsBuffer));
+
     return {
       ...base,
       blobSha: sha,
@@ -140,6 +204,7 @@ const ResponseSchema = Union(
   }),
   Struct({
     type: Literal('file'),
+    node_id: SchemaString,
     encoding: Literal('base64', 'none'),
     content: SchemaString,
     ...GitSomethingFields,
@@ -151,6 +216,7 @@ const decodeResponse = decodeUnknownEither(
   { exact: true }
 );
 
+// const asd = ;
 export class InconsistentEncodingWithSize extends TaggedErrorVerifyingCause<{
   encoding: {
     actual: string,
@@ -166,7 +232,55 @@ export class InconsistentEncodingWithSize extends TaggedErrorVerifyingCause<{
     } for file with size ${ctx.size} bytes`,
 ) {}
 
-const requestPathContentsMetaInfoFromGitHubAPI = ({
+export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifyingCause<{
+  path: string,
+  actual: number,
+  expected: number,
+  gitLFSInfo: {
+    meta: 'Parsed successfully'
+    value: (typeof GitLFSInfoSchema)['Type']
+  } | {
+    meta: 'Failed to parse'
+    error: FailedToParseGitLFSInfo
+  }
+}>()(
+  'InconsistentExpectedAndRealContentSize',
+  (ctx) => `Got file ${ctx.path} with size ${ctx.actual} bytes while expecting "${ctx.expected}" bytes`,
+) {}
+
+export class FailedToParseResponseFromRepoContentsAPI extends TaggedErrorVerifyingCause<{
+  unparsedData: unknown,
+}>()(
+  'FailedToParseResponseFromRepoContentsAPI',
+  `Failed to parse response from repo contents api`,
+  ParseError
+) {}
+
+export class FailedToParseGitLFSInfo extends TaggedErrorVerifyingCause<{
+  rawInfo: string,
+}>()(
+  'FailedToParseGitLFSInfo',
+  `Failed to parse git lfs announcement`,
+  ParseError
+) {}
+
+
+const gitLFSInfoRegexp = /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]*)\n$/mg
+
+const GitLFSInfoSchema = Struct({
+  version: NonEmptyTrimmedString,
+  oidSha256: NonEmptyTrimmedString,
+  size: NumberFromString
+})
+
+type asd = (typeof GitLFSInfoSchema)['Type']
+
+const decodeGitLFSInfoSchema = decodeUnknownEither(
+  GitLFSInfoSchema,
+  { exact: true }
+);
+
+export const requestPathContentsMetaInfoFromGitHubAPI = ({
   repo,
   gitRef,
   path
@@ -195,6 +309,7 @@ const requestPathContentsMetaInfoFromGitHubAPI = ({
         ? new GitHubApiRepoIsEmpty(error)
         : gitRef && error.status === 404 && (error.response?.data as any)?.message?.startsWith('No commit found for the ref')
         ? new GitHubApiNoCommitFoundForGitRef(error, { gitRef })
+        // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
         : error.status === 404
         ? new GitHubApiRepoDoesNotExistsOrPermissionsInsufficient(error)
         : error.status === 401

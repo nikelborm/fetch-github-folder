@@ -4,33 +4,47 @@ import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
 import { Equals } from 'effect/Types';
 
+// This is a helper because typescript starts going crazy sometimes
+export type GetSimpleFormError<T> = T extends object ? {
+  [K in keyof T as Exclude<K, Exclude<keyof YieldableError, 'name' | 'message' | 'stack' | 'cause'> | symbol | 'issue'>]: GetSimpleFormError<T[K]>;
+} : T
+
 export const TaggedErrorVerifyingCause = <
   Context extends Record<string, any> = {}
 >() => <
   const ErrorName extends string,
-  ExpectedCauseClass extends (new(...args: any[]) => Error) | undefined,
-  ConstructorArgs extends ([ExpectedCauseClass] extends [Exclude<ExpectedCauseClass, undefined>]
-    ? [
-      cause: InstanceType<ExpectedCauseClass>,
-      ctx: ContextArg
-    ]
-    : [ctx: ContextArg]),
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  ConstructorArgs extends (
+    [ExpectedCauseClass] extends [WideErrorConstructor]
+      ? [
+        cause: InstanceType<ExpectedCauseClass>,
+        ctx: ContextArg
+      ]
+      // if it's [WideErrorConstructor | undefined] it's probably because it
+      // wasn't specified at all, and when [undefined] specified it is also
+      // clear
+      : [ctx: ContextArg]
+  ),
   ContextArg = Prettify<
     Equals<Context, {}> extends true
       ? void
-      : Readonly<Context, string, 'deep'>
+      : Readonly<GetSimpleFormError<Context>, string, 'deep'>
   >,
 >(
   errorName: ErrorName,
   customMessage: string | ((...args: ConstructorArgs) => string),
   expectedCauseClass?: ExpectedCauseClass,
 ): {
-  new (...args: ConstructorArgs): YieldableError & Readonly<{
+  new (...args: ConstructorArgs): Omit<YieldableError, 'cause'> & Readonly<{
     message: string;
     _tag: ErrorName;
     name: ErrorName;
-    cause: InstanceType<Exclude<ExpectedCauseClass, undefined>>;
-  } & Context>
+  } & (
+    [ExpectedCauseClass] extends [WideErrorConstructor]
+    // To improve TS performance I wrap it in GetSimpleFormError
+    ? { cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>; }
+    : {}
+  ) & Context>
 } => {
   const CustomTaggedErrorClass = TaggedError(errorName)<any>;
 
@@ -55,6 +69,8 @@ export const TaggedErrorVerifyingCause = <
   return Base as any;
 }
 
-type Prettify<T> = T extends object
+export type Prettify<T> = T extends object
   ? { [K in keyof T]: Prettify<T[K]> }
   : T;
+
+type WideErrorConstructor = new (...args: any[]) => Error;
