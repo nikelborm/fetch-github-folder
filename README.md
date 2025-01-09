@@ -1,4 +1,4 @@
-# fetch-github-folder
+# <img src="https://raw.githubusercontent.com/nikelborm/fetch-github-folder/refs/heads/main/assets/logo.png" position="relative" align="left" width="40px" height="40px"/> fetch-github-folder
 
 [![Release Workflow](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml)
 [![npm version](https://badge.fury.io/js/fetch-github-folder.svg)](https://badge.fury.io/js/fetch-github-folder)
