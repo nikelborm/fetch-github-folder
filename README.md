@@ -10,6 +10,10 @@
 ![NPM License](https://img.shields.io/npm/l/fetch-github-folder)
 <!-- ![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder) -->
 
+> [!CAUTION]
+>
+> This project currently is not stable, but I'm actively working on writing tests and handling edge cases, such as support for Git-LFS and other.
+
 ## What This Project Does
 
 This project allows you to download any folder inside a repo on github.

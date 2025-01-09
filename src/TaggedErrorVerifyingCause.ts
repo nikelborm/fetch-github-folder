@@ -1,9 +1,11 @@
 import { YieldableError } from 'effect/Cause';
+import { Equals } from 'tsafe';
 import type { Readonly } from "ts-toolbelt/out/Object/Readonly.d.ts";
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
-import { Equals } from 'effect/Types';
 
+type asd = Equals<unknown, any>;
+type sadd2 = unknown extends object ? true : false;
 // This is a helper because typescript starts going crazy sometimes
 export type GetSimpleFormError<T> = T extends object ? {
   [K in keyof T as Exclude<

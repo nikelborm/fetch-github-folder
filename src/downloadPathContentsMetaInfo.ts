@@ -1,6 +1,9 @@
 import { RequestError } from "@octokit/request-error";
+import { Either } from 'effect';
 import { UnknownException } from 'effect/Cause';
-import { succeed, gen, tryMapPromise, tryPromise, catchTag, flip } from 'effect/Effect';
+import { catchTag, gen, succeed, tryMapPromise } from 'effect/Effect';
+import { isRight, mapLeft } from 'effect/Either';
+import { ParseError } from 'effect/ParseResult';
 import {
   Array as ArraySchema,
   decodeUnknownEither,
@@ -25,11 +28,9 @@ import {
 import { OctokitTag } from './octokit.js';
 import { ParseToReadableStream } from './parseToReadableStream.js';
 import { Repo } from './repo.interface.js';
-import { GetSimpleFormError, Prettify, TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
-import { Either, pipe } from 'effect';
+import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 import { TapLogBoth } from './TapLogBoth.js';
-import { ParseError } from 'effect/ParseResult';
-import { isLeft, isRight, mapLeft } from 'effect/Either';
+
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -40,6 +41,7 @@ import { isLeft, isRight, mapLeft } from 'effect/Either';
 //   | ParseError,
 //   OctokitTag
 // >
+
 
 export const getPathContentsMetaInfo = ({
   repo,
@@ -70,12 +72,17 @@ export const getPathContentsMetaInfo = ({
 
   if (response.type === "dir") {
     if (!response.name && !response.path) return {
-      type: "dir",
+      type: response.type,
       treeSha: response.sha,
       entries: response.entries,
       meta: "This is root directory of the repo"
     } as const
-    return response;
+    return {
+      type: response.type,
+      treeSha: response.sha,
+      entries: response.entries,
+      meta: "This nested directory of the repo"
+    } as const;
   }
 
   const { content, encoding, sha, ...base } = response;
@@ -88,62 +95,17 @@ export const getPathContentsMetaInfo = ({
       });
 
     const contentAsBuffer = Buffer.from(response.content, response.encoding);
-    const contentAsString = contentAsBuffer.toString("utf8");
 
-    const parsingResult = mapLeft(
-      decodeGitLFSInfoSchema(
-        contentAsString.match(gitLFSInfoRegexp)?.groups
-      ),
-      cause => new FailedToParseGitLFSInfo(
-        cause,
-        { rawInfo: contentAsString }
-      )
-    );
+    const potentialGitLFSObject = yield* parseGitLFSObject({
+      contentAsBuffer,
+      blobSha: response.sha,
+      expectedContentSize: response.size,
+      name: response.name,
+      path: response.path,
+    });
 
-    const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
-    const gitLFSInfoSizeAlignsWithResponseSize = (
-      isRight(parsingResult)
-      && (parsingResult.right.size === response.size)
-    );
-    const gitLFSInfoStringIsOfCorrectLength = (
-      contentAsBuffer.byteLength >= 126
-      && contentAsBuffer.byteLength <= 137
-    );
-
-    const thisIsGitLFSObject = matchedByRegexpAndParsedByEffectSchema
-      && gitLFSInfoSizeAlignsWithResponseSize
-      && gitLFSInfoStringIsOfCorrectLength;
-
-    const shouldFailIfItIsNotGitLFS = contentAsBuffer.byteLength !== response.size;
-
-    if (thisIsGitLFSObject) {
-      return {
-        gitLFSInfo: parsingResult.right
-      };
-    } else if (shouldFailIfItIsNotGitLFS)
-      // If we weren't successful in parsing it as git LFS object
-      // announcement using RegExp and Effect.Schema, we just do a basic size
-      // consistency check. The check implements the second marker of it
-      // being a Git LFS object as a backup to checking "content" to just
-      // look like a Git LFS object. If reported by API "size" field is
-      // different from actual size of "content" field, it means either our
-      // schema with regexp fucked up, or GitHub API did. If it doesn't
-      // throw, it means there's no reason to assume it's a Git LFS object.
-      return yield* new InconsistentExpectedAndRealContentSize({
-        path: response.path,
-        actual: contentAsBuffer.byteLength,
-        expected: response.size,
-        gitLFSInfo: parsingResult.pipe(Either.match({
-          onLeft: left => ({
-            meta: 'Failed to parse',
-            error: left
-          }),
-          onRight: right => ({
-            meta: 'Parsed successfully',
-            value: right
-          }),
-        }))
-      })
+    if (potentialGitLFSObject !== "This is not a git LFS object")
+      return potentialGitLFSObject;
 
     const stream = yield* ParseToReadableStream(succeed(contentAsBuffer));
 
@@ -204,7 +166,6 @@ const ResponseSchema = Union(
   }),
   Struct({
     type: Literal('file'),
-    node_id: SchemaString,
     encoding: Literal('base64', 'none'),
     content: SchemaString,
     ...GitSomethingFields,
@@ -232,6 +193,88 @@ export class InconsistentEncodingWithSize extends TaggedErrorVerifyingCause<{
     } for file with size ${ctx.size} bytes`,
 ) {}
 
+const MAX_GIT_LFS_INFO_SIZE = 137;
+
+const parseGitLFSObject = ({
+  contentAsBuffer,
+  expectedContentSize,
+  blobSha,
+  name,
+  path,
+}: {
+  contentAsBuffer: Buffer<ArrayBuffer>,
+  expectedContentSize: number,
+  blobSha: string,
+  name: string;
+  path: string;
+}) => {
+  const contentAsString = contentAsBuffer.toString("utf8");
+
+  const parsingResult = mapLeft(
+    decodeGitLFSInfoSchema(
+      contentAsString.match(gitLFSInfoRegexp)?.groups
+    ),
+    cause => new FailedToParseGitLFSInfo(
+      cause,
+      // gitLFS info usually is no longer than 200 bytes
+      { partOfContentThatCouldBeGitLFSInfo: contentAsString.slice(
+        0,
+        MAX_GIT_LFS_INFO_SIZE
+      ) }
+    )
+  );
+
+  const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
+  const sizeFromGitLFSInfoAlignsWithExpectedContentSize = (
+    isRight(parsingResult)
+    && (parsingResult.right.size === expectedContentSize)
+  );
+
+  const shouldFailIfItIsNotGitLFS = contentAsBuffer.byteLength !== expectedContentSize;
+
+  const thisIsGitLFSObject = matchedByRegexpAndParsedByEffectSchema
+    && sizeFromGitLFSInfoAlignsWithExpectedContentSize;
+
+  if (thisIsGitLFSObject) {
+    return Either.right({
+      type: 'file',
+      name,
+      path,
+      blobSha,
+      size: expectedContentSize,
+      gitLFSObjectIdSha256: parsingResult.right.oidSha256,
+      gitLFSVersion: parsingResult.right.version,
+      meta: "This file can be downloaded as a git-LFS object"
+    } as const);
+  } else if (shouldFailIfItIsNotGitLFS) {
+    // If we weren't successful in parsing it as git LFS object
+    // announcement using RegExp and Effect.Schema, we just do a basic size
+    // consistency check. The check implements the second marker of it
+    // being a Git LFS object as a backup to checking "content" to just
+    // look like a Git LFS object. If reported by API "size" field is
+    // different from actual size of "content" field, it means either our
+    // schema with regexp fucked up, or GitHub API did. If it doesn't
+    // throw, it means there's no reason to assume it's a Git LFS object.
+    return Either.left(new InconsistentExpectedAndRealContentSize({
+      path,
+      actual: contentAsBuffer.byteLength,
+      expected: expectedContentSize,
+      gitLFSInfo: parsingResult.pipe(Either.match({
+        onLeft: left => ({
+          meta: 'Failed to parse',
+          error: left
+        }),
+        onRight: right => ({
+          meta: 'Parsed successfully',
+          value: right
+        }),
+      }))
+    }))
+  } else {
+    return Either.right("This is not a git LFS object" as const)
+  }
+}
+
 export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifyingCause<{
   path: string,
   actual: number,
@@ -257,15 +300,17 @@ export class FailedToParseResponseFromRepoContentsAPI extends TaggedErrorVerifyi
 ) {}
 
 export class FailedToParseGitLFSInfo extends TaggedErrorVerifyingCause<{
-  rawInfo: string,
+  partOfContentThatCouldBeGitLFSInfo: string,
 }>()(
   'FailedToParseGitLFSInfo',
   `Failed to parse git lfs announcement`,
   ParseError
 ) {}
 
-
-const gitLFSInfoRegexp = /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]*)\n$/mg
+// there are some responses that look like
+// `version https://git-lfs.github.com/spec/v1_oid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa_size 128_`
+// and the only variable thing in it is the size at the end, and we can assume that supported file size is not greater than 100 GB
+const gitLFSInfoRegexp = /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]{0,11})\n$/mg
 
 const GitLFSInfoSchema = Struct({
   version: NonEmptyTrimmedString,
@@ -273,7 +318,6 @@ const GitLFSInfoSchema = Struct({
   size: NumberFromString
 })
 
-type asd = (typeof GitLFSInfoSchema)['Type']
 
 const decodeGitLFSInfoSchema = decodeUnknownEither(
   GitLFSInfoSchema,
