@@ -2,7 +2,7 @@ import { Path } from "@effect/platform/Path";
 import type { RequestError } from '@octokit/request-error';
 import type { UnknownException } from 'effect/Cause';
 import { fail, gen, type Effect } from 'effect/Effect';
-import { getPathContentsMetaInfo } from './getPathContentsMetaInfo.js';
+import { getPathContentsMetaInfo } from './getPathContentsMetaInfo/index.js';
 import type { OctokitTag } from './octokit.js';
 import { Repo } from './repo.interface.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
