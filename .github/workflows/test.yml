@@ -7,6 +7,7 @@ on:
       - 'src/**'
       - 'vite.config.ts'
       - 'rollup.config.ts'
+      - 'assets/gh_pages_landing.html'
 
 jobs:
   test-coverage:
