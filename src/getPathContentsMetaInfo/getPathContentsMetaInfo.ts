@@ -54,26 +54,30 @@ export const getPathContentsMetaInfo = ({
 
   const { content, encoding, sha: _, ...base } = response;
 
-  // This is quite a graceful implementation. I had the choice to throw
+  // This is quite forgiving implementation. I had the choice to throw
   // errors whenever GitHub's API didn't follow its documentation. I even
   // did that initially, but when I looked at the resulting mess, I changed
-  // my mind not to. For example I could throw errors in following cases:
-  //
-  // 1. when size is between 1 mb and 100 mb per documentation I should
-  //    never receive data, instead receiving empty "content" field and
-  //    "encoding" field equal "none". I could have thrown error if this
-  //    promise is broken, instead if received 50mb file and correct
-  //    encoding I will parse and return it.
-  // 2. per documentation all files higher than 100mb should be put into
-  //    Git LFS storage. If I receive 110mb file inlined, I'll will not
-  //    fail and will parse and return it.
-  // 3. per documentation when size less than 1MB it MUST be inlined. If it
-  //    wasn't inlined I could have thrown error, but instead I just return
-  //    saying "it's a blob, download it elsewhere"
-  // 4. per documentation files with size larger than 100 mb must be in a
-  //    git LFS storage and it's assumed that git LFS annotation will be
-  //    provided. But if it's not provided, instead of throwing error, I
-  //    say "it's a blob, download it elsewhere"
+  // my mind not to. For example, I could throw errors in the following
+  // cases:
+
+  // 1. When the size is between 1 MB and 100 MB per documentation, I
+  //    should never receive data. Instead, I should receive an empty
+  //    "content" field and an "encoding" field equal to "none." If this
+  //    promise was broken, I could have thrown an error. Instead, if I
+  //    receive a 50 MB file with the correct encoding, I will parse and
+  //    return it.
+  // 2. Per the documentation, all files larger than 100 MB should be put
+  //    into Git LFS storage. If I receive a 110 MB file inlined, I'll not
+  //    fail; I'll parse and return it.
+  // 3. Per documentation when size less than 1MB it MUST be inlined. If it
+  //    wasn't inlined I could have thrown an error, but instead, I just
+  //    returned an object representing the message "It's a blob, download
+  //    it elsewhere"
+  // 4. Per documentation files larger than 100 mb must be in a git LFS
+  //    storage and it's assumed that git LFS annotation will be provided.
+  //    But if it's not provided, instead of throwing an error, I returned
+  //    an object representing the message "It's a blob, download it
+  //    elsewhere"
 
   // In the end it leads to much lower complexity with a ton of IFs removed
   if (encoding !== 'none') {
