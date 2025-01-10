@@ -29,7 +29,8 @@ jobs:
         run: npm exec -c ./scripts/build.sh
       -
         name: 'Check if code follows JSR rules for packages'
-        run: npm run test-jsr
+        # tree will be dirty because fetch-github-folder.ts has bumped inlined version numbers
+        run: npx jsr publish --dry-run --allow-dirty
       -
         name: 'Check if code passes tests'
         run: npm run test-once
