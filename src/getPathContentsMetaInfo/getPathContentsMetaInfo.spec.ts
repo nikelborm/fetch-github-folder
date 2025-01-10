@@ -1,6 +1,6 @@
-import { assert, it, } from "@effect/vitest";
+import { it } from "@effect/vitest";
 import { Octokit } from '@octokit/core';
-import { Effect, flip, map, provideService, tryMapPromise } from 'effect/Effect';
+import { andThen, Effect, flip, map, provideService } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { GitHubApiBadCredentials, GitHubApiGeneralUserError, GitHubApiNoCommitFoundForGitRef, GitHubApiRepoDoesNotExistsOrPermissionsInsufficient, GitHubApiRepoIsEmpty } from '../errors.js';
@@ -116,30 +116,88 @@ expectError({
 })
 
 it.effect(
-  `Should return root directory`,
+  `Should return children of root directory`,
   (ctx) => pipe(
     getPathContentsMetaInfo({
       path: "",
-      gitRef: "aa01ad6b31edbfa41d18187215e7b9a35be34a1b",
+      gitRef: "9898e22",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',
       }
     }),
-    map(e => assert.deepStrictEqual(e, {
-      type: 'dir',
-      treeSha: '90a3d3cc0f107b11eb06c8148086de65eb86b676',
-      entries: [
-        {
-          type: 'file',
-          size: 13,
-          name: 'README.md',
-          path: 'README.md',
-          sha: 'e0581c6516af41608a222765cfb582f0bf89ed47'
-        }
-      ],
-      meta: 'This root directory of the repo can be downloaded as a git tree'
-    })),
+    map(e => ctx.expect(e).toMatchInlineSnapshot(`
+      {
+        "entries": [
+          {
+            "name": ".gitattributes",
+            "path": ".gitattributes",
+            "sha": "236917878e566c0f8ec5db75938d074b8df259c9",
+            "size": 51,
+            "type": "file",
+          },
+          {
+            "name": "100mb_file.txt",
+            "path": "100mb_file.txt",
+            "sha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
+            "size": 134,
+            "type": "file",
+          },
+          {
+            "name": "1023kb+1023b_file.txt",
+            "path": "1023kb+1023b_file.txt",
+            "sha": "4ef7ad24ca43c487151fc6a194eb40fb715bf689",
+            "size": 1048575,
+            "type": "file",
+          },
+          {
+            "name": "1mb_file.txt",
+            "path": "1mb_file.txt",
+            "sha": "7c7377879f52df073befeb0cb7df4d1a4b6b7563",
+            "size": 1048576,
+            "type": "file",
+          },
+          {
+            "name": "README.md",
+            "path": "README.md",
+            "sha": "e0581c6516af41608a222765cfb582f0bf89ed47",
+            "size": 13,
+            "type": "file",
+          },
+          {
+            "name": "fake_git_lfs.txt",
+            "path": "fake_git_lfs.txt",
+            "sha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
+            "size": 134,
+            "type": "file",
+          },
+          {
+            "name": "index.js",
+            "path": "index.js",
+            "sha": "927d79ca931f4512ec3798abef6624e53f9d6ad3",
+            "size": 193,
+            "type": "file",
+          },
+          {
+            "name": "package.json",
+            "path": "package.json",
+            "sha": "96ae6e57eb3980436bae7749ddbdca84b4978cc2",
+            "size": 24,
+            "type": "file",
+          },
+          {
+            "name": "parentFolderDirectlyInRoot",
+            "path": "parentFolderDirectlyInRoot",
+            "sha": "51106992bea30bb953ac5754e54bb968ab0dcbe5",
+            "size": 0,
+            "type": "dir",
+          },
+        ],
+        "meta": "This root directory of the repo can be downloaded as a git tree",
+        "treeSha": "eb10ce40a99007c3dd4f2e120c2de77850d1d5f4",
+        "type": "dir",
+      }
+    `)),
     provideService(
       OctokitTag,
       new Octokit()
@@ -154,36 +212,33 @@ it.effect(
   (ctx) => pipe(
     getPathContentsMetaInfo({
       path: "README.md",
-      gitRef: "aa01ad6b31edbfa41d18187215e7b9a35be34a1b",
+      gitRef: "9898e22",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',
       }
     }),
-    tryMapPromise({
-      try: async (info) => {
-        if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
+    andThen(async (info) => {
+      if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
 
-        const { content, ...rest } = info;
+      const { content, ...rest } = info;
 
-        assert.deepStrictEqual(
-          {
-            ...rest,
-            content: await text(content)
-          },
-          {
-            type: 'file',
-            size: 13,
-            name: 'README.md',
-            path: 'README.md',
-            blobSha: 'e0581c6516af41608a222765cfb582f0bf89ed47',
-            meta: 'This file is small enough that GitHub API decided to inline it',
-            content: "# public-repo"
-          }
-        );
-      },
-      catch: (e) => e
+      return {
+        ...rest,
+        content: await text(content)
+      }
     }),
+    map((info) => ctx.expect(info).toMatchInlineSnapshot(`
+      {
+        "blobSha": "e0581c6516af41608a222765cfb582f0bf89ed47",
+        "content": "# public-repo",
+        "meta": "This file is small enough that GitHub API decided to inline it",
+        "name": "README.md",
+        "path": "README.md",
+        "size": 13,
+        "type": "file",
+      }
+    `)),
     provideService(
       OctokitTag,
       new Octokit()
@@ -198,36 +253,31 @@ it.effect(
   (ctx) => pipe(
     getPathContentsMetaInfo({
       path: "1023kb+1023b_file.txt",
-      gitRef: "6ca2b300cae4d49dbbd938060702c264b5ef055b",
+      gitRef: "9898e22",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',
       }
     }),
-    tryMapPromise({
-      try: async (info) => {
-        if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
+    andThen(async (info) => {
+      if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
 
-        const { content, ...rest } = info;
+      const { content, ...rest } = info;
 
-        assert.deepStrictEqual(
-          {
-            ...rest,
-            content: await text(content)
-          },
-          {
-            type: 'file',
-            size: 1024 * 1024 - 1,
-            name: '1023kb+1023b_file.txt',
-            path: '1023kb+1023b_file.txt',
-            blobSha: '4ef7ad24ca43c487151fc6a194eb40fb715bf689',
-            meta: 'This file is small enough that GitHub API decided to inline it',
-            content: "a".repeat(1024 * 1024 - 1)
-          }
-        );
-      },
-      catch: (e) => e
+      return {
+        ...rest,
+        content: await text(content)
+      }
     }),
+    map((info) => ctx.expect(info).toEqual({
+      type: 'file',
+      size: 1024 * 1024 - 1,
+      name: '1023kb+1023b_file.txt',
+      path: '1023kb+1023b_file.txt',
+      blobSha: '4ef7ad24ca43c487151fc6a194eb40fb715bf689',
+      meta: 'This file is small enough that GitHub API decided to inline it',
+      content: "a".repeat(1024 * 1024 - 1)
+    })),
     provideService(
       OctokitTag,
       new Octokit()
@@ -237,34 +287,106 @@ it.effect(
 );
 
 it.effect(
-  `Should not inline file with 100mb size placed directly in root directory and return Git-LFS info`,
+  `Should not inline file with 100mb size placed directly in root directory and instead return Git-LFS info`,
   (ctx) => pipe(
     getPathContentsMetaInfo({
       path: "100mb_file.txt",
-      gitRef: "0362e8aec37c9146e1f946b27d98043a823357b7",
+      gitRef: "9898e22",
       repo: {
         owner: 'fetch-gh-folder-tests',
         name: 'public-repo',
       }
     }),
-    tryMapPromise({
-      try: async (info) => {
-        assert.deepStrictEqual(
-          info,
-          {
-            type: 'file',
-            size: 1024 * 1024 * 100,
-            name: '100mb_file.txt',
-            path: '100mb_file.txt',
-            gitLFSObjectIdSha256: 'cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6',
-            gitLFSVersion: 'https://git-lfs.github.com/spec/v1',
-            blobSha: '7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b',
-            meta: 'This file can be downloaded as a git-LFS object'
-          }
-        );
-      },
-      catch: (e) => e
+    map((info) => ctx.expect(info).toMatchInlineSnapshot(`
+      {
+        "blobSha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
+        "gitLFSObjectIdSha256": "cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6",
+        "gitLFSVersion": "https://git-lfs.github.com/spec/v1",
+        "meta": "This file can be downloaded as a git-LFS object",
+        "name": "100mb_file.txt",
+        "path": "100mb_file.txt",
+        "size": 104857600,
+        "type": "file",
+      }
+    `)),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);
+
+it.effect(
+  `Should return little inlined file inside of a nested directory`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "parentFolderDirectlyInRoot/childFolder/nestedFile.md",
+      gitRef: "9898e22",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
     }),
+    andThen(async (info) => {
+      if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
+
+      const { content, ...rest } = info;
+
+      return {
+        ...rest,
+        content: await text(content)
+      }
+    }),
+    map((info) => ctx.expect(info).toMatchInlineSnapshot(`
+      {
+        "blobSha": "24ebb076f9e46157c4abdc6e7b69a775eb38d6a4",
+        "content": "# Nested file
+      ",
+        "meta": "This file is small enough that GitHub API decided to inline it",
+        "name": "nestedFile.md",
+        "path": "parentFolderDirectlyInRoot/childFolder/nestedFile.md",
+        "size": 14,
+        "type": "file",
+      }
+    `)),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);
+
+it.effect(
+  `Should return children of nested directory`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "parentFolderDirectlyInRoot/childFolder",
+      gitRef: "9898e22",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    map(e => ctx.expect(e).toMatchInlineSnapshot(`
+      {
+        "entries": [
+          {
+            "name": "nestedFile.md",
+            "path": "parentFolderDirectlyInRoot/childFolder/nestedFile.md",
+            "sha": "24ebb076f9e46157c4abdc6e7b69a775eb38d6a4",
+            "size": 14,
+            "type": "file",
+          },
+        ],
+        "meta": "This nested directory can be downloaded as a git tree",
+        "name": "childFolder",
+        "path": "parentFolderDirectlyInRoot/childFolder",
+        "treeSha": "ea5690c87fc1cb6b88cb953f29f826daeb2e43ab",
+        "type": "dir",
+      }
+    `)),
     provideService(
       OctokitTag,
       new Octokit()
