@@ -163,9 +163,7 @@ it.effect(
     }),
     tryMapPromise({
       try: async (info) => {
-        tsafe.assert(tsafe.is<Extract<typeof info, {
-          meta: 'This file is less than 1 MB and was sent automatically'
-        }>>(info));
+        if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
 
         const { content, ...rest } = info;
 
@@ -180,7 +178,7 @@ it.effect(
             name: 'README.md',
             path: 'README.md',
             blobSha: 'e0581c6516af41608a222765cfb582f0bf89ed47',
-            meta: 'This file is less than 1 MB and was sent automatically',
+            meta: 'This file is small enough that GitHub API decided to inline it',
             content: "# public-repo"
           }
         );
@@ -209,9 +207,7 @@ it.effect(
     }),
     tryMapPromise({
       try: async (info) => {
-        tsafe.assert(tsafe.is<Extract<typeof info, {
-          meta: 'This file is less than 1 MB and was sent automatically'
-        }>>(info));
+        if (info.meta !== 'This file is small enough that GitHub API decided to inline it') throw new Error("File wasn't inlined");
 
         const { content, ...rest } = info;
 
@@ -226,7 +222,7 @@ it.effect(
             name: '1023kb+1023b_file.txt',
             path: '1023kb+1023b_file.txt',
             blobSha: '4ef7ad24ca43c487151fc6a194eb40fb715bf689',
-            meta: 'This file is less than 1 MB and was sent automatically',
+            meta: 'This file is small enough that GitHub API decided to inline it',
             content: "a".repeat(1024 * 1024 - 1)
           }
         );
@@ -254,10 +250,6 @@ it.effect(
     }),
     tryMapPromise({
       try: async (info) => {
-        tsafe.assert(tsafe.is<Extract<typeof info, {
-          meta: 'This file can be downloaded as a git-LFS object'
-        }>>(info));
-
         assert.deepStrictEqual(
           info,
           {
@@ -265,6 +257,8 @@ it.effect(
             size: 1024 * 1024 * 100,
             name: '100mb_file.txt',
             path: '100mb_file.txt',
+            gitLFSObjectIdSha256: 'cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6',
+            gitLFSVersion: 'https://git-lfs.github.com/spec/v1',
             blobSha: '7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b',
             meta: 'This file can be downloaded as a git-LFS object'
           }

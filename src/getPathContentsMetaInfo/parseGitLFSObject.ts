@@ -2,7 +2,8 @@
 import { isRight, left, mapLeft, match, right } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import { decodeUnknownEither, NonEmptyTrimmedString, NumberFromString, Struct } from 'effect/Schema';
-import { GetSimpleFormError, TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
+import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
+import { outdent } from 'outdent';
 
 export const parseGitLFSObject = ({
   contentAsBuffer,
@@ -55,14 +56,6 @@ export const parseGitLFSObject = ({
       meta: "This file can be downloaded as a git-LFS object"
     } as const);
   } else if (shouldFailIfItIsNotGitLFS) {
-    // If we weren't successful in parsing it as git LFS object
-    // announcement using RegExp and Effect.Schema, we just do a basic size
-    // consistency check. The check implements the second marker of it
-    // being a Git LFS object as a backup to checking does "content" look
-    // like a Git LFS object. If GitHub API's "size" field is different
-    // from actual size of "content" field, it means either our schema with
-    // regexp fucked up, or GitHub API did. If it doesn't throw, it means
-    // there's no reason to assume it's a Git LFS object.
     return left(new InconsistentExpectedAndRealContentSize({
       path,
       actual: contentAsBuffer.byteLength,
@@ -92,7 +85,8 @@ export const parseGitLFSObject = ({
 // and the only variable thing in it is the size at the end, and I assume
 // that supported file size is not greater than 100 GB
 const MAX_GIT_LFS_INFO_SIZE = 137;
-const gitLFSInfoRegexp = /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]{0,11})\n$/mg
+// Don't add g modifier, it breaks match groups for some reason
+const gitLFSInfoRegexp = /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]{0,11})\n$/m
 
 const GitLFSInfoSchema = Struct({
   version: NonEmptyTrimmedString,
@@ -129,4 +123,15 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
 }>()(
   'InconsistentExpectedAndRealContentSize',
   (ctx) => `Got file ${ctx.path} with size ${ctx.actual} bytes while expecting "${ctx.expected}" bytes`,
+  void 0,
+  { comment: outdent({ newline: ' ' })`
+    If we weren't successful in parsing it as git LFS object
+    announcement using RegExp and Effect.Schema, we just do a basic size
+    consistency check. The check implements the second marker of it
+    being a Git LFS object as a backup to checking does "content" look
+    like a Git LFS object. If GitHub API's "size" field is different
+    from actual size of "content" field, it means either our schema with
+    regexp fucked up, or GitHub API did. If it doesn't throw, it means
+    there's no reason to assume it's a Git LFS object.
+  ` }
 ) {}
