@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intermediate Navigation Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('https://raw.githubusercontent.com/nikelborm/fetch-github-folder/refs/heads/main/assets/background_image.webp') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      filter: blur(8px);
+      z-index: -1;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 20px;
+      width: 90%;
+      max-width: 1200px;
+      height: 90%;
+    }
+
+    .box {
+      background-color: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      padding: 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .box:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .box img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 15px;
+    }
+
+    .box a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .box a:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .clickable {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .clickable:hover {
+      background-color: rgba(0, 0, 0, 0.85);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box clickable" onclick="window.location.href='https://github.com/nikelborm'">
+      <img src="https://raw.githubusercontent.com/nikelborm/fetch-github-folder/refs/heads/main/assets/author_image.png" alt="Creator's Picture">
+      <p style="padding-bottom: 20px;">Eva</p>
+      <p>Creator of the Project</p>
+    </div>
+    <div class="box clickable" onclick="window.location.href='https://github.com/nikelborm/fetch-github-folder/'">
+      <img src="https://raw.githubusercontent.com/nikelborm/fetch-github-folder/3656a3cf51537f3b89dfb6527c880e0c9e677c77/assets/logo.svg" alt="Project Logo">
+      <p style="padding-bottom: 20px;">fetch-github-folder</p>
+      <p>A CLI tool for downloading any file or folder in a repo on GitHub</p>
+    </div>
+    <div class="box clickable" onclick="window.location.href='https://nikelborm.github.io/fetch-github-folder/coverage/'">
+      Coverage Report
+    </div>
+    <div class="box clickable" onclick="window.location.href='https://nikelborm.github.io/fetch-github-folder/bundled_deps/'">
+      Bundle Size Report
+    </div>
+  </div>
+</body>
+</html>
