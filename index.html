@@ -22,34 +22,22 @@
       background-size: cover;
     }
 
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      filter: blur(8px);
-      z-index: -1;
-    }
-
     .container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
       gap: 20px;
       width: 90%;
-      max-width: 1200px;
       height: 90%;
     }
 
     .box {
       background-color: rgba(0, 0, 0, 0.75);
-      border: 1px solid rgba(0, 0, 0, 0.8);
+      border: 1.5px solid rgba(0, 0, 0, 0.8);
       border-radius: 15px;
       padding: 40px;
       color: white;
+      backdrop-filter: blur(1.5px);
       display: flex;
       flex-direction: column;
       justify-content: center;
