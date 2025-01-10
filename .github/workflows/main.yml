@@ -13,57 +13,63 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout
+        name: 'Checkout'
         uses: actions/checkout@v4
       -
-        name: Set up Node.js
+        name: 'Set up Node.js'
         uses: actions/setup-node@v4
         with:
           node-version: 23
           registry-url: https://registry.npmjs.org/
       -
-        name: 'Deps: Install'
-        run: |
-          npm install
+        name: 'Install dependencies'
+        run: npm install
       -
-        name: 'Build'
-        run: |
-          npm exec -c ./scripts/build.sh
+        name: 'Build, bundle, compress'
+        run: npm exec -c ./scripts/build.sh
       -
-        name: 'Publish to default NPM registry'
-        run: |
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        name: 'Test and report coverage'
+        run: npm run coverage
+      # -
+      #   name: 'Test if code follows JSR rules for packages'
+      #   uses: npm run test-jsr
       -
-        name: Prepare package.json with jsr.json for publishing
-        run: |
-          jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
-          jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
-      -
-        name: Commit updated jsr.json and potentially updated package-lock.json after npm install
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_author: 'nikelborm <evadev@duck.com>'
-          file_pattern: 'jsr.json package-lock.json fetch-github-folder.ts'
-          commit_message: Auto-updated NPM package files
-      -
-        name: 'Publish to JSR''s NPM registry'
-        run: |
-          npx jsr publish --allow-dirty # package.json has temporarily prefixed "name" field
-      -
-        name: 'Publish to GitHub''s NPM registry'
-        run: |
-          sed -i 's/registry.npmjs.org/npm.pkg.github.com/' /home/runner/work/_temp/.npmrc
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: 'Release: Upload'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: latest-${{github.sha}}
-          fail_on_unmatched_files: true
-          files: |
-            ./dist/minified/fetch-github-folder.js
-            ./template.env
+        name: Upload coverage report to coveralls.io
+        uses: coverallsapp/github-action@v2
+      # -
+      #   name: 'Publish to default NPM registry'
+      #   run: npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      # -
+      #   name: Prepare package.json with jsr.json for publishing
+      #   run: |
+      #     jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
+      #     jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
+      # -
+      #   name: Commit updated jsr.json and potentially updated package-lock.json after npm install
+      #   uses: stefanzweifel/git-auto-commit-action@v5
+      #   with:
+      #     commit_author: 'nikelborm <evadev@duck.com>'
+      #     file_pattern: 'jsr.json package-lock.json fetch-github-folder.ts'
+      #     commit_message: Auto-updated NPM package files
+      # -
+      #   name: 'Publish to JSR''s NPM registry'
+      #   run: |
+      #     npx jsr publish --allow-dirty # package.json has temporarily prefixed "name" field
+      # -
+      #   name: 'Publish to GitHub''s NPM registry'
+      #   run: |
+      #     sed -i 's/registry.npmjs.org/npm.pkg.github.com/' /home/runner/work/_temp/.npmrc
+      #     npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # -
+      #   name: 'Release: Upload'
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     tag_name: latest-${{github.sha}}
+      #     fail_on_unmatched_files: true
+      #     files: |
+      #       ./dist/minified/fetch-github-folder.js
+      #       ./template.env
