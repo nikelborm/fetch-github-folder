@@ -287,6 +287,35 @@ it.effect(
 );
 
 it.effect(
+  `Should return blob info for file with size exactly 1mb`,
+  (ctx) => pipe(
+    getPathContentsMetaInfo({
+      path: "1mb_file.txt",
+      gitRef: "9898e22",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    map((info) => ctx.expect(info).toMatchInlineSnapshot(`
+      {
+        "blobSha": "7c7377879f52df073befeb0cb7df4d1a4b6b7563",
+        "meta": "This file can be downloaded as a blob",
+        "name": "1mb_file.txt",
+        "path": "1mb_file.txt",
+        "size": 1048576,
+        "type": "file",
+      }
+    `)),
+    provideService(
+      OctokitTag,
+      new Octokit()
+    )
+  ),
+  { concurrent: true }
+);
+
+it.effect(
   `Should not inline file with 100mb size placed directly in root directory and instead return Git-LFS info`,
   (ctx) => pipe(
     getPathContentsMetaInfo({
