@@ -16,6 +16,9 @@
 [![NPM License](https://img.shields.io/npm/l/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder?tab=MIT-1-ov-file)
 [![Coverage Status](https://coveralls.io/repos/github/nikelborm/fetch-github-folder/badge.svg?branch=main)](https://coveralls.io/github/nikelborm/fetch-github-folder?branch=main)
 [![CodeFactor](https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/badge)](https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder)
+[![Codeclimate Maintainability](https://api.codeclimate.com/v1/badges/0068c34824ae7b6ee8a0/maintainability)](https://codeclimate.com/github/nikelborm/fetch-github-folder/maintainability)
+[![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/nikelborm/fetch-github-folder)](https://codeclimate.com/github/nikelborm/fetch-github-folder/issues)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/t/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/graphs/commit-activity)
 <!-- [![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder)](update_link_later) -->
 <!-- [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) -->
 
@@ -108,3 +111,7 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 6. add autodeterminator that this is a public repo and we don't need an API key
 7. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
 8. tests
+9. https://github.com/nikelborm/fetch-github-folder/community
+10. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
+11. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
+12. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
