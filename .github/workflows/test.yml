@@ -9,6 +9,8 @@ on:
 
 jobs:
   test-coverage:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       -
@@ -24,11 +26,20 @@ jobs:
         name: 'Install dependencies'
         run: npm install
       -
-        name: 'Test that it compiles at all'
-        run: npx tsc
+        name: 'Compile, build, bundle, report deps graph'
+        run: npm run build
       -
         name: 'Test and report coverage'
         run: npm run coverage
       -
         name: 'Upload coverage report to coveralls.io'
         uses: coverallsapp/github-action@v2
+        with:
+          file: ./report/coverage/clover.xml
+      -
+        name: 'Upload coverage and bundled deps reports to github actions'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./report
+          commit_message: "Coverage: ${{ github.event.head_commit.message }}"

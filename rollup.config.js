@@ -10,5 +10,13 @@ export default {
     format: 'es',
     compact: true
   },
-  plugins: [nodeResolve(), commonjs(), terser(), visualizer()]
+  plugins: [
+    nodeResolve(),
+    commonjs(),
+    terser(),
+    visualizer({
+      sourcemap: "true",
+      filename: "report/bundled_deps/index.html",
+    })
+  ],
 };
