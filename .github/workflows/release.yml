@@ -1,11 +1,11 @@
-name: Release Workflow
+name: Release workflow
 on:
   workflow_dispatch:
   # push:
   #   branches: [ main ]
 
 jobs:
-  build:
+  release:
     permissions:
       contents: write
       packages: write
