@@ -52,6 +52,6 @@
     "./fetch-github-folder.ts",
     "./scratchpad.ts",
     "./reset.d.ts",
-    "./src/index.ts"
+    "./src/**/*"
   ]
 }

@@ -28,17 +28,19 @@ jobs:
         name: 'Build, bundle, compress'
         run: npm exec -c ./scripts/build.sh
       -
-        name: 'Test if code follows JSR rules for packages'
+        name: 'Check if code follows JSR rules for packages'
         run: npm run test-jsr
+      -
+        name: 'Check if code passes tests'
+        run: npm run test-once
       -
         name: 'Publish to default NPM registry'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
-        name: 'Prepare package.json with jsr.json for publishing'
+        name: 'Prepare jsr.json for publishing to JSR'
         run: |
-          jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
           jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
       -
         name: 'Commit updated jsr.json and potentially updated package-lock.json after npm install'
@@ -48,9 +50,12 @@ jobs:
           file_pattern: 'jsr.json package-lock.json fetch-github-folder.ts'
           commit_message: Auto-updated NPM package files
       -
-        name: 'Publish to JSR''s NPM registry'
+        name: 'Publish to JSR'
+        run: npx jsr publish
+      -
+        name: 'Prepare package.json for publishing to GitHub''s NPM registry'
         run: |
-          npx jsr publish --allow-dirty # package.json has temporarily prefixed "name" field
+          jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
       -
         name: 'Publish to GitHub''s NPM registry'
         run: |
@@ -59,10 +64,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: 'Upload bundled CLI as release artifact'
+        name: 'Upload bundled CLI as a release artifact'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest-${{github.sha}}
+          tag_name: nightly-${{github.sha}}
           fail_on_unmatched_files: true
           files: |
             ./dist/minified/fetch-github-folder.js

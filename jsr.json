@@ -10,6 +10,10 @@
       "src/**/*.ts",
       "README.md",
       "LICENSE"
+      ],
+    "exclude": [
+      "**/*.spec.*",
+      "scratchpad.*"
     ]
   }
 }
