@@ -33,6 +33,9 @@ jobs:
         name: 'Test and report coverage'
         run: npm run coverage
       -
+        name: 'Move landing to github pages folder'
+        run: cp ./assets/gh_pages_landing.html ./report/index.html
+      -
         name: 'Upload coverage report to coveralls.io'
         uses: coverallsapp/github-action@v2
         with:
