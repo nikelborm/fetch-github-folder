@@ -1,7 +1,6 @@
 import { gen, succeed } from 'effect/Effect';
 import { ParseToReadableStream } from '../parseToReadableStream.js';
 import { Repo } from '../repo.interface.js';
-import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { parseGitLFSObject } from './parseGitLFSObject.js';
 import { requestPathContentsMetaInfoFromGitHubAPI } from './requestPathContentsMetaInfoFromGitHubAPI.js';
@@ -31,8 +30,6 @@ export const getPathContentsMetaInfo = ({
     path: requestedPath
   });
 
-  const MB = 1024 * 1024;
-
   const { type, name, path, sha, size } = response;
 
   if (requestedPath !== path) throw new Error(`Requested path (${requestedPath}) doesn't match returned path (${path})`)
@@ -57,13 +54,29 @@ export const getPathContentsMetaInfo = ({
 
   const { content, encoding, sha: _, ...base } = response;
 
-  if (size < MB) {
-    if (encoding === "none")
-      return yield* new InconsistentEncodingWithSize({
-        size,
-        encoding: { actual: encoding }
-      });
+  // This is quite a graceful implementation. I had the choice to throw
+  // errors whenever GitHub's API didn't follow its documentation. I even
+  // did that initially, but when I looked at the resulting mess, I changed
+  // my mind not to. For example I could throw errors in following cases:
+  //
+  // 1. when size is between 1 mb and 100 mb per documentation I should
+  //    never receive data, instead receiving empty "content" field and
+  //    "encoding" field equal "none". I could have thrown error if this
+  //    promise is broken, instead if received 50mb file and correct
+  //    encoding I will parse and return it.
+  // 2. per documentation all files higher than 100mb should be put into
+  //    Git LFS storage. If I receive 110mb file inlined, I'll will not
+  //    fail and will parse and return it.
+  // 3. per documentation when size less than 1MB it MUST be inlined. If it
+  //    wasn't inlined I could have thrown error, but instead I just return
+  //    saying "it's a blob, download it elsewhere"
+  // 4. per documentation files with size larger than 100 mb must be in a
+  //    git LFS storage and it's assumed that git LFS annotation will be
+  //    provided. But if it's not provided, instead of throwing error, I
+  //    say "it's a blob, download it elsewhere"
 
+  // In the end it leads to much lower complexity with a ton of IFs removed
+  if (encoding !== 'none') {
     const contentAsBuffer = Buffer.from(content, encoding);
 
     const potentialGitLFSObject = yield* parseGitLFSObject({
@@ -83,50 +96,13 @@ export const getPathContentsMetaInfo = ({
       ...base,
       blobSha: sha,
       content: stream,
-      meta: "This file is less than 1 MB and was sent automatically"
+      meta: "This file is small enough that GitHub API decided to inline it"
     } as const;
-  } else if (size >= MB && size < /* <=? */ 100 * MB) {
-    // From GitHub API documentation:
-    // Between 1-100 MB: Only the raw or object custom media types are
-    // supported. Both will work as normal, except that when using the
-    // object media type, the content field will be an empty string and
-    // the encoding field will be "none". To get the contents of these
-    // larger files, use the raw media type.
-    if (encoding !== "none")
-      return yield* new InconsistentEncodingWithSize({
-        size,
-        encoding: {
-          actual: encoding,
-          expected: "none"
-        }
-      });
-
-    return {
-      ...base,
-      blobSha: sha,
-      meta: "This file can be downloaded as a blob"
-    } as const
   } else {
     return {
       ...base,
       blobSha: sha,
-      meta: "This file can be downloaded as a git-LFS object"
-    } as const
+      meta: "This file can be downloaded as a blob"
+    } as const;
   }
 }).pipe(TapLogBoth);
-
-
-export class InconsistentEncodingWithSize extends TaggedErrorVerifyingCause<{
-  encoding: {
-    actual: string,
-    expected?: string,
-  },
-  size: number
-}>()(
-  'InconsistentEncodingWithSize',
-  (ctx) => `Got "${ctx.encoding.actual}" encoding ${
-      "expected" in ctx.encoding
-        ? `while expecting "${ctx.encoding.expected}" encoding`
-        : ''
-    } for file with size ${ctx.size} bytes`,
-) {}

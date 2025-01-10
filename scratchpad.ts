@@ -1,5 +1,9 @@
 import { Octokit } from '@octokit/core';
-import { logObjectNicely } from './src/index.js';
+import { getPathContentsMetaInfo, logObjectNicely, OctokitTag } from './src/index.js';
+import { provide, provideService, runPromise } from 'effect/Effect';
+import { pipe } from 'effect/Function';
+import { TapLogBoth } from './src/TapLogBoth.js';
+import { NodeTerminal } from '@effect/platform-node';
 
 
 // await runPromise(
@@ -87,3 +91,24 @@ import { logObjectNicely } from './src/index.js';
 //   readmeContents,
 //   _100mbFileContents,
 // });
+
+
+await runPromise(
+  pipe(
+    getPathContentsMetaInfo({
+      // path: "fake_git_lfs.txt",
+      path: "100mb_file.txt",
+      gitRef: "test-disabling-lfs",
+      repo: {
+        owner: 'fetch-gh-folder-tests',
+        name: 'public-repo',
+      }
+    }),
+    TapLogBoth,
+    provideService(
+      OctokitTag,
+      new Octokit()
+    ),
+    provide(NodeTerminal.layer),
+  )
+)

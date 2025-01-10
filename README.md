@@ -1,13 +1,18 @@
 # <img src="https://raw.githubusercontent.com/nikelborm/fetch-github-folder/refs/heads/main/assets/logo.png" align="right" width="40px" height="40px"/> fetch-github-folder
 
+[![NPM package version](https://badge.fury.io/js/fetch-github-folder.svg)](https://www.npmjs.com/package/fetch-github-folder)
+[![NPM downloads](https://img.shields.io/npm/dm/fetch-github-folder.svg?style=flat)](https://npmjs.org/package/fetch-github-folder)
+[![NPM Last Update](https://img.shields.io/npm/last-update/fetch-github-folder)](https://npmjs.org/package/fetch-github-folder)
+[![Dependency count](https://badgen.net/bundlephobia/dependency-count/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependencies)
+[![Dependents](https://badgen.net/npm/dependents/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependents)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/fetch-github-folder)](https://bundlephobia.com/package/fetch-github-folder)
 [![Release Workflow](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/main.yml)
-[![npm version](https://badge.fury.io/js/fetch-github-folder.svg)](https://badge.fury.io/js/fetch-github-folder)
 [![JSR](https://jsr.io/badges/@nikelborm/fetch-github-folder)](https://jsr.io/@nikelborm/fetch-github-folder)
 [![JSR Score](https://jsr.io/badges/@nikelborm/fetch-github-folder/score)](https://jsr.io/@nikelborm/fetch-github-folder)
 [![JSR Scope](https://jsr.io/badges/@nikelborm)](https://jsr.io/@nikelborm)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/nikelborm/fetch-github-folder)
-![GitHub top language](https://img.shields.io/github/languages/top/nikelborm/fetch-github-folder)
-![NPM License](https://img.shields.io/npm/l/fetch-github-folder)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/pulse)
+[![GitHub top language](https://img.shields.io/github/languages/top/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder)
+[![NPM License](https://img.shields.io/npm/l/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder?tab=MIT-1-ov-file)
 <!-- ![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder) -->
 
 > [!CAUTION]
