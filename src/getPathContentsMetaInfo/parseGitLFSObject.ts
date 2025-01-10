@@ -122,7 +122,7 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
   }
 }>()(
   'InconsistentExpectedAndRealContentSize',
-  (ctx) => `Got file ${ctx.path} with size ${ctx.actual} bytes while expecting "${ctx.expected}" bytes`,
+  (ctx) => `Got file ${ctx.path} with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
   void 0,
   { comment: outdent({ newline: ' ' })`
     If we weren't successful in parsing it as git LFS object

@@ -101,6 +101,7 @@ export const TaggedErrorVerifyingCause = <
           )
           : customMessage,
         ...(!!expectedCauseClass && { cause: args[0] }),
+        ...staticContext,
         ...(args[~~!!expectedCauseClass])
       });
     }
