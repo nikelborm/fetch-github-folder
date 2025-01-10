@@ -7,3 +7,4 @@ dist
 _
 fetch-github-folder-*
 coverage
+/report
