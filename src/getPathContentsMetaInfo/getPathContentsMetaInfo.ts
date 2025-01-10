@@ -32,8 +32,6 @@ export const getPathContentsMetaInfo = ({
 
   const { type, name, path, sha, size } = response;
 
-  if (requestedPath !== path) throw new Error(`Requested path (${requestedPath}) doesn't match returned path (${path})`)
-
   if (type === "dir") {
     const { entries } = response;
     if (!name || !path) return {
