@@ -1,0 +1,31 @@
+name: Tests and report coverage workflow
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, dev ]
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: 'Checkout'
+        uses: actions/checkout@v4
+      -
+        name: 'Set up Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+          registry-url: https://registry.npmjs.org/
+      -
+        name: 'Install dependencies'
+        run: npm install
+      -
+        name: 'Test that it compiles at all'
+        run: npx tsc
+      -
+        name: 'Test and report coverage'
+        run: npm run coverage
+      -
+        name: 'Upload coverage report to coveralls.io'
+        uses: coverallsapp/github-action@v2

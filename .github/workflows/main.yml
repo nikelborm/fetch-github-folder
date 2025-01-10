@@ -28,12 +28,6 @@ jobs:
         name: 'Build, bundle, compress'
         run: npm exec -c ./scripts/build.sh
       -
-        name: 'Test and report coverage'
-        run: npm run coverage
-      -
-        name: Upload coverage report to coveralls.io
-        uses: coverallsapp/github-action@v2
-      -
         name: 'Test if code follows JSR rules for packages'
         uses: npm run test-jsr
       -
@@ -42,12 +36,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       -
-        name: Prepare package.json with jsr.json for publishing
+        name: 'Prepare package.json with jsr.json for publishing'
         run: |
           jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
           jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
       -
-        name: Commit updated jsr.json and potentially updated package-lock.json after npm install
+        name: 'Commit updated jsr.json and potentially updated package-lock.json after npm install'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
@@ -65,7 +59,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: 'Release: Upload'
+        name: 'Upload bundled CLI as release artifact'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest-${{github.sha}}
