@@ -50,7 +50,7 @@ it('Should have expected fields from both contexts: dynamic and static ', (ctx) 
 it(
   'Should throw when incorrect cause provided during constructor call',
   { fails: true },
-  (ctx) => {
+  () => {
     new FailedToParseGitLFSInfo(
       new Error('bad error') as ParseError,
       {partOfContentThatCouldBeGitLFSInfo: 'Part of content that could be git lfs info'}

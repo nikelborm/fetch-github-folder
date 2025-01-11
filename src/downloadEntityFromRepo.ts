@@ -81,7 +81,7 @@ export const downloadEntityFromRepo = ({
     })
   }
   yield* fail(new Error('LFS files are not yet supported'))
-  pathContentsMetaInfo
+  // pathContentsMetaInfo
 })
 
 
