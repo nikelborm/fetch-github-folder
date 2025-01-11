@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>41/41</span>
+                <span class='fraction'>34/34</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/41</span>
+                <span class='fraction'>34/34</span>
             </div>
         
             
@@ -177,10 +177,7 @@
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
 <a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L115'></a><a href='#L115'>115</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,10 +235,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,6 +249,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
@@ -264,23 +264,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
@@ -317,7 +311,7 @@ export type GetSimpleFormError&lt;T&gt; = T extends object ? {
 } : T
 &nbsp;
 export const TaggedErrorVerifyingCause = &lt;
-  const DynamicContext extends Record&lt;string, any&gt; = {},
+  const DynamicContext extends Record&lt;string, unknown&gt; = {},
 &gt;() =&gt; &lt;
   const ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
@@ -343,7 +337,7 @@ export const TaggedErrorVerifyingCause = &lt;
       // clear
       : [fullContext: MessageRendererFullContextArg]
   ),
-  const StaticContext extends Record&lt;string, any&gt; = {},
+  const StaticContext extends Record&lt;string, unknown&gt; = {},
   MessageRendererFullContextArg = Prettify&lt;
     Equals&lt;DynamicContext &amp; StaticContext, {}&gt; extends true
       ? void
@@ -354,49 +348,46 @@ export const TaggedErrorVerifyingCause = &lt;
       ? void
       : Readonly&lt;GetSimpleFormError&lt;DynamicContext&gt;, string, 'deep'&gt;
   &gt;,
+  ReturnType = {
+    new (...args: ConstructorArgs): YieldableError &amp; Readonly&lt;{
+      message: string;
+      _tag: ErrorName;
+      name: ErrorName;
+    } &amp; (
+      [ExpectedCauseClass] extends [WideErrorConstructor]
+      // To improve TS performance I wrap it in GetSimpleFormError
+      ? { cause: GetSimpleFormError&lt;InstanceType&lt;ExpectedCauseClass&gt;&gt;; }
+      : {}
+    ) &amp; DynamicContext &amp; StaticContext&gt;
+  }
 &gt;(
   errorName: ErrorName,
   customMessage: string | ((...args: MessageRendererArgs) =&gt; string),
   expectedCauseClass?: ExpectedCauseClass,
   staticContext?: StaticContext,
-): {
-  new (...args: ConstructorArgs): YieldableError &amp; Readonly&lt;{
-    message: string;
-    _tag: ErrorName;
-    name: ErrorName;
-  } &amp; (
-    [ExpectedCauseClass] extends [WideErrorConstructor]
-    // To improve TS performance I wrap it in GetSimpleFormError
-    ? { cause: GetSimpleFormError&lt;InstanceType&lt;ExpectedCauseClass&gt;&gt;; }
-    : {}
-  ) &amp; DynamicContext &amp; StaticContext&gt;
-} =&gt; {
-  const CustomTaggedErrorClass = TaggedError(errorName)&lt;any&gt;;
+): ReturnType =&gt; {
+  const CustomTaggedErrorClass = TaggedError(errorName)&lt;
+    Record&lt;'message' | '_tag' | 'name', unknown&gt;
+  &gt;;
 &nbsp;
   class Base extends CustomTaggedErrorClass {
     constructor(...args: ConstructorArgs) {
-      if(expectedCauseClass &amp;&amp; !(args[0] instanceof expectedCauseClass))
+      if (expectedCauseClass &amp;&amp; !(args[0] instanceof expectedCauseClass))
         throw new Error(`Provided cause of incorrect type to ${
           errorName
         } class. Expected cause class: "${expectedCauseClass.name}"`);
 &nbsp;
+      const customMessageRendererArgs = (expectedCauseClass
+        ? [ args[0], { ...args[1], ...staticContext }]
+        : [{ ...args[0], ...staticContext }]
+      ) as MessageRendererArgs
+&nbsp;
       super({
         name: errorName,
         message: isFunction(customMessage)
-          ? (expectedCauseClass
-            ? (customMessage as any)(
-              /* cause */ args[0],
-              /* full_ctx */ {
-                /* dynamic context */ ...args[1],
-                ...staticContext,
-              }
-            )
-            : (customMessage as any)(
-              /* full_ctx */ {
-                /* dynamic context */ ...args[0],
-                ...staticContext,
-              }
-            )
+          ? customMessage.apply(
+            void 0,
+            customMessageRendererArgs
           )
           : customMessage,
         ...(!!expectedCauseClass &amp;&amp; { cause: args[0] }),
@@ -406,7 +397,7 @@ export const TaggedErrorVerifyingCause = &lt;
     }
   }
 &nbsp;
-  return Base as any;
+  return Base as ReturnType;
 }
 &nbsp;
 export type Prettify&lt;T&gt; = T extends object
@@ -421,7 +412,7 @@ type WideErrorConstructor = new (...args: any[]) =&gt; Error;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-10T16:54:04.276Z
+                at 2025-01-11T04:15:58.314Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

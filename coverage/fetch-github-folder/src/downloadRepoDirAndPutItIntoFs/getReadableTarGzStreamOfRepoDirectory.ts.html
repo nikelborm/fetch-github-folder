@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for fetch-github-folder/src/getReadableTarGzStreamOfRepoDirectory.ts</title>
+    <title>Code coverage report for fetch-github-folder/src/downloadRepoDirAndPutItIntoFs/getReadableTarGzStreamOfRepoDirectory.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">fetch-github-folder/src</a> getReadableTarGzStreamOfRepoDirectory.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">fetch-github-folder/src/downloadRepoDirAndPutItIntoFs</a> getReadableTarGzStreamOfRepoDirectory.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -151,15 +151,15 @@
 import { UnknownException } from 'effect/Cause';
 import { map, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { OctokitTag } from './octokit.js';
-import { ParseToReadableStream } from './parseToReadableStream.js';
-import { Repo } from './repo.interface.js';
+import { OctokitTag } from '../octokit.js';
+import { ParseToReadableStream } from '../parseToReadableStream.js';
+import { Repo } from '../repo.interface.js';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const getReadableTarGzStreamOfRepoDirectory = (</span>
 <span class="cstat-no" title="statement not covered" >  repo: Repo,</span>
-<span class="cstat-no" title="statement not covered" >  gitRef: string</span>
+<span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree?: string</span>
 <span class="cstat-no" title="statement not covered" >) =&gt; pipe(</span>
-<span class="cstat-no" title="statement not covered" >  requestTarballFromGitHubAPI(repo, gitRef),</span>
+<span class="cstat-no" title="statement not covered" >  requestTarballFromGitHubAPI(repo, gitRefWhichWillBeUsedToIdentifyGitTree),</span>
 <span class="cstat-no" title="statement not covered" >  map(({ data }) =&gt; data),</span>
 <span class="cstat-no" title="statement not covered" >  ParseToReadableStream</span>
 <span class="cstat-no" title="statement not covered" >);</span>
@@ -168,14 +168,14 @@ import { Repo } from './repo.interface.js';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >const requestTarballFromGitHubAPI = (</span>
 <span class="cstat-no" title="statement not covered" >  repo: Repo,</span>
-<span class="cstat-no" title="statement not covered" >  gitRef: string</span>
+<span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree = ''</span>
 <span class="cstat-no" title="statement not covered" >) =&gt; OctokitTag.pipe(tryMapPromise({</span>
 <span class="cstat-no" title="statement not covered" >  try: (octokit, signal) =&gt; octokit.request(</span>
 <span class="cstat-no" title="statement not covered" >    'GET /repos/{owner}/{repo}/tarball/{ref}',</span>
 <span class="cstat-no" title="statement not covered" >    {</span>
 <span class="cstat-no" title="statement not covered" >      owner: repo.owner,</span>
 <span class="cstat-no" title="statement not covered" >      repo: repo.name,</span>
-<span class="cstat-no" title="statement not covered" >      ref: gitRef,</span>
+<span class="cstat-no" title="statement not covered" >      ref: gitRefWhichWillBeUsedToIdentifyGitTree,</span>
 <span class="cstat-no" title="statement not covered" >      request: {</span>
 <span class="cstat-no" title="statement not covered" >        signal,</span>
 <span class="cstat-no" title="statement not covered" >        parseSuccessResponseBody: false,</span>
@@ -186,7 +186,7 @@ import { Repo } from './repo.interface.js';
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  ),</span>
 <span class="cstat-no" title="statement not covered" >  catch: (error) =&gt; (error instanceof RequestError)</span>
-<span class="cstat-no" title="statement not covered" >    ? error</span>
+<span class="cstat-no" title="statement not covered" >    ? error // TODO: add the same extensive error parsing as in other places</span>
 <span class="cstat-no" title="statement not covered" >    : new UnknownException(error, "Failed to request tarball from GitHub")</span>
 <span class="cstat-no" title="statement not covered" >}));</span>
 &nbsp;</pre></td></tr></table></pre>
@@ -196,16 +196,16 @@ import { Repo } from './repo.interface.js';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-10T16:54:04.276Z
+                at 2025-01-11T04:15:58.314Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     

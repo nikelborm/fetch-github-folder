@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1736528044287" clover="3.2.0">
-  <project timestamp="1736528044288" name="All files">
-    <metrics statements="559" coveredstatements="306" conditionals="61" coveredconditionals="49" methods="17" coveredmethods="10" elements="637" coveredelements="365" complexity="0" loc="559" ncloc="559" packages="3" files="12" classes="12"/>
+<coverage generated="1736568958327" clover="3.2.0">
+  <project timestamp="1736568958327" name="All files">
+    <metrics statements="590" coveredstatements="318" conditionals="63" coveredconditionals="50" methods="19" coveredmethods="11" elements="672" coveredelements="379" complexity="0" loc="590" ncloc="590" packages="4" files="14" classes="14"/>
     <package name="fetch-github-folder">
       <metrics statements="66" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="fetch-github-folder.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/fetch-github-folder.ts">
@@ -75,76 +75,72 @@
       </file>
     </package>
     <package name="fetch-github-folder.src">
-      <metrics statements="266" coveredstatements="102" conditionals="19" coveredconditionals="14" methods="8" coveredmethods="4"/>
+      <metrics statements="204" coveredstatements="95" conditionals="17" coveredconditionals="14" methods="6" coveredmethods="4"/>
       <file name="TaggedErrorVerifyingCause.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/TaggedErrorVerifyingCause.ts">
-        <metrics statements="41" coveredstatements="41" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
+        <metrics statements="34" coveredstatements="34" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="20" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="22" count="15" type="cond" truecount="1" falsecount="0"/>
-        <line num="59" count="15" type="stmt"/>
-        <line num="60" count="15" type="stmt"/>
-        <line num="61" count="15" type="stmt"/>
-        <line num="62" count="15" type="stmt"/>
+        <line num="71" count="15" type="stmt"/>
+        <line num="72" count="15" type="stmt"/>
+        <line num="73" count="15" type="stmt"/>
         <line num="74" count="15" type="stmt"/>
         <line num="75" count="15" type="stmt"/>
-        <line num="77" count="15" type="stmt"/>
-        <line num="78" count="15" type="cond" truecount="1" falsecount="0"/>
-        <line num="79" count="14" type="cond" truecount="1" falsecount="0"/>
-        <line num="80" count="14" type="cond" truecount="1" falsecount="0"/>
-        <line num="81" count="1" type="stmt"/>
-        <line num="82" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="84" count="13" type="stmt"/>
-        <line num="85" count="13" type="stmt"/>
-        <line num="86" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="87" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="88" count="1" type="stmt"/>
+        <line num="76" count="15" type="stmt"/>
+        <line num="80" count="15" type="stmt"/>
+        <line num="81" count="15" type="cond" truecount="1" falsecount="0"/>
+        <line num="82" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="83" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="85" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="87" count="13" type="cond" truecount="1" falsecount="0"/>
+        <line num="88" count="12" type="cond" truecount="1" falsecount="0"/>
         <line num="89" count="1" type="stmt"/>
-        <line num="90" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
-        <line num="93" count="1" type="stmt"/>
-        <line num="94" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="95" count="1" type="stmt"/>
-        <line num="96" count="1" type="stmt"/>
-        <line num="97" count="1" type="stmt"/>
-        <line num="98" count="1" type="stmt"/>
-        <line num="99" count="1" type="stmt"/>
-        <line num="100" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="102" count="11" type="stmt"/>
-        <line num="103" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="92" count="14" type="stmt"/>
+        <line num="93" count="14" type="stmt"/>
+        <line num="94" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="95" count="2" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
+        <line num="97" count="2" type="stmt"/>
+        <line num="98" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="99" count="11" type="stmt"/>
+        <line num="100" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="101" count="14" type="stmt"/>
+        <line num="102" count="14" type="stmt"/>
+        <line num="103" count="14" type="stmt"/>
         <line num="104" count="14" type="stmt"/>
-        <line num="105" count="14" type="stmt"/>
-        <line num="106" count="14" type="stmt"/>
-        <line num="107" count="14" type="stmt"/>
+        <line num="105" count="15" type="stmt"/>
+        <line num="107" count="15" type="stmt"/>
         <line num="108" count="15" type="stmt"/>
-        <line num="110" count="15" type="stmt"/>
-        <line num="111" count="15" type="stmt"/>
       </file>
-      <file name="downloadDirAndPutIntoFs.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadDirAndPutIntoFs.ts">
-        <metrics statements="57" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="downloadEntityFromRepo.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadEntityFromRepo.ts">
+        <metrics statements="68" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="20" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
         <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
         <line num="37" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
         <line num="40" count="0" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
         <line num="48" count="0" type="stmt"/>
         <line num="49" count="0" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
@@ -155,33 +151,41 @@
         <line num="55" count="0" type="stmt"/>
         <line num="56" count="0" type="stmt"/>
         <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
         <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
         <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
         <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
         <line num="77" count="0" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
         <line num="79" count="0" type="stmt"/>
         <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
         <line num="82" count="0" type="stmt"/>
         <line num="83" count="0" type="stmt"/>
         <line num="84" count="0" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="87" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
         <line num="92" count="0" type="stmt"/>
         <line num="93" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
       </file>
       <file name="downloadInfoAboutAllBlobsInDirectory.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadInfoAboutAllBlobsInDirectory.ts">
-        <metrics statements="34" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="35" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="14" count="0" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
@@ -202,20 +206,21 @@
         <line num="34" count="0" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
         <line num="40" count="0" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
       </file>
       <file name="errors.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/errors.ts">
         <metrics statements="42" coveredstatements="42" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -262,48 +267,70 @@
         <line num="51" count="1" type="stmt"/>
         <line num="52" count="1" type="stmt"/>
       </file>
-      <file name="getGitTreeRefFromParentTreeRef.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getGitTreeRefFromParentTreeRef.ts">
-        <metrics statements="38" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="octokit.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/octokit.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+      </file>
+      <file name="parseToReadableStream.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/parseToReadableStream.ts">
+        <metrics statements="21" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="6" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="12" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="fetch-github-folder.src.downloadRepoDirAndPutItIntoFs">
+      <metrics statements="58" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <file name="downloadRepoDirAndPutItIntoFs.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadRepoDirAndPutItIntoFs/downloadRepoDirAndPutItIntoFs.ts">
+        <metrics statements="26" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
         <line num="28" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
         <line num="31" count="0" type="stmt"/>
         <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="69" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
       </file>
-      <file name="getReadableTarGzStreamOfRepoDirectory.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getReadableTarGzStreamOfRepoDirectory.ts">
+      <file name="getReadableTarGzStreamOfRepoDirectory.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadRepoDirAndPutItIntoFs/getReadableTarGzStreamOfRepoDirectory.ts">
         <metrics statements="32" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="9" count="0" type="stmt"/>
@@ -338,38 +365,10 @@
         <line num="41" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
       </file>
-      <file name="octokit.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/octokit.ts">
-        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-      </file>
-      <file name="parseToReadableStream.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/parseToReadableStream.ts">
-        <metrics statements="18" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="5" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="6" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="3" type="stmt"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="11" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="12" count="3" type="stmt"/>
-        <line num="13" count="3" type="stmt"/>
-        <line num="14" count="3" type="stmt"/>
-        <line num="15" count="3" type="cond" truecount="0" falsecount="1"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="22" count="1" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="25" count="1" type="stmt"/>
-      </file>
     </package>
-    <package name="fetch-github-folder.src.getPathContentsMetaInfo">
-      <metrics statements="227" coveredstatements="204" conditionals="41" coveredconditionals="35" methods="8" coveredmethods="6"/>
-      <file name="getPathContentsMetaInfo.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContentsMetaInfo/getPathContentsMetaInfo.ts">
+    <package name="fetch-github-folder.src.getPathContents">
+      <metrics statements="262" coveredstatements="223" conditionals="43" coveredconditionals="36" methods="10" coveredmethods="7"/>
+      <file name="getPathContentsMetaInfo.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/getPathContentsMetaInfo.ts">
         <metrics statements="57" coveredstatements="57" conditionals="11" coveredconditionals="11" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="18" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -429,37 +428,38 @@
         <line num="109" count="1" type="stmt"/>
         <line num="110" count="14" type="stmt"/>
       </file>
-      <file name="parseGitLFSObject.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContentsMetaInfo/parseGitLFSObject.ts">
+      <file name="parseGitLFSObject.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/parseGitLFSObject.ts">
         <metrics statements="84" coveredstatements="69" conditionals="9" coveredconditionals="8" methods="4" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="8" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="4" type="stmt"/>
         <line num="9" count="4" type="stmt"/>
         <line num="10" count="4" type="stmt"/>
         <line num="11" count="4" type="stmt"/>
         <line num="12" count="4" type="stmt"/>
         <line num="13" count="4" type="stmt"/>
-        <line num="14" count="4" type="stmt"/>
-        <line num="20" count="4" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
         <line num="22" count="4" type="stmt"/>
         <line num="23" count="4" type="stmt"/>
-        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
         <line num="26" count="4" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
-        <line num="28" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="29" count="4" type="stmt"/>
-        <line num="30" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="27" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="29" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="30" count="3" type="stmt"/>
         <line num="31" count="3" type="stmt"/>
         <line num="32" count="3" type="stmt"/>
-        <line num="33" count="3" type="stmt"/>
-        <line num="34" count="4" type="stmt"/>
+        <line num="33" count="4" type="stmt"/>
+        <line num="35" count="4" type="stmt"/>
         <line num="36" count="4" type="stmt"/>
-        <line num="37" count="4" type="stmt"/>
-        <line num="38" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="42" count="4" type="stmt"/>
-        <line num="44" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="47" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="37" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
+        <line num="43" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="46" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="47" count="1" type="stmt"/>
         <line num="48" count="1" type="stmt"/>
         <line num="49" count="1" type="stmt"/>
         <line num="50" count="1" type="stmt"/>
@@ -469,8 +469,8 @@
         <line num="54" count="1" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
         <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="57" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="0" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
@@ -485,125 +485,165 @@
         <line num="70" count="0" type="stmt"/>
         <line num="71" count="0" type="stmt"/>
         <line num="72" count="0" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
+        <line num="73" count="3" type="stmt"/>
         <line num="74" count="3" type="stmt"/>
         <line num="75" count="3" type="stmt"/>
-        <line num="76" count="3" type="stmt"/>
-        <line num="77" count="4" type="stmt"/>
-        <line num="87" count="1" type="stmt"/>
-        <line num="89" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
-        <line num="93" count="1" type="stmt"/>
-        <line num="94" count="1" type="stmt"/>
-        <line num="95" count="1" type="stmt"/>
-        <line num="98" count="1" type="stmt"/>
-        <line num="99" count="1" type="stmt"/>
-        <line num="100" count="1" type="stmt"/>
-        <line num="101" count="1" type="stmt"/>
-        <line num="104" count="1" type="stmt"/>
-        <line num="106" count="1" type="stmt"/>
-        <line num="107" count="1" type="stmt"/>
-        <line num="108" count="1" type="stmt"/>
-        <line num="109" count="1" type="stmt"/>
-        <line num="110" count="1" type="stmt"/>
-        <line num="112" count="1" type="stmt"/>
-        <line num="123" count="1" type="stmt"/>
-        <line num="124" count="1" type="stmt"/>
-        <line num="125" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="126" count="1" type="stmt"/>
-        <line num="127" count="1" type="stmt"/>
-        <line num="136" count="1" type="stmt"/>
-        <line num="137" count="1" type="stmt"/>
-      </file>
-      <file name="requestPathContentsMetaInfoFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContentsMetaInfo/requestPathContentsMetaInfoFromGitHubAPI.ts">
-        <metrics statements="86" coveredstatements="78" conditionals="21" coveredconditionals="16" methods="3" coveredmethods="3"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="31" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="32" count="14" type="stmt"/>
-        <line num="33" count="14" type="stmt"/>
-        <line num="34" count="14" type="stmt"/>
-        <line num="35" count="14" type="stmt"/>
-        <line num="39" count="14" type="stmt"/>
-        <line num="40" count="14" type="stmt"/>
-        <line num="41" count="14" type="stmt"/>
-        <line num="42" count="14" type="cond" truecount="1" falsecount="0"/>
-        <line num="43" count="14" type="stmt"/>
-        <line num="44" count="14" type="stmt"/>
-        <line num="45" count="14" type="stmt"/>
-        <line num="46" count="14" type="stmt"/>
-        <line num="47" count="14" type="stmt"/>
-        <line num="48" count="14" type="cond" truecount="1" falsecount="0"/>
-        <line num="49" count="14" type="stmt"/>
-        <line num="50" count="14" type="stmt"/>
-        <line num="51" count="14" type="stmt"/>
-        <line num="52" count="14" type="stmt"/>
-        <line num="53" count="14" type="stmt"/>
-        <line num="54" count="14" type="stmt"/>
-        <line num="55" count="14" type="stmt"/>
-        <line num="56" count="14" type="cond" truecount="1" falsecount="0"/>
-        <line num="58" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="59" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="60" count="6" type="cond" truecount="3" falsecount="0"/>
-        <line num="61" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="63" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="64" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="65" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="66" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="67" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="69" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="74" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="75" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="77" count="0" type="stmt"/>
-        <line num="78" count="14" type="stmt"/>
-        <line num="79" count="14" type="stmt"/>
-        <line num="80" count="14" type="cond" truecount="1" falsecount="0"/>
-        <line num="81" count="7" type="stmt"/>
-        <line num="82" count="7" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="86" count="14" type="stmt"/>
-        <line num="87" count="14" type="stmt"/>
-        <line num="89" count="1" type="stmt"/>
+        <line num="76" count="4" type="stmt"/>
+        <line num="86" count="1" type="stmt"/>
+        <line num="88" count="1" type="stmt"/>
         <line num="90" count="1" type="stmt"/>
         <line num="91" count="1" type="stmt"/>
         <line num="92" count="1" type="stmt"/>
         <line num="93" count="1" type="stmt"/>
         <line num="94" count="1" type="stmt"/>
-        <line num="96" count="1" type="stmt"/>
         <line num="97" count="1" type="stmt"/>
+        <line num="98" count="1" type="stmt"/>
         <line num="99" count="1" type="stmt"/>
         <line num="100" count="1" type="stmt"/>
-        <line num="101" count="1" type="stmt"/>
-        <line num="102" count="1" type="stmt"/>
         <line num="103" count="1" type="stmt"/>
-        <line num="104" count="1" type="stmt"/>
         <line num="105" count="1" type="stmt"/>
         <line num="106" count="1" type="stmt"/>
         <line num="107" count="1" type="stmt"/>
         <line num="108" count="1" type="stmt"/>
         <line num="109" count="1" type="stmt"/>
-        <line num="110" count="1" type="stmt"/>
         <line num="111" count="1" type="stmt"/>
-        <line num="112" count="1" type="stmt"/>
-        <line num="113" count="1" type="stmt"/>
-        <line num="114" count="1" type="stmt"/>
-        <line num="116" count="1" type="stmt"/>
-        <line num="117" count="1" type="stmt"/>
-        <line num="118" count="1" type="stmt"/>
-        <line num="119" count="1" type="stmt"/>
-        <line num="121" count="1" type="stmt"/>
+        <line num="122" count="1" type="stmt"/>
         <line num="123" count="1" type="stmt"/>
-        <line num="124" count="1" type="stmt"/>
+        <line num="124" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="125" count="1" type="stmt"/>
         <line num="126" count="1" type="stmt"/>
-        <line num="127" count="1" type="stmt"/>
+        <line num="135" count="1" type="stmt"/>
+        <line num="136" count="1" type="stmt"/>
+      </file>
+      <file name="requestMetaInfoAboutPathContentsFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/requestMetaInfoAboutPathContentsFromGitHubAPI.ts">
+        <metrics statements="56" coveredstatements="53" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="19" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="20" count="14" type="stmt"/>
+        <line num="21" count="14" type="stmt"/>
+        <line num="22" count="14" type="stmt"/>
+        <line num="23" count="14" type="stmt"/>
+        <line num="27" count="14" type="stmt"/>
+        <line num="28" count="14" type="stmt"/>
+        <line num="29" count="14" type="stmt"/>
+        <line num="30" count="14" type="stmt"/>
+        <line num="31" count="14" type="stmt"/>
+        <line num="32" count="14" type="stmt"/>
+        <line num="33" count="14" type="stmt"/>
+        <line num="34" count="14" type="stmt"/>
+        <line num="35" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="36" count="7" type="stmt"/>
+        <line num="37" count="7" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="14" type="stmt"/>
+        <line num="42" count="14" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+      </file>
+      <file name="requestRawRepoPathContentsFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/requestRawRepoPathContentsFromGitHubAPI.ts">
+        <metrics statements="16" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+      </file>
+      <file name="requestRepoPathContentsFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/requestRepoPathContentsFromGitHubAPI.ts">
+        <metrics statements="49" coveredstatements="44" conditionals="20" coveredconditionals="15" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="19" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="20" count="14" type="stmt"/>
+        <line num="21" count="14" type="stmt"/>
+        <line num="22" count="14" type="stmt"/>
+        <line num="23" count="14" type="stmt"/>
+        <line num="24" count="14" type="stmt"/>
+        <line num="25" count="14" type="stmt"/>
+        <line num="31" count="14" type="stmt"/>
+        <line num="32" count="14" type="stmt"/>
+        <line num="33" count="14" type="stmt"/>
+        <line num="34" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="35" count="14" type="stmt"/>
+        <line num="36" count="14" type="stmt"/>
+        <line num="37" count="14" type="stmt"/>
+        <line num="38" count="14" type="stmt"/>
+        <line num="39" count="14" type="stmt"/>
+        <line num="40" count="14" type="cond" truecount="1" falsecount="0"/>
+        <line num="41" count="14" type="stmt"/>
+        <line num="42" count="14" type="stmt"/>
+        <line num="43" count="14" type="stmt"/>
+        <line num="44" count="14" type="stmt"/>
+        <line num="45" count="14" type="stmt"/>
+        <line num="46" count="14" type="stmt"/>
+        <line num="47" count="14" type="stmt"/>
+        <line num="48" count="14" type="stmt"/>
+        <line num="49" count="14" type="stmt"/>
+        <line num="50" count="14" type="stmt"/>
+        <line num="51" count="14" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="55" count="6" type="cond" truecount="3" falsecount="0"/>
+        <line num="56" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="58" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="59" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="60" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="61" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="62" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="69" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="14" type="stmt"/>
+        <line num="72" count="14" type="stmt"/>
       </file>
     </package>
   </project>
