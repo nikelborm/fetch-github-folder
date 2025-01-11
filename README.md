@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/nikelborm/fetch-github-folder/refs/heads/main/assets/logo.png" align="right" width="40px" height="40px"/> fetch-github-folder
+# <img src="https://nikelborm.github.io/fetch-github-folder/logo.png" align="right" width="40px" height="40px"/> fetch-github-folder
 
 [![NPM package version](https://badge.fury.io/js/fetch-github-folder.svg)](https://www.npmjs.com/package/fetch-github-folder)
 [![NPM downloads](https://img.shields.io/npm/dm/fetch-github-folder.svg?style=flat)](https://npmjs.org/package/fetch-github-folder)

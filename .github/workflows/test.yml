@@ -7,7 +7,7 @@ on:
       - 'src/**'
       - 'vite.config.ts'
       - 'rollup.config.ts'
-      - 'assets/gh_pages_landing.html'
+      - 'gh-page/**'
 
 jobs:
   test-coverage:
@@ -34,17 +34,14 @@ jobs:
         name: 'Test and report coverage'
         run: npm run coverage
       -
-        name: 'Move landing to github pages folder'
-        run: cp ./assets/gh_pages_landing.html ./report/index.html
-      -
         name: 'Upload coverage report to coveralls.io'
         uses: coverallsapp/github-action@v2
         with:
-          file: ./report/coverage/clover.xml
+          file: ./gh-page/coverage/clover.xml
       -
         name: 'Upload coverage and bundled deps reports to github actions'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./report
+          publish_dir: ./gh-page
           commit_message: "Coverage: ${{ github.event.head_commit.message }}"

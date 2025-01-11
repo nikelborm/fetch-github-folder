@@ -6,5 +6,5 @@ stats.html
 dist
 _
 fetch-github-folder-*
-coverage
-/report
+/gh-page/coverage
+/gh-page/bundled_deps

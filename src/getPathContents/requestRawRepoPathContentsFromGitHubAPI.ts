@@ -11,13 +11,12 @@ export const requestRawRepoPathContentsFromGitHubAPI = ({
   repo: Repo,
   path: string,
   gitRef?: string | undefined,
-}) => pipe(
+}) => ParseToReadableStream(
   requestRepoPathContentsFromGitHubAPI({
     repo,
     gitRef,
     format: "raw",
     streamBody: true,
     path
-  }),
-  ParseToReadableStream
+  })
 );

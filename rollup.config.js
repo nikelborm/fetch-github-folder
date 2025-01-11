@@ -16,7 +16,7 @@ export default {
     terser(),
     visualizer({
       sourcemap: "true",
-      filename: "report/bundled_deps/index.html",
+      filename: "gh-page/bundled_deps/index.html",
     })
   ],
 };

@@ -5,7 +5,7 @@ export default defineConfig({
     coverage: {
       enabled: true,
       provider: 'v8',
-      reportsDirectory: './report/coverage',
+      reportsDirectory: './gh-page/coverage',
       exclude: [
         ...coverageConfigDefaults.exclude,
         '**/{scratchpad,index,TapLogBoth,logObjectNicely,repo.interface}[.][jt]s'
