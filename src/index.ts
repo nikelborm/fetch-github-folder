@@ -1,5 +1,5 @@
 export * from './downloadEntityFromRepo.js';
-export * from './getPathContentsMetaInfo/index.js';
+export * from './getPathContents/index.js';
 export * from './downloadInfoAboutAllBlobsInDirectory.js';
 export * from './errors.js';
 export * from './octokit.js';

@@ -1,7 +1,7 @@
 import { ParseError, Unexpected } from 'effect/ParseResult';
 import { outdent } from 'outdent';
 import { it } from 'vitest';
-import { FailedToParseGitLFSInfo, InconsistentExpectedAndRealContentSize } from './getPathContentsMetaInfo/parseGitLFSObject.js';
+import { FailedToParseGitLFSInfo, InconsistentExpectedAndRealContentSize } from './getPathContents/parseGitLFSObject.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 it('Should have expected fields from both contexts: dynamic and static ', (ctx) => {

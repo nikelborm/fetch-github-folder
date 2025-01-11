@@ -3,7 +3,7 @@ import { ParseToReadableStream } from '../parseToReadableStream.js';
 import { Repo } from '../repo.interface.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { parseGitLFSObject } from './parseGitLFSObject.js';
-import { requestPathContentsMetaInfoFromGitHubAPI } from './requestPathContentsMetaInfoFromGitHubAPI.js';
+import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfoAboutPathContentsFromGitHubAPI.js';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -24,7 +24,7 @@ export const getPathContentsMetaInfo = ({
   path: string,
   gitRef?: string | undefined,
 }) => gen(function* () {
-  const response = yield* requestPathContentsMetaInfoFromGitHubAPI({
+  const response = yield* requestMetaInfoAboutPathContentsFromGitHubAPI({
     repo,
     gitRef,
     path: requestedPath

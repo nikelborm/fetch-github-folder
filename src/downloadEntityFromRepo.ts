@@ -3,11 +3,10 @@ import { Repo } from './repo.interface.js';
 import { fail, gen, tryPromise } from 'effect/Effect';
 import { Path } from '@effect/platform/Path';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
-import { getPathContentsMetaInfo } from './getPathContentsMetaInfo/index.js';
+import { getPathContentsMetaInfo, requestRawRepoPathContentsFromGitHubAPI } from './getPathContents/index.js';
 import { downloadRepoDirAndPutItIntoFs } from './downloadRepoDirAndPutItIntoFs/index.js';
 import { pipeline } from 'node:stream/promises';
 import { createWriteStream } from 'node:fs';
-import { requestRawPathContentsFromGitHubAPI } from './getPathContentsMetaInfo/requestPathContentsMetaInfoFromGitHubAPI.js';
 
 export const downloadEntityFromRepo = ({
   repo,
@@ -62,7 +61,7 @@ export const downloadEntityFromRepo = ({
     })
 
   if (pathContentsMetaInfo.meta === 'This file can be downloaded as a blob') {
-    const fileStream = yield* requestRawPathContentsFromGitHubAPI({
+    const fileStream = yield* requestRawRepoPathContentsFromGitHubAPI({
       repo,
       path: pathContentsMetaInfo.path,
       gitRef: pathContentsMetaInfo.blobSha

@@ -55,38 +55,39 @@ export const TaggedErrorVerifyingCause = <
       ? void
       : Readonly<GetSimpleFormError<DynamicContext>, string, 'deep'>
   >,
+  ReturnType = {
+    new (...args: ConstructorArgs): YieldableError & Readonly<{
+      message: string;
+      _tag: ErrorName;
+      name: ErrorName;
+    } & (
+      [ExpectedCauseClass] extends [WideErrorConstructor]
+      // To improve TS performance I wrap it in GetSimpleFormError
+      ? { cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>; }
+      : {}
+    ) & DynamicContext & StaticContext>
+  }
 >(
   errorName: ErrorName,
   customMessage: string | ((...args: MessageRendererArgs) => string),
   expectedCauseClass?: ExpectedCauseClass,
   staticContext?: StaticContext,
-): {
-  new (...args: ConstructorArgs): YieldableError & Readonly<{
-    message: string;
-    _tag: ErrorName;
-    name: ErrorName;
-  } & (
-    [ExpectedCauseClass] extends [WideErrorConstructor]
-    // To improve TS performance I wrap it in GetSimpleFormError
-    ? { cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>; }
-    : {}
-  ) & DynamicContext & StaticContext>
-} => {
+): ReturnType => {
   const CustomTaggedErrorClass = TaggedError(errorName)<
     Record<'message' | '_tag' | 'name', unknown>
   >;
 
   class Base extends CustomTaggedErrorClass {
     constructor(...args: ConstructorArgs) {
-      if(expectedCauseClass && !(args[0] instanceof expectedCauseClass))
+      if (expectedCauseClass && !(args[0] instanceof expectedCauseClass))
         throw new Error(`Provided cause of incorrect type to ${
           errorName
         } class. Expected cause class: "${expectedCauseClass.name}"`);
 
-        const customMessageRendererArgs = (expectedCauseClass
-          ? [ args[0], { ...args[1], ...staticContext }]
-          : [{ ...args[0], ...staticContext }]
-        ) as MessageRendererArgs
+      const customMessageRendererArgs = (expectedCauseClass
+        ? [ args[0], { ...args[1], ...staticContext }]
+        : [{ ...args[0], ...staticContext }]
+      ) as MessageRendererArgs
 
       super({
         name: errorName,
@@ -103,7 +104,7 @@ export const TaggedErrorVerifyingCause = <
     }
   }
 
-  return Base as any;
+  return Base as ReturnType;
 }
 
 export type Prettify<T> = T extends object
