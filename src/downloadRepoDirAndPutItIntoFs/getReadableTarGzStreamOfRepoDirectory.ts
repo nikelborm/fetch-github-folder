@@ -2,15 +2,15 @@ import { RequestError } from "@octokit/request-error";
 import { UnknownException } from 'effect/Cause';
 import { map, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { OctokitTag } from './octokit.js';
-import { ParseToReadableStream } from './parseToReadableStream.js';
-import { Repo } from './repo.interface.js';
+import { OctokitTag } from '../octokit.js';
+import { ParseToReadableStream } from '../parseToReadableStream.js';
+import { Repo } from '../repo.interface.js';
 
 export const getReadableTarGzStreamOfRepoDirectory = (
   repo: Repo,
-  gitRef: string
+  gitRefWhichWillBeUsedToIdentifyGitTree?: string
 ) => pipe(
-  requestTarballFromGitHubAPI(repo, gitRef),
+  requestTarballFromGitHubAPI(repo, gitRefWhichWillBeUsedToIdentifyGitTree),
   map(({ data }) => data),
   ParseToReadableStream
 );
@@ -19,14 +19,14 @@ export const getReadableTarGzStreamOfRepoDirectory = (
 
 const requestTarballFromGitHubAPI = (
   repo: Repo,
-  gitRef: string
+  gitRefWhichWillBeUsedToIdentifyGitTree = ''
 ) => OctokitTag.pipe(tryMapPromise({
   try: (octokit, signal) => octokit.request(
     'GET /repos/{owner}/{repo}/tarball/{ref}',
     {
       owner: repo.owner,
       repo: repo.name,
-      ref: gitRef,
+      ref: gitRefWhichWillBeUsedToIdentifyGitTree,
       request: {
         signal,
         parseSuccessResponseBody: false,
@@ -37,6 +37,6 @@ const requestTarballFromGitHubAPI = (
     }
   ),
   catch: (error) => (error instanceof RequestError)
-    ? error
+    ? error // TODO: add the same extensive error parsing as in other places
     : new UnknownException(error, "Failed to request tarball from GitHub")
 }));

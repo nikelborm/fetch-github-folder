@@ -3,7 +3,7 @@ import { Octokit } from '@octokit/core';
 import { andThen, Effect, flip, map, provideService } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
-import { GitHubApiBadCredentials, GitHubApiGeneralUserError, GitHubApiNoCommitFoundForGitRef, GitHubApiRepoDoesNotExistsOrPermissionsInsufficient, GitHubApiRepoIsEmpty } from '../errors.js';
+import { GitHubApiBadCredentials, GitHubApiGeneralUserError, GitHubApiNoCommitFoundForGitRef, GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient, GitHubApiRepoIsEmpty } from '../errors.js';
 import { OctokitTag } from '../octokit.js';
 import type { Repo } from '../repo.interface.js';
 import { getPathContentsMetaInfo } from './getPathContentsMetaInfo.js';
@@ -66,7 +66,7 @@ expectError({
 
 expectError({
   when: "asked for a private repo",
-  ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
   path: '',
   repo: {
     owner: 'fetch-gh-folder-tests',
@@ -76,7 +76,7 @@ expectError({
 
 expectError({
   when: "asked for nonexistent repo",
-  ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
   path: '',
   repo: {
     owner: 'fetch-gh-folder-tests',
@@ -86,7 +86,7 @@ expectError({
 
 expectError({
   when: "asked for nonexistent owner",
-  ExpectedErrorClass: GitHubApiRepoDoesNotExistsOrPermissionsInsufficient,
+  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
   path: '',
   repo: {
     owner: 'llllllllllllllllllllllllllll',

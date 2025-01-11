@@ -111,7 +111,8 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 6. add autodeterminator that this is a public repo and we don't need an API key
 7. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
 8. tests
-9. https://github.com/nikelborm/fetch-github-folder/community
-10. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
-11. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
-12. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
+9. more options for symbolic links and git submodules
+10. https://github.com/nikelborm/fetch-github-folder/community
+11. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
+12. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
+13. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder

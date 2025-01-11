@@ -1,10 +1,12 @@
 import { Effect, gen } from 'effect/Effect';
 import { Readable } from 'node:stream';
+import { ReadableStream } from 'node:stream/web'
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 export const ParseToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
   gen(function* () {
     const data = yield* self;
+    console.log(console.constructor.name, data);
 
     if (data instanceof ArrayBuffer || data instanceof Buffer)
       return new Readable({
@@ -14,7 +16,11 @@ export const ParseToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
         }
       });
 
-    if (data instanceof Readable) return data;
+    if (data instanceof ReadableStream)
+      return Readable.fromWeb(data);
+
+    if (data instanceof Readable)
+      return data;
 
     return yield * new FailedToParseDataToReadableStream()
   })

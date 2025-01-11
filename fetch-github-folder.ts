@@ -9,7 +9,7 @@ import { runMain } from '@effect/platform-node/NodeRuntime';
 import { Octokit as OctokitClient } from '@octokit/core';
 import { pipe } from 'effect/Function';
 import { provide, provideService } from 'effect/Effect';
-import { downloadDirAndPutIntoFs, OctokitTag } from "./src/index.js";
+import { downloadEntityFromRepo, OctokitTag } from "./src/index.js";
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh
@@ -49,13 +49,13 @@ const appCommand = make("fetch-github-folder", {
   localDirPathToPutInsideRepoDirContents,
   gitRef,
 }, (x) =>
-  downloadDirAndPutIntoFs({
+  downloadEntityFromRepo({
     repo: {
       owner: x.repoOwner,
       name: x.repoName,
     },
-    pathToDirectoryInRepo: x.pathToDirectoryInRepo,
-    localDirPathToPutInsideRepoDirContents:
+    pathToEntityInRepo: x.pathToDirectoryInRepo,
+    localPathAtWhichEntityFromRepoWillBeAvailable:
       x.localDirPathToPutInsideRepoDirContents,
     gitRef: x.gitRef,
   })

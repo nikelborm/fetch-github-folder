@@ -1,9 +1,13 @@
 import { Octokit } from '@octokit/core';
 import { getPathContentsMetaInfo, logObjectNicely, OctokitTag } from './src/index.js';
-import { provide, provideService, runPromise } from 'effect/Effect';
+import { andThen, flatMap, provide, provideService, runPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { TapLogBoth } from './src/TapLogBoth.js';
 import { NodeTerminal } from '@effect/platform-node';
+// import { requestRepoPathContentsFromGitHubAPI } from './src/getPathContentsMetaInfo/requestPathContentsMetaInfoFromGitHubAPI.js';
+import { mapLeft } from 'effect/Either';
+import { text } from 'node:stream/consumers';
+import { Readable } from 'node:stream';
 
 
 // await runPromise(
@@ -93,22 +97,24 @@ import { NodeTerminal } from '@effect/platform-node';
 // });
 
 
-await runPromise(
-  pipe(
-    getPathContentsMetaInfo({
-      // path: "fake_git_lfs.txt",
-      path: "100mb_file.txt",
-      gitRef: "test-disabling-lfs",
-      repo: {
-        owner: 'fetch-gh-folder-tests',
-        name: 'public-repo',
-      }
-    }),
-    TapLogBoth,
-    provideService(
-      OctokitTag,
-      new Octokit()
-    ),
-    provide(NodeTerminal.layer),
-  )
-)
+// await runPromise(
+//   pipe(
+//     requestRepoPathContentsFromGitHubAPI({
+//       repo: {
+//         owner: 'fetch-gh-folder-tests',
+//         name: 'public-repo',
+//       },
+//       gitRef: "9898e22",
+//       format: "raw",
+//       streamBody: false,
+//       path: "parentFolderDirectlyInRoot",
+//     }),
+//     // andThen(async e => await text(e.data as unknown as Readable)),
+//     TapLogBoth,
+//     provideService(
+//       OctokitTag,
+//       new Octokit()
+//     ),
+//     provide(NodeTerminal.layer),
+//   )
+// )

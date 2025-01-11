@@ -21,13 +21,14 @@ export const downloadInfoAboutAllBlobsInDirectory = (
 }>[], RequestError | UnknownException | ParseError, OctokitTag> => pipe(
   OctokitTag,
   tryMapPromise({
-    try: async (octokit) => {
+    try: async (octokit, signal) => {
       const { data: { tree } } = await octokit.request(
         'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
         {
           owner: repo.owner,
           repo: repo.name,
           tree_sha: gitTreeShaHashOfDirectory,
+          request: { signal },
           recursive: 'true',
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'

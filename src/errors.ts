@@ -13,9 +13,9 @@ export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
   RequestError,
 ) {}
 
-export class GitHubApiRepoDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause()(
-  'GitHubApiRepoDoesNotExistsOrPermissionsInsufficient',
-  'GitHub API Error: Repo does not exists or you do not have permissions to access it',
+export class GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause()(
+  'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
+  'GitHub API Error: Either repo, owner, requested path in repo at specified ref don\'t exist or you don\'t have permissions to access it',
   RequestError,
 ) {}
 
