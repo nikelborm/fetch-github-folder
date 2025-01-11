@@ -62,28 +62,26 @@ const requestRepoPathContentsFromGitHubAPI = ({
         },
       }
     ),
-    catch: (error) => error instanceof RequestError
-      ? (
-        error.status === 404 && (error.response as ResponseWithError)?.data?.message === 'This repository is empty.'
-          ? new GitHubApiRepoIsEmpty(error)
-          : gitRef && error.status === 404 && (error.response as ResponseWithError)?.data?.message?.startsWith('No commit found for the ref')
-          ? new GitHubApiNoCommitFoundForGitRef(error, { gitRef })
-          // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
-          : error.status === 404
-          ? new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(error)
-          : error.status === 401
-          ? new GitHubApiBadCredentials(error)
-          : error.status === 403
-          ? new GitHubApiAuthRatelimited(error)
-          : error.status === 429
-          ? new GitHubApiRatelimited(error)
-          : error.status >= 500
-          ? new GitHubApiGeneralServerError(error)
-          : error.status >= 400
-          ? new GitHubApiGeneralUserError(error)
-          : error
-      )
-      : new UnknownException(error, "Failed to request contents at the path inside GitHub repo")
+    catch: (error) => !(error instanceof RequestError)
+      ? new UnknownException(error, "Failed to request contents at the path inside GitHub repo")
+      : error.status === 404 && (error.response as ResponseWithError)?.data?.message === 'This repository is empty.'
+      ? new GitHubApiRepoIsEmpty(error)
+      : gitRef && error.status === 404 && (error.response as ResponseWithError)?.data?.message?.startsWith('No commit found for the ref')
+      ? new GitHubApiNoCommitFoundForGitRef(error, { gitRef })
+      // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
+      : error.status === 404
+      ? new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(error)
+      : error.status === 401
+      ? new GitHubApiBadCredentials(error)
+      : error.status === 403
+      ? new GitHubApiAuthRatelimited(error)
+      : error.status === 429
+      ? new GitHubApiRatelimited(error)
+      : error.status >= 500
+      ? new GitHubApiGeneralServerError(error)
+      : error.status >= 400
+      ? new GitHubApiGeneralUserError(error)
+      : error
   }),
 )
 

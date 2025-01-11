@@ -18,7 +18,7 @@ export type GetSimpleFormError<T> = T extends object ? {
 } : T
 
 export const TaggedErrorVerifyingCause = <
-  const DynamicContext extends Record<string, any> = {},
+  const DynamicContext extends Record<string, unknown> = {},
 >() => <
   const ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
@@ -44,7 +44,7 @@ export const TaggedErrorVerifyingCause = <
       // clear
       : [fullContext: MessageRendererFullContextArg]
   ),
-  const StaticContext extends Record<string, any> = {},
+  const StaticContext extends Record<string, unknown> = {},
   MessageRendererFullContextArg = Prettify<
     Equals<DynamicContext & StaticContext, {}> extends true
       ? void
@@ -72,7 +72,9 @@ export const TaggedErrorVerifyingCause = <
     : {}
   ) & DynamicContext & StaticContext>
 } => {
-  const CustomTaggedErrorClass = TaggedError(errorName)<any>;
+  const CustomTaggedErrorClass = TaggedError(errorName)<
+    Record<'message' | '_tag' | 'name', unknown>
+  >;
 
   class Base extends CustomTaggedErrorClass {
     constructor(...args: ConstructorArgs) {
@@ -81,23 +83,17 @@ export const TaggedErrorVerifyingCause = <
           errorName
         } class. Expected cause class: "${expectedCauseClass.name}"`);
 
+        const customMessageRendererArgs = (expectedCauseClass
+          ? [ args[0], { ...args[1], ...staticContext }]
+          : [{ ...args[0], ...staticContext }]
+        ) as MessageRendererArgs
+
       super({
         name: errorName,
         message: isFunction(customMessage)
-          ? (expectedCauseClass
-            ? (customMessage as any)(
-              /* cause */ args[0],
-              /* full_ctx */ {
-                /* dynamic context */ ...args[1],
-                ...staticContext,
-              }
-            )
-            : (customMessage as any)(
-              /* full_ctx */ {
-                /* dynamic context */ ...args[0],
-                ...staticContext,
-              }
-            )
+          ? customMessage.apply(
+            void 0,
+            customMessageRendererArgs
           )
           : customMessage,
         ...(!!expectedCauseClass && { cause: args[0] }),

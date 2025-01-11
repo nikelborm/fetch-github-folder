@@ -103,16 +103,14 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 
 ## TODO
 
-1. add possibility for quick request of token through browser (script opens a window and runs the request from as user )
-2. make smarter determinator of a main branch ([info](https://chatgpt.com/share/675f3a23-2638-800d-a5ea-3873f01aad0a))
-3. support downloading not only folders, but also individual files
-4. support creating downloading plans, where user can specify more than one entity (folder/file) to download
-5. support git submodules
-6. add autodeterminator that this is a public repo and we don't need an API key
-7. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
-8. tests
-9. more options for symbolic links and git submodules
-10. https://github.com/nikelborm/fetch-github-folder/community
-11. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
-12. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
-13. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
+1. add possibility for quick request of token through browser (script opens a window and runs the request as authorized user)
+2. support creating downloading plans, where user can specify more than one entity (folder/file) to download
+3. support git submodules
+4. add autodeterminator that this is a public repo and we don't need an API key
+5. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
+6. tests
+7. more options for symbolic links and git submodules
+8.  https://github.com/nikelborm/fetch-github-folder/community
+9.  https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
+10. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
+11. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
