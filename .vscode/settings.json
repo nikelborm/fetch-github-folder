@@ -4,5 +4,8 @@
       "fileMatch": ["*.tsconfig.json"],
       "url": "https://json.schemastore.org/tsconfig"
     }
+  ],
+  "cSpell.words": [
+    "Voidify"
   ]
 }
