@@ -17,44 +17,33 @@ export type GetSimpleFormError<T> = T extends object ? {
   >]: GetSimpleFormError<T[K]>;
 } : T
 
+type VoidifyEmptyObject<O extends object> = Prettify<
+  Equals<O, {}> extends true
+    ? void
+    : Readonly<GetSimpleFormError<O>, string, 'deep'>
+>
+
 export const TaggedErrorVerifyingCause = <
   const DynamicContext extends Record<string, unknown> = {},
 >() => <
   const ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
-  ConstructorArgs extends (
+
+  CauseArgTuple extends (
     [ExpectedCauseClass] extends [WideErrorConstructor]
-      ? [
-        cause: InstanceType<ExpectedCauseClass>,
-        dynamicContext: ConstructorDynamicContextArg
-      ]
-      // if it's [WideErrorConstructor | undefined] it's probably because it
-      // wasn't specified at all, and when [undefined] specified it is also
-      // clear
-      : [dynamicContext: ConstructorDynamicContextArg]
+      ? [cause: InstanceType<ExpectedCauseClass>]
+      : []
   ),
-  MessageRendererArgs extends (
-    [ExpectedCauseClass] extends [WideErrorConstructor]
-      ? [
-        cause: InstanceType<ExpectedCauseClass>,
-        fullContext: MessageRendererFullContextArg
-      ]
-      // if it's [WideErrorConstructor | undefined] it's probably because it
-      // wasn't specified at all, and when [undefined] specified it is also
-      // clear
-      : [fullContext: MessageRendererFullContextArg]
-  ),
+  ConstructorArgs extends [
+    ...CauseArgTuple,
+    dynamicContext: VoidifyEmptyObject<DynamicContext>
+  ],
+  MessageRendererArgs extends [
+    ...CauseArgTuple,
+    fullContext: VoidifyEmptyObject<DynamicContext & StaticContext>
+  ],
+
   const StaticContext extends Record<string, unknown> = {},
-  MessageRendererFullContextArg = Prettify<
-    Equals<DynamicContext & StaticContext, {}> extends true
-      ? void
-      : Readonly<GetSimpleFormError<DynamicContext & StaticContext>, string, 'deep'>
-  >,
-  ConstructorDynamicContextArg = Prettify<
-    Equals<DynamicContext, {}> extends true
-      ? void
-      : Readonly<GetSimpleFormError<DynamicContext>, string, 'deep'>
-  >,
   ReturnType = {
     new (...args: ConstructorArgs): YieldableError & Readonly<{
       message: string;
