@@ -4,6 +4,7 @@ temp.json
 node_modules
 stats.html
 dist
+destination
 _
 fetch-github-folder-*
 /gh-page/coverage

@@ -13,7 +13,7 @@ const RepoConfig = Config.all([RepoNameConfig, RepoOwnerConfig]);
 
 export const SingleRunConfig = Config.all([
   Config.nested(RepoConfig, 'REPO'),
-  Config.nonEmptyString('PATH_TO_DIRECTORY_IN_REPO').pipe(Config.option),
+  Config.nonEmptyString('PATH_TO_ENTITY_IN_REPO').pipe(Config.option),
   Config.nonEmptyString(
     'LOCAL_PATH_AT_WHICH_ENTITY_FROM_REPO_WILL_BE_AVAILABLE',
   ),

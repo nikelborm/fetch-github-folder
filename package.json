@@ -5,8 +5,8 @@
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node --env-file=.env ./dist/fetch-github-folder.js",
-    "scratchpad": "tsc && node --env-file=.env ./dist/scratchpad.js",
+    "start": "tsx --env-file=.env ./fetch-github-folder.ts",
+    "scratchpad": "tsx --env-file=.env ./scratchpad.ts",
     "test": "vitest --watch",
     "format": "prettier . --write",
     "coverage": "vitest run --coverage",
@@ -41,6 +41,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.29.1",
     "rollup-plugin-visualizer": "^5.13.1",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   },
