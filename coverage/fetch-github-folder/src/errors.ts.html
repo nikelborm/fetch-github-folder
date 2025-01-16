@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96% </span>
+                <span class="strong">92.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/50</span>
+                <span class='fraction'>51/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">54.54% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>6/11</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96% </span>
+                <span class="strong">92.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>48/50</span>
+                <span class='fraction'>51/55</span>
             </div>
         
             
@@ -138,13 +138,22 @@
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -198,6 +207,11 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -222,7 +236,9 @@ export class GitHubApiGeneralServerError extends TaggedErrorVerifyingCause()(
   RequestError,
 ) {}
 &nbsp;
-export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
+export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause&lt;{
+  readonly notes?: string;
+}&gt;()(
   'GitHubApiGeneralUserError',
   'GitHub API Error: Bad user, invalid request',
   RequestError,
@@ -230,7 +246,7 @@ export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
 &nbsp;
 export class GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause()(
   'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
-  "GitHub API Error: Either repo, owner, requested path in repo at specified ref don't exist or you don't have permissions to access it",
+  "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
   RequestError,
 ) {}
 &nbsp;
@@ -274,9 +290,14 @@ export const parseCommonGitHubApiErrors = (error: RequestError) =&gt; {
 &nbsp;
   if (error.status === 429) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiRatelimited(error);</span>
 &nbsp;
+  if (error.status === 404)
+<span class="branch-0 cbranch-no" title="branch not covered" >    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(</span>
+<span class="cstat-no" title="statement not covered" >      error,</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
+&nbsp;
   if (error.status &gt;= 500) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiGeneralServerError(error);</span>
 &nbsp;
-  if (error.status &gt;= 400) return new GitHubApiGeneralUserError(error<span class="branch-0 cbranch-no" title="branch not covered" >);</span>
+  if (error.status &gt;= 400) return new GitHubApiGeneralUserError(error, {}<span class="branch-0 cbranch-no" title="branch not covered" >);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return error;</span>
 <span class="cstat-no" title="statement not covered" >};</span>
@@ -295,7 +316,7 @@ export type GitHubApiCommonErrors =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T17:11:13.623Z
+                at 2025-01-16T20:26:26.755Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
