@@ -1,8 +1,9 @@
-import { YieldableError } from 'effect/Cause';
+import type { YieldableError } from 'effect/Cause';
 import { Equals } from 'tsafe';
 import type { Readonly } from 'ts-toolbelt/out/Object/Readonly.d.ts';
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
+import type { ParseError } from 'effect/ParseResult';
 
 // This is a helper because typescript starts going crazy sometimes
 export type GetSimpleFormError<T> = T extends object
@@ -10,11 +11,10 @@ export type GetSimpleFormError<T> = T extends object
       [K in keyof T as Exclude<
         K,
         | Exclude<
-            keyof YieldableError,
+            keyof YieldableError | keyof ParseError,
             'name' | 'message' | 'stack' | 'cause'
           >
         | symbol
-        | 'issue'
       >]: GetSimpleFormError<T[K]>;
     }
   : T;
@@ -44,25 +44,22 @@ export const TaggedErrorVerifyingCause =
       fullContext: VoidifyEmptyObject<DynamicContext & StaticContext>,
     ],
     const StaticContext extends Record<string, unknown> = {},
-    ReturnType = {
-      new (...args: ConstructorArgs): YieldableError &
-        Readonly<
-          {
-            message: string;
-            _tag: ErrorName;
-            name: ErrorName;
-          } & ([ExpectedCauseClass] extends [WideErrorConstructor]
+    ReturnType = new (...args: ConstructorArgs) => YieldableError &
+      Readonly<
+        {
+          message: string;
+          _tag: ErrorName;
+          name: ErrorName;
+        } & GetSimpleFormError<DynamicContext & StaticContext> &
+          ([ExpectedCauseClass] extends [WideErrorConstructor]
             ? // To improve TS performance I wrap it in GetSimpleFormError
               {
                 cause: GetSimpleFormError<
                   InstanceType<ExpectedCauseClass>
                 >;
               }
-            : {}) &
-            DynamicContext &
-            StaticContext
-        >;
-    },
+            : {})
+      >,
   >(
     errorName: ErrorName,
     customMessage: string | ((...args: MessageRendererArgs) => string),
@@ -77,9 +74,9 @@ export const TaggedErrorVerifyingCause =
       constructor(...args: ConstructorArgs) {
         if (expectedCauseClass && !(args[0] instanceof expectedCauseClass))
           throw new Error(
-            `Provided cause of incorrect type to ${
+            `Provided cause of incorrect type to "${
               errorName
-            } class. Expected cause class: "${expectedCauseClass.name}"`,
+            }" class. Expected cause class: "${expectedCauseClass.name}"`,
           );
 
         const customMessageRendererArgs = (

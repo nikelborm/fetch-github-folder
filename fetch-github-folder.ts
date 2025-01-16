@@ -127,14 +127,14 @@ export const CleanRepoEntityPathString = transformOrFail(
         // there, it's very intentional and no other elements in the path exist.
         const cleanPathToEntityInRepo = path
           .join(dirtyPathToEntityInRepo)
-          .replaceAll(/[/]*$/g, '');
+          .replaceAll(/\/*$/g, '');
 
         if (cleanPathToEntityInRepo.startsWith('..'))
           return fail(
             new Type(
               ast,
               dirtyPathToEntityInRepo,
-              "Can\'t request contents that lie higher than the root of the repo",
+              "Can't request contents that lie higher than the root of the repo",
             ),
           );
         return succeed(cleanPathToEntityInRepo);

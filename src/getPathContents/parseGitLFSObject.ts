@@ -95,7 +95,7 @@ export const parseGitLFSObject = ({
 const MAX_GIT_LFS_INFO_SIZE = 137;
 // Don't add regexp /g modifier, it breaks match groups
 const gitLFSInfoRegexp =
-  /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]{0,11})\n$/m;
+  /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9]\d{0,11})\n$/m;
 
 const GitLFSInfoSchema = Struct({
   version: NonEmptyTrimmedString,

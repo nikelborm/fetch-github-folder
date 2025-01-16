@@ -65,16 +65,28 @@ it('Should have expected fields from both contexts: dynamic and static ', ctx =>
   });
 });
 
-it(
-  'Should throw when incorrect cause provided during constructor call',
-  { fails: true },
-  () => {
-    new FailedToParseGitLFSInfo(new Error('bad error') as ParseError, {
-      partOfContentThatCouldBeGitLFSInfo:
-        'Part of content that could be git lfs info',
-    });
-  },
-);
+it('Should throw when incorrect cause provided during constructor call', ctx => {
+  try {
+    const error = new FailedToParseGitLFSInfo(
+      new Error('bad error') as ParseError,
+      {
+        partOfContentThatCouldBeGitLFSInfo:
+          'Part of content that could be git lfs info',
+      },
+    );
+    throw new Error(
+      "new FailedToParseGitLFSInfo(...) should throw, but didn't",
+      { cause: error },
+    );
+  } catch (error) {
+    ctx.expect(error).toBeInstanceOf(Error);
+    ctx
+      .expect((error as Error).message)
+      .toBe(
+        'Provided cause of incorrect type to "FailedToParseGitLFSInfo" class. Expected cause class: "ParseError"',
+      );
+  }
+});
 
 it('Should not try to call message string', ctx => {
   const causeOriginal = new ParseError({
