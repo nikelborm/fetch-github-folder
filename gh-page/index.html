@@ -50,6 +50,8 @@
         align-items: center;
         text-align: center;
         transition: background-color 0.3s ease;
+        text-decoration: none;
+        font-weight: bold;
       }
 
       .box:hover {
@@ -61,20 +63,6 @@
         width: 100px;
         height: 100px;
         margin-bottom: 15px;
-      }
-
-      .box a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 10px 20px;
-        border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.2);
-        transition: background-color 0.3s ease;
-      }
-
-      .box a:hover {
-        background-color: rgba(255, 255, 255, 0.4);
       }
 
       .clickable {
@@ -94,47 +82,28 @@
   </head>
   <body>
     <div class="container">
-      <div
-        class="box clickable"
-        role="link"
-        onclick="window.location.href='https://github.com/nikelborm'"
-        onKeyPress="window.location.href='https://github.com/nikelborm'"
-      >
+      <a class="box clickable" href="https://github.com/nikelborm">
         <img
           src="author_image.png"
           alt="Eva's Avatar: Blonde white girl in a green dress with white bindweed flowers woven into her hair"
         />
         <p style="padding-bottom: 20px">Eva</p>
         <p>Creator of the Project</p>
-      </div>
-      <div
+      </a>
+      <a
         class="box clickable"
-        role="link"
-        onclick="window.location.href='https://github.com/nikelborm/fetch-github-folder/'"
-        onKeyPress="window.location.href='https://github.com/nikelborm/fetch-github-folder/'"
+        href="https://github.com/nikelborm/fetch-github-folder/"
       >
         <img src="logo.svg" alt="Project Logo" />
         <p style="padding-bottom: 20px">fetch-github-folder</p>
         <p>
           A CLI tool for downloading any file or folder in a repo on GitHub
         </p>
-      </div>
-      <div
-        class="box clickable"
-        role="link"
-        onclick="window.location.href='coverage/'"
-        onKeyPress="window.location.href='coverage/'"
-      >
-        Coverage Report
-      </div>
-      <div
-        class="box clickable"
-        role="link"
-        onclick="window.location.href='bundled_deps/'"
-        onKeyPress="window.location.href='bundled_deps/'"
-      >
+      </a>
+      <a class="box clickable" href="coverage/"> Coverage Report </a>
+      <a class="box clickable" href="bundled_deps/">
         Bundle Size Report
-      </div>
+      </a>
     </div>
   </body>
 </html>
