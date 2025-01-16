@@ -7,7 +7,9 @@ export class GitHubApiGeneralServerError extends TaggedErrorVerifyingCause()(
   RequestError,
 ) {}
 
-export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
+export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause<{
+  readonly notes?: string;
+}>()(
   'GitHubApiGeneralUserError',
   'GitHub API Error: Bad user, invalid request',
   RequestError,
@@ -15,7 +17,7 @@ export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
 
 export class GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause()(
   'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
-  "GitHub API Error: Either repo, owner, requested path in repo at specified ref don't exist or you don't have permissions to access it",
+  "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
   RequestError,
 ) {}
 
@@ -59,9 +61,14 @@ export const parseCommonGitHubApiErrors = (error: RequestError) => {
 
   if (error.status === 429) return new GitHubApiRatelimited(error);
 
+  if (error.status === 404)
+    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(
+      error,
+    );
+
   if (error.status >= 500) return new GitHubApiGeneralServerError(error);
 
-  if (error.status >= 400) return new GitHubApiGeneralUserError(error);
+  if (error.status >= 400) return new GitHubApiGeneralUserError(error, {});
 
   return error;
 };

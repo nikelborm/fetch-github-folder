@@ -2,9 +2,13 @@ import { RequestError } from '@octokit/request-error';
 import { UnknownException } from 'effect/Cause';
 import { all, map, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
+import { RepoConfigTag } from './config.js';
+import {
+  GitHubApiGeneralUserError,
+  parseCommonGitHubApiErrors,
+} from './errors.js';
 import { OctokitTag } from './octokit.js';
 import { ParseToReadableStream } from './parseToReadableStream.js';
-import { RepoConfigTag } from './config.js';
 
 export const getReadableTarGzStreamOfRepoDirectory = (
   gitRefWhichWillBeUsedToIdentifyGitTree?: string,
@@ -14,8 +18,6 @@ export const getReadableTarGzStreamOfRepoDirectory = (
     map(({ data }) => data),
     ParseToReadableStream,
   );
-
-// TODO: PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
 
 const requestTarballFromGitHubAPI = (
   gitRefWhichWillBeUsedToIdentifyGitTree = '',
@@ -35,12 +37,20 @@ const requestTarballFromGitHubAPI = (
             'X-GitHub-Api-Version': '2022-11-28',
           },
         }),
-      catch: error =>
-        error instanceof RequestError
-          ? error // TODO: add the same extensive error parsing as in other places
-          : new UnknownException(
-              error,
-              'Failed to request tarball from GitHub',
-            ),
+      catch: error => {
+        if (!(error instanceof RequestError))
+          return new UnknownException(
+            error,
+            'Failed to request .tar.gz file from GitHub API',
+          );
+
+        if (error.status === 400)
+          return new GitHubApiGeneralUserError(error, {
+            notes:
+              'Error happened probably because you asked for empty repo',
+          });
+
+        return parseCommonGitHubApiErrors(error);
+      },
     }),
   );

@@ -36,8 +36,6 @@ import {
 const PACKAGE_VERSION = '0.1.6';
 const PACKAGE_NAME = 'fetch-github-folder';
 
-// TODO: add support for effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-
 const validateGitHubHandle = (s: string) => !!s.match(/^[a-z0-9.\-_]+$/gi);
 const badGitHubHandleMessage = `GitHub handle should have only ASCII letters, digits, and the characters ".", "-", and "_"`;
 

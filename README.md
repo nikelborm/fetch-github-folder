@@ -113,7 +113,9 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 6. tests
 7. more options for symbolic links and git submodules
 8. complete git LFS support
-9. https://github.com/nikelborm/fetch-github-folder/community
-10. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
-11. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
-12. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
+9. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
+10. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
+11. https://github.com/nikelborm/fetch-github-folder/community
+12. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
+13. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
+14. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder

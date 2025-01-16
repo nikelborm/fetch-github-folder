@@ -44,26 +44,28 @@ export const requestRepoPathContentsFromGitHubAPI = (
             'Failed to request contents at the path inside GitHub repo',
           );
 
-        if (error.status === 404)
-          return parseNotFoundErrors(error, gitRef);
+        const potentialErrorMessage = (error.response as ResponseWithError)
+          ?.data?.message;
+
+        if (error.status === 404 && potentialErrorMessage)
+          return parseNotFoundErrors(potentialErrorMessage, error, gitRef);
 
         return parseCommonGitHubApiErrors(error);
       },
     });
   });
 
-const parseNotFoundErrors = (error: RequestError, gitRef: string) => {
-  if (
-    (error.response as ResponseWithError)?.data?.message ===
-    'This repository is empty.'
-  )
+const parseNotFoundErrors = (
+  potentialErrorMessage: string,
+  error: RequestError,
+  gitRef: string,
+) => {
+  if (potentialErrorMessage === 'This repository is empty.')
     return new GitHubApiRepoIsEmpty(error);
 
   if (
     gitRef &&
-    (error.response as ResponseWithError)?.data?.message?.startsWith(
-      'No commit found for the ref',
-    )
+    potentialErrorMessage.startsWith('No commit found for the ref')
   )
     return new GitHubApiNoCommitFoundForGitRef(error, { gitRef });
 
