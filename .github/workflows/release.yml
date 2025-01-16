@@ -14,44 +14,56 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
+
       - name: 'Set up Node.js'
         uses: actions/setup-node@v4
         with:
           node-version: 23
           registry-url: https://registry.npmjs.org/
+
       - name: 'Install dependencies'
         run: npm install
+
       - name: 'Build, bundle, compress'
         run: npm exec -c ./scripts/build.sh
+
       - name: 'Check if code follows JSR rules for packages'
         # tree will be dirty because fetch-github-folder.ts has bumped inlined version numbers
         run: npx jsr publish --dry-run --allow-dirty
+
       - name: 'Check if code passes tests'
         run: npm run test-once
+
       - name: 'Publish to default NPM registry'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
       - name: 'Prepare jsr.json for publishing to JSR'
         run: |
           jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
+
       - name: 'Commit updated jsr.json and potentially updated package-lock.json after npm install'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
           file_pattern: 'jsr.json package-lock.json fetch-github-folder.ts'
           commit_message: Auto-updated NPM package files
+
       - name: 'Publish to JSR'
         run: npx jsr publish
+
       - name: "Prepare package.json for publishing to GitHub's NPM registry"
         run: |
           jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
+
       - name: "Publish to GitHub's NPM registry"
         run: |
           sed -i 's/registry.npmjs.org/npm.pkg.github.com/' /home/runner/work/_temp/.npmrc
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 'Upload bundled CLI as a release artifact'
         uses: softprops/action-gh-release@v2
         with:

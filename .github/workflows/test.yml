@@ -17,21 +17,27 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
+
       - name: 'Set up Node.js'
         uses: actions/setup-node@v4
         with:
           node-version: 23
           registry-url: https://registry.npmjs.org/
+
       - name: 'Install dependencies'
         run: npm install
+
       - name: 'Compile, build, bundle, report deps graph'
         run: npm run build
+
       - name: 'Test and report coverage'
         run: npm run coverage
+
       - name: 'Upload coverage report to coveralls.io'
         uses: coverallsapp/github-action@v2
         with:
           file: ./gh-page/coverage/clover.xml
+
       - name: 'Upload coverage and bundled deps reports to github actions'
         uses: peaceiris/actions-gh-pages@v4
         with:
