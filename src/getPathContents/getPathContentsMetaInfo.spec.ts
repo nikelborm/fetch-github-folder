@@ -40,6 +40,11 @@ type EffectReadyErrors =
     ? Extract<U, { _tag: unknown }>
     : never;
 
+const defaultRepo = {
+  owner: 'fetch-gh-folder-tests',
+  name: 'public-repo',
+};
+
 const expectError = <
   const Instance extends EffectReadyErrors,
   Args extends unknown[],
@@ -47,14 +52,14 @@ const expectError = <
   when,
   ExpectedErrorClass,
   authToken,
-  repo,
+  repo = defaultRepo,
   gitRef = '',
   path,
 }: {
   when: string;
   ExpectedErrorClass: new (...args: Args) => Instance;
   authToken?: string | undefined;
-  repo: IRepo;
+  repo?: IRepo;
   gitRef?: string | undefined;
   path: string;
 }) =>
@@ -135,10 +140,6 @@ expectError({
   when: 'given broken path',
   ExpectedErrorClass: GitHubApiGeneralUserError,
   path: '///',
-  repo: {
-    owner: 'fetch-gh-folder-tests',
-    name: 'public-repo',
-  },
 });
 
 expectError({
@@ -146,15 +147,11 @@ expectError({
   ExpectedErrorClass: GitHubApiNoCommitFoundForGitRef,
   path: '',
   gitRef: '807070987097809870987',
-  repo: {
-    owner: 'fetch-gh-folder-tests',
-    name: 'public-repo',
-  },
 });
 
 const expectNotFail = (
   descriptionOfWhatItShouldReturn: string,
-  inputConfig: ArgumentsType<typeof createInputConfigContext>['0'],
+  pathToEntityInRepo: string,
   asd: (
     ctx: TaskContext<RunnerTestCase<{}>> & TestContext,
     pathContentsMetaInfo: typeof getPathContentsMetaInfo,
@@ -170,7 +167,13 @@ const expectNotFail = (
     ctx =>
       pipe(
         asd(ctx, getPathContentsMetaInfo),
-        provide(createInputConfigContext(inputConfig)),
+        provide(
+          createInputConfigContext({
+            pathToEntityInRepo,
+            gitRef: '',
+            repo: defaultRepo,
+          }),
+        ),
         provideService(
           OctokitTag,
           new Octokit(authToken ? { auth: authToken } : void 0),
@@ -179,19 +182,9 @@ const expectNotFail = (
     { concurrent: true },
   );
 
-expectNotFail(
-  `children of root directory`,
-  {
-    pathToEntityInRepo: '',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
-  (ctx, self) =>
-    map(self, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
+expectNotFail(`children of root directory`, '', (ctx, self) =>
+  map(self, e =>
+    ctx.expect(e).toMatchInlineSnapshot(`
     {
       "entries": [
         {
@@ -263,19 +256,12 @@ expectNotFail(
       "type": "dir",
     }
   `),
-    ),
+  ),
 );
 
 expectNotFail(
   `little inlined file directly in root directory`,
-  {
-    pathToEntityInRepo: 'README.md',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
+  'README.md',
   (ctx, self) =>
     self.pipe(
       andThen(async info => {
@@ -310,14 +296,7 @@ expectNotFail(
 
 expectNotFail(
   `inlined file with size 1 byte less than 1mb placed directly in root directory`,
-  {
-    pathToEntityInRepo: '1023kb+1023b_file.txt',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
+  '1023kb+1023b_file.txt',
   (ctx, self) =>
     self.pipe(
       andThen(async info => {
@@ -350,14 +329,7 @@ expectNotFail(
 
 expectNotFail(
   `blob info for file with size exactly 1mb`,
-  {
-    pathToEntityInRepo: '1mb_file.txt',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
+  '1mb_file.txt',
   (ctx, self) =>
     map(self, e =>
       ctx.expect(e).toMatchInlineSnapshot(`
@@ -373,19 +345,9 @@ expectNotFail(
     ),
 );
 
-expectNotFail(
-  `Git-LFS info`,
-  {
-    pathToEntityInRepo: '100mb_file.txt',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
-  (ctx, self) =>
-    map(self, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
+expectNotFail(`Git-LFS info`, '100mb_file.txt', (ctx, self) =>
+  map(self, e =>
+    ctx.expect(e).toMatchInlineSnapshot(`
     {
       "blobSha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
       "gitLFSObjectIdSha256": "cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6",
@@ -397,20 +359,12 @@ expectNotFail(
       "type": "file",
     }
   `),
-    ),
+  ),
 );
 
 expectNotFail(
   `little inlined file inside of a nested directory`,
-  {
-    pathToEntityInRepo:
-      'parentFolderDirectlyInRoot/childFolder/nestedFile.md',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
+  'parentFolderDirectlyInRoot/childFolder/nestedFile.md',
   (ctx, self) =>
     self.pipe(
       andThen(async info => {
@@ -446,14 +400,7 @@ expectNotFail(
 
 expectNotFail(
   `children of nested directory`,
-  {
-    pathToEntityInRepo: 'parentFolderDirectlyInRoot/childFolder',
-    gitRef: '9898e22',
-    repo: {
-      owner: 'fetch-gh-folder-tests',
-      name: 'public-repo',
-    },
-  },
+  'parentFolderDirectlyInRoot/childFolder',
   (ctx, self) =>
     map(self, e =>
       ctx.expect(e).toMatchInlineSnapshot(`
