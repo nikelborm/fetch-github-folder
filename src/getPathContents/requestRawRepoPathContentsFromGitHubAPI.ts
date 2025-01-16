@@ -1,4 +1,4 @@
-import { ParseToReadableStream } from 'src/parseToReadableStream.js';
+import { ParseToReadableStream } from '../parseToReadableStream.js';
 import { requestRepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
 
 export const requestRawRepoPathContentsFromGitHubAPI = ParseToReadableStream(

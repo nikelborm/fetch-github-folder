@@ -4,7 +4,7 @@ import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
 import { Readable } from 'node:stream';
-import { OutputConfigTag } from 'src/config.js';
+import { OutputConfigTag } from './config.js';
 
 export const unpackRepoFolderTarGzStreamToFs = <E, R>(
   self: Effect<Readable, E, R>

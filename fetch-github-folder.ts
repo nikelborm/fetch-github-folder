@@ -13,8 +13,7 @@ import { ParseResult, Schema } from 'effect';
 import { nonEmptyString } from 'effect/Config';
 import { flatMap, provide, provideService } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { createSingleTargetConfigContext } from 'src/config.js';
-import { downloadEntityFromRepo, OctokitTag } from "./src/index.js";
+import { downloadEntityFromRepo, OctokitTag, createSingleTargetConfigContext } from "./src/index.js";
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh

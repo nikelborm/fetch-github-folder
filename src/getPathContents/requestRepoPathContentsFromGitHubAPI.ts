@@ -2,7 +2,7 @@ import { RequestError } from "@octokit/request-error";
 import type { OctokitResponse } from "@octokit/types";
 import { UnknownException } from 'effect/Cause';
 import { gen, tryPromise } from 'effect/Effect';
-import { InputConfigTag, RepoConfigTag } from 'src/config.js';
+import { InputConfigTag, RepoConfigTag } from '../config.js';
 import {
   GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
