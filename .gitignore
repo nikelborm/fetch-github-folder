@@ -4,6 +4,7 @@ temp.json
 node_modules
 stats.html
 dist
+scratchpad.ts
 destination
 docker
 _
