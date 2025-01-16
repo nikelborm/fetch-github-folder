@@ -19,6 +19,7 @@
 [![Codeclimate Maintainability](https://api.codeclimate.com/v1/badges/0068c34824ae7b6ee8a0/maintainability)](https://codeclimate.com/github/nikelborm/fetch-github-folder/maintainability)
 [![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/nikelborm/fetch-github-folder)](https://codeclimate.com/github/nikelborm/fetch-github-folder/issues)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/t/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/graphs/commit-activity)
+
 <!-- [![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder)](update_link_later) -->
 <!-- [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) -->
 
@@ -57,18 +58,19 @@ npx jsr add @nikelborm/fetch-github-folder
 2. Save the token
 3. Login to Github's NPM registry (yes you need to do it, even if the package is public):
 
-    ```bash
-    npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com
-    ```
+   ```bash
+   npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com
+   ```
 
-    You can also read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
+   You can also read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
+
 4. Enter your username when asked
 5. Paste the token as password value
 6. Then install the package by executing:
 
-    ```bash
-    npm i @nikelborm/fetch-github-folder
-    ```
+   ```bash
+   npm i @nikelborm/fetch-github-folder
+   ```
 
 ### For local development
 
@@ -110,7 +112,7 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 5. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
 6. tests
 7. more options for symbolic links and git submodules
-8.  https://github.com/nikelborm/fetch-github-folder/community
-9.  https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
+8. https://github.com/nikelborm/fetch-github-folder/community
+9. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
 10. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
 11. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder

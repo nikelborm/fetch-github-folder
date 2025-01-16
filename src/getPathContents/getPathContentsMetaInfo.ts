@@ -19,21 +19,22 @@ export const getPathContentsMetaInfo = gen(function* () {
 
   const { type, name, path, sha, size } = response;
 
-  if (type === "dir") {
+  if (type === 'dir') {
     const { entries } = response;
-    if (!name || !path) return {
-      type,
-      treeSha: sha,
-      entries,
-      meta: "This root directory of the repo can be downloaded as a git tree"
-    } as const
+    if (!name || !path)
+      return {
+        type,
+        treeSha: sha,
+        entries,
+        meta: 'This root directory of the repo can be downloaded as a git tree',
+      } as const;
     return {
       type,
       name,
       path,
       treeSha: sha,
       entries,
-      meta: "This nested directory can be downloaded as a git tree"
+      meta: 'This nested directory can be downloaded as a git tree',
     } as const;
   }
 
@@ -76,7 +77,7 @@ export const getPathContentsMetaInfo = gen(function* () {
       pathToFileInRepo: path,
     });
 
-    if (potentialGitLFSObject !== "This is not a git LFS object")
+    if (potentialGitLFSObject !== 'This is not a git LFS object')
       return potentialGitLFSObject;
 
     const stream = yield* ParseToReadableStream(succeed(contentAsBuffer));
@@ -85,13 +86,13 @@ export const getPathContentsMetaInfo = gen(function* () {
       ...base,
       blobSha: sha,
       content: stream,
-      meta: "This file is small enough that GitHub API decided to inline it"
+      meta: 'This file is small enough that GitHub API decided to inline it',
     } as const;
   } else {
     return {
       ...base,
       blobSha: sha,
-      meta: "This file can be downloaded as a blob"
+      meta: 'This file can be downloaded as a blob',
     } as const;
   }
 }).pipe(TapLogBoth);

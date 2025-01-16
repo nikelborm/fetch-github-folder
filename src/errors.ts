@@ -15,7 +15,7 @@ export class GitHubApiGeneralUserError extends TaggedErrorVerifyingCause()(
 
 export class GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient extends TaggedErrorVerifyingCause()(
   'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
-  'GitHub API Error: Either repo, owner, requested path in repo at specified ref don\'t exist or you don\'t have permissions to access it',
+  "GitHub API Error: Either repo, owner, requested path in repo at specified ref don't exist or you don't have permissions to access it",
   RequestError,
 ) {}
 
@@ -35,7 +35,7 @@ export class GitHubApiNoCommitFoundForGitRef extends TaggedErrorVerifyingCause<{
 
 export class GitHubApiBadCredentials extends TaggedErrorVerifyingCause()(
   'GitHubApiBadCredentials',
-  'GitHub API Error: Token you\'re using is invalid.',
+  "GitHub API Error: Token you're using is invalid.",
   RequestError,
 ) {}
 
@@ -57,4 +57,4 @@ export type GitHubApiCommonErrors =
   | GitHubApiGeneralUserError
   | GitHubApiBadCredentials
   | GitHubApiAuthRatelimited
-  | GitHubApiRatelimited
+  | GitHubApiRatelimited;

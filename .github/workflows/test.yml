@@ -2,7 +2,7 @@ name: Tests
 on:
   workflow_dispatch:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
     paths:
       - 'src/**'
       - 'vite.config.ts'
@@ -15,33 +15,26 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      -
-        name: 'Checkout'
+      - name: 'Checkout'
         uses: actions/checkout@v4
-      -
-        name: 'Set up Node.js'
+      - name: 'Set up Node.js'
         uses: actions/setup-node@v4
         with:
           node-version: 23
           registry-url: https://registry.npmjs.org/
-      -
-        name: 'Install dependencies'
+      - name: 'Install dependencies'
         run: npm install
-      -
-        name: 'Compile, build, bundle, report deps graph'
+      - name: 'Compile, build, bundle, report deps graph'
         run: npm run build
-      -
-        name: 'Test and report coverage'
+      - name: 'Test and report coverage'
         run: npm run coverage
-      -
-        name: 'Upload coverage report to coveralls.io'
+      - name: 'Upload coverage report to coveralls.io'
         uses: coverallsapp/github-action@v2
         with:
           file: ./gh-page/coverage/clover.xml
-      -
-        name: 'Upload coverage and bundled deps reports to github actions'
+      - name: 'Upload coverage and bundled deps reports to github actions'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./gh-page
-          commit_message: "Coverage: ${{ github.event.head_commit.message }}"
+          commit_message: 'Coverage: ${{ github.event.head_commit.message }}'

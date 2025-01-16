@@ -1,5 +1,5 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { visualizer } from "rollup-plugin-visualizer";
+import { visualizer } from 'rollup-plugin-visualizer';
 import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -8,15 +8,15 @@ export default {
   output: {
     dir: 'dist/minified',
     format: 'es',
-    compact: true
+    compact: true,
   },
   plugins: [
     nodeResolve(),
     commonjs(),
     terser(),
     visualizer({
-      sourcemap: "true",
-      filename: "gh-page/bundled_deps/index.html",
-    })
+      sourcemap: 'true',
+      filename: 'gh-page/bundled_deps/index.html',
+    }),
   ],
 };

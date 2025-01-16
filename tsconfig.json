@@ -34,17 +34,17 @@
     "strictNullChecks": true,
     "noImplicitThis": true,
     "strictBindCallApply": true,
-    "noUncheckedIndexedAccess":true,
+    "noUncheckedIndexedAccess": true,
     "useUnknownInCatchVariables": true,
     "strictPropertyInitialization": true,
-    "alwaysStrict":true,
+    "alwaysStrict": true,
     "noImplicitUseStrict": false,
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
     "noStrictGenericChecks": false,
     "plugins": [
       {
-        "name": "typescript-strict-plugin",
+        "name": "typescript-strict-plugin"
       }
     ]
   },
