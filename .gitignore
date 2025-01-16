@@ -5,6 +5,7 @@ node_modules
 stats.html
 dist
 destination
+docker
 _
 fetch-github-folder-*
 /gh-page/coverage

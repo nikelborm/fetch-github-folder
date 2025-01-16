@@ -31,14 +31,19 @@ import { OctokitTag } from '../octokit.js';
 import type { IRepo } from '../repo.interface.js';
 import { getPathContentsMetaInfo } from './getPathContentsMetaInfo.js';
 
-type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never;
+type ArgumentsType<T> = T extends (...args: infer U) => unknown
+  ? U
+  : never;
 
 type EffectReadyErrors =
   typeof getPathContentsMetaInfo extends Effect<unknown, infer U, unknown>
     ? Extract<U, { _tag: unknown }>
     : never;
 
-const expectError = <const T extends EffectReadyErrors>({
+const expectError = <
+  const Instance extends EffectReadyErrors,
+  Args extends unknown[],
+>({
   when,
   ExpectedErrorClass,
   authToken,
@@ -47,7 +52,7 @@ const expectError = <const T extends EffectReadyErrors>({
   path,
 }: {
   when: string;
-  ExpectedErrorClass: new (...args: any[]) => T;
+  ExpectedErrorClass: new (...args: Args) => Instance;
   authToken?: string | undefined;
   repo: IRepo;
   gitRef?: string | undefined;

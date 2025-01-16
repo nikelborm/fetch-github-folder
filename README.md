@@ -112,7 +112,8 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 5. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
 6. tests
 7. more options for symbolic links and git submodules
-8. https://github.com/nikelborm/fetch-github-folder/community
-9. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
-10. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
-11. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
+8. complete git LFS support
+9. https://github.com/nikelborm/fetch-github-folder/community
+10. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
+11. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
+12. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder

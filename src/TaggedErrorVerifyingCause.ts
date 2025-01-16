@@ -91,7 +91,7 @@ export const TaggedErrorVerifyingCause =
         super({
           name: errorName,
           message: isFunction(customMessage)
-            ? customMessage.apply(void 0, customMessageRendererArgs)
+            ? customMessage(...customMessageRendererArgs)
             : customMessage,
           ...(!!expectedCauseClass && { cause: args[0] }),
           ...staticContext,
