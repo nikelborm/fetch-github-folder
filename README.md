@@ -1,32 +1,41 @@
-# <img src="https://nikelborm.github.io/fetch-github-folder/logo.png" align="right" width="40px" height="40px"/> fetch-github-folder
+# <img src="https://nikelborm.github.io/fetch-github-folder/logo.png" align="right" width="40px" height="40px"/> fetch-github-folder :lizard:
 
 [![NPM package version](https://badge.fury.io/js/fetch-github-folder.svg)](https://www.npmjs.com/package/fetch-github-folder)
 [![NPM downloads](https://img.shields.io/npm/dm/fetch-github-folder.svg?style=flat)](https://npmjs.org/package/fetch-github-folder)
 [![NPM Last Update](https://img.shields.io/npm/last-update/fetch-github-folder)](https://npmjs.org/package/fetch-github-folder)
-[![Dependency count](https://badgen.net/bundlephobia/dependency-count/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependencies)
-[![Dependents](https://badgen.net/npm/dependents/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependents)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/fetch-github-folder)](https://bundlephobia.com/package/fetch-github-folder)
-[![Release](https://github.com/nikelborm/fetch-github-folder/actions/workflows/release.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/release.yml)
-[![Tests](https://github.com/nikelborm/fetch-github-folder/actions/workflows/test.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/test.yml)
-[![JSR](https://jsr.io/badges/@nikelborm/fetch-github-folder)](https://jsr.io/@nikelborm/fetch-github-folder)
-[![JSR Score](https://jsr.io/badges/@nikelborm/fetch-github-folder/score)](https://jsr.io/@nikelborm/fetch-github-folder)
-[![JSR Scope](https://jsr.io/badges/@nikelborm)](https://jsr.io/@nikelborm)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/pulse)
-[![GitHub top language](https://img.shields.io/github/languages/top/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder)
+[![package.json Dependencies count](https://badgen.net/bundlephobia/dependency-count/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependencies)
+[![package.json Dependents count](https://badgen.net/npm/dependents/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependents)
+[![npm minzipped bundle size](https://img.shields.io/bundlephobia/minzip/fetch-github-folder)](https://bundlephobia.com/package/fetch-github-folder)
+[![JSR package version](https://jsr.io/badges/@nikelborm/fetch-github-folder)](https://jsr.io/@nikelborm/fetch-github-folder)
+[![JSR package Score](https://jsr.io/badges/@nikelborm/fetch-github-folder/score)](https://jsr.io/@nikelborm/fetch-github-folder)
+[![JSR package owner](https://jsr.io/badges/@nikelborm)](https://jsr.io/@nikelborm)
+[![GitHub commits per month](https://img.shields.io/github/commit-activity/m/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/pulse)
+[![GitHub Total commits Count](https://img.shields.io/github/commit-activity/t/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/graphs/commit-activity)
 [![NPM License](https://img.shields.io/npm/l/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder?tab=MIT-1-ov-file)
 [![Coveralls Coverage Percentage](https://coveralls.io/repos/github/nikelborm/fetch-github-folder/badge.svg?branch=main&rand=123)](https://coveralls.io/github/nikelborm/fetch-github-folder?branch=main)
-[![CodeFactor](https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/badge)](https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder)
-[![Codeclimate Maintainability](https://api.codeclimate.com/v1/badges/0068c34824ae7b6ee8a0/maintainability)](https://codeclimate.com/github/nikelborm/fetch-github-folder/maintainability)
-[![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/nikelborm/fetch-github-folder)](https://codeclimate.com/github/nikelborm/fetch-github-folder/issues)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/t/nikelborm/fetch-github-folder)](https://github.com/nikelborm/fetch-github-folder/graphs/commit-activity)
-
+[![CodeFactor Code quality Grade](https://img.shields.io/codefactor/grade/github/nikelborm/fetch-github-folder?label=codefactor)](https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder)
+[![Code Climate Technical Debt](https://img.shields.io/codeclimate/tech-debt/nikelborm/fetch-github-folder)](https://codeclimate.com/github/nikelborm/fetch-github-folder/issues)
+[![Code Climate Issues](https://img.shields.io/codeclimate/issues/nikelborm/fetch-github-folder)](https://codeclimate.com/github/nikelborm/fetch-github-folder/issues)
+[![GitHub Tests Workflow status](https://github.com/nikelborm/fetch-github-folder/actions/workflows/test.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/test.yml)
+[![GitHub Release Workflow status](https://github.com/nikelborm/fetch-github-folder/actions/workflows/release.yml/badge.svg)](https://github.com/nikelborm/fetch-github-folder/actions/workflows/release.yml)
+[![Sonar Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Bugs Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=bugs)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Code Smells Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Lines of Code Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Reliability Grade](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Security Grade](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Technical Debt Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Maintainability Grade](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+[![Sonar Vulnerabilities Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
 <!-- [![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder)](update_link_later) -->
 <!-- [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) -->
+<sup>(Don't judge me for my obsession with badges)</sup>
 
 > [!CAUTION]
 >
 > This project currently is not stable, but I'm actively working on writing tests and handling edge cases, such as support for Git-LFS and other.
-> Check out the `dev` branch to see the latest updates! 😉
+> Check out the `dev` branch to see the latest updates! 😉 (except that I currently don't care and just push to main)
 
 ## What This Project Does
 
@@ -115,7 +124,8 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 8. complete git LFS support
 9. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
 10. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-11. https://github.com/nikelborm/fetch-github-folder/community
-12. https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues
-13. https://codeclimate.com/github/nikelborm/fetch-github-folder/issues
-14. https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder
+11. add codacy, coderabbit, CodeQL, scorecard.dev
+12. <https://github.com/nikelborm/fetch-github-folder/community>
+13. <https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues>
+14. <https://codeclimate.com/github/nikelborm/fetch-github-folder/issues>
+15. <https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder>
