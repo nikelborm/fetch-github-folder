@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.36% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>42/47</span>
+                <span class='fraction'>48/56</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.36% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>42/47</span>
+                <span class='fraction'>48/56</span>
             </div>
         
             
@@ -131,7 +131,21 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,14 +165,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
@@ -176,13 +189,25 @@
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -199,8 +224,11 @@
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RequestError } from "@octokit/request-error";
-import type { OctokitResponse } from "@octokit/types";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RequestError } from '@octokit/request-error';
+import type { OctokitResponse } from '@octokit/types';
 import { UnknownException } from 'effect/Cause';
 import { gen, tryPromise } from 'effect/Effect';
 import { InputConfigTag, RepoConfigTag } from '../config.js';
@@ -212,61 +240,75 @@ import {
   GitHubApiNoCommitFoundForGitRef,
   GitHubApiRatelimited,
   GitHubApiRepoIsEmpty,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
+  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from '../errors.js';
 import { OctokitTag } from '../octokit.js';
 &nbsp;
 export const requestRepoPathContentsFromGitHubAPI = (
   format: 'object' | 'raw',
-  streamBody?: boolean
-) =&gt; gen(function * () {
-  const octokit = yield* OctokitTag;
+  streamBody?: boolean,
+) =&gt;
+  gen(function* () {
+    const octokit = yield* OctokitTag;
 &nbsp;
-  const { gitRef, pathToEntityInRepo } = yield* InputConfigTag;
-  const repo = yield* RepoConfigTag;
+    const { gitRef, pathToEntityInRepo } = yield* InputConfigTag;
+    const repo = yield* RepoConfigTag;
 &nbsp;
-  return yield* tryPromise({
-    try: (signal) =&gt; octokit.request(
-      'GET /repos/{owner}/{repo}/contents/{path}',
-      {
-        owner: repo.owner,
-        repo: repo.name,
-        path: pathToEntityInRepo,
-        ...(gitRef &amp;&amp; { ref: gitRef }),
-        request: {
-          signal,
-          parseSuccessResponseBody: !streamBody
-        },
-        mediaType: { format },
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        },
-      }
-    ),
-    catch: (error) =&gt; !(error instanceof <span class="branch-0 cbranch-no" title="branch not covered" >RequestError)</span>
-<span class="cstat-no" title="statement not covered" >      ? new UnknownException(error, "Failed to request contents at the path inside GitHub repo")</span>
-      : error.status === 404 &amp;&amp; (error.response as ResponseWithError)?.data?.message === 'This repository is empty.'
-      ? new GitHubApiRepoIsEmpty(error)
-      : gitRef &amp;&amp; error.status === 404 &amp;&amp; (error.response as ResponseWithError)?.data?.message?.startsWith('No commit found for the ref')
-      ? new GitHubApiNoCommitFoundForGitRef(error, { gitRef })
-      // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
-      : error.status === 404
-      ? new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(error)
-      : error.status === 401
-      ? new GitHubApiBadCredentials(error)
-      : error.status === <span class="branch-0 cbranch-no" title="branch not covered" >403</span>
-<span class="cstat-no" title="statement not covered" >      ? new GitHubApiAuthRatelimited(error)</span>
-      : error.status === <span class="branch-0 cbranch-no" title="branch not covered" >429</span>
-<span class="cstat-no" title="statement not covered" >      ? new GitHubApiRatelimited(error)</span>
-      : error.status &gt;= <span class="branch-0 cbranch-no" title="branch not covered" >500</span>
-<span class="cstat-no" title="statement not covered" >      ? new GitHubApiGeneralServerError(error)</span>
-      : error.status &gt;= 400
-      ? new GitHubApiGeneralUserError(error<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
-<span class="cstat-no" title="statement not covered" >      : error</span>
-  })
-})
+    return yield* tryPromise({
+      try: signal =&gt;
+        octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+          owner: repo.owner,
+          repo: repo.name,
+          path: pathToEntityInRepo,
+          ...(gitRef &amp;&amp; { ref: gitRef }),
+          request: {
+            signal,
+            parseSuccessResponseBody: !streamBody,
+          },
+          mediaType: { format },
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        }),
+      catch: error =&gt;
+        !(error instanceof <span class="branch-0 cbranch-no" title="branch not covered" >RequestError)</span>
+<span class="cstat-no" title="statement not covered" >          ? new UnknownException(</span>
+<span class="cstat-no" title="statement not covered" >              error,</span>
+<span class="cstat-no" title="statement not covered" >              'Failed to request contents at the path inside GitHub repo',</span>
+<span class="cstat-no" title="statement not covered" >            )</span>
+          : error.status === 404 &amp;&amp;
+              (error.response as ResponseWithError)?.data?.message ===
+                'This repository is empty.'
+            ? new GitHubApiRepoIsEmpty(error)
+            : gitRef &amp;&amp;
+                error.status === 404 &amp;&amp;
+                (
+                  error.response as ResponseWithError
+                )?.data?.message?.startsWith('No commit found for the ref')
+              ? new GitHubApiNoCommitFoundForGitRef(error, { gitRef })
+              : // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
+                error.status === 404
+                ? new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(
+                    error,
+                  )
+                : error.status === 401
+                  ? new GitHubApiBadCredentials(error)
+                  : error.status === <span class="branch-0 cbranch-no" title="branch not covered" >403</span>
+<span class="cstat-no" title="statement not covered" >                    ? new GitHubApiAuthRatelimited(error)</span>
+                    : error.status === <span class="branch-0 cbranch-no" title="branch not covered" >429</span>
+<span class="cstat-no" title="statement not covered" >                      ? new GitHubApiRatelimited(error)</span>
+                      : error.status &gt;= <span class="branch-0 cbranch-no" title="branch not covered" >500</span>
+<span class="cstat-no" title="statement not covered" >                        ? new GitHubApiGeneralServerError(error)</span>
+                        : error.status &gt;= 400
+                          ? new GitHubApiGeneralUserError(error<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
+<span class="cstat-no" title="statement not covered" >                          : error,</span>
+    });
+  });
 &nbsp;
-type ResponseWithError = OctokitResponse&lt;{ message?: string } | undefined, number&gt;
+type ResponseWithError = OctokitResponse&lt;
+  { message?: string } | undefined,
+  number
+&gt;;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -274,7 +316,7 @@ type ResponseWithError = OctokitResponse&lt;{ message?: string } | undefined, nu
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:03:57.751Z
+                at 2025-01-16T08:23:34.262Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

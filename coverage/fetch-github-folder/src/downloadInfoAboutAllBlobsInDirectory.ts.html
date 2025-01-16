@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/34</span>
+                <span class='fraction'>0/40</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/34</span>
+                <span class='fraction'>0/40</span>
             </div>
         
             
@@ -120,7 +120,14 @@
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,6 +148,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -165,30 +175,34 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { RequestError } from "@octokit/request-error";</span></span></span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { RequestError } from '@octokit/request-error';</span></span></span>
 import { UnknownException } from 'effect/Cause';
-import {
-  all,
-  flatMap,
-  tryMapPromise
-} from 'effect/Effect';
+import { all, flatMap, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { Array as ArraySchema, decodeUnknownEither, NonEmptyTrimmedString, Struct } from 'effect/Schema';
+import {
+  Array as ArraySchema,
+  decodeUnknownEither,
+  NonEmptyTrimmedString,
+  Struct,
+} from 'effect/Schema';
 import { RepoConfigTag } from './config.js';
 import { OctokitTag } from './octokit.js';
-&nbsp;
 &nbsp;
 /* : Effect&lt;readonly Readonly&lt;{
   pathInsideDirectory: string;
@@ -197,35 +211,42 @@ import { OctokitTag } from './octokit.js';
 }&gt;[], RequestError | UnknownException | ParseError, OctokitTag&gt; */
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const downloadInfoAboutAllBlobsInDirectory = (</span>
-<span class="cstat-no" title="statement not covered" >  gitTreeShaHashOfDirectory: string</span>
-<span class="cstat-no" title="statement not covered" >) =&gt; pipe(</span>
-<span class="cstat-no" title="statement not covered" >  all([OctokitTag, RepoConfigTag]),</span>
-<span class="cstat-no" title="statement not covered" >  tryMapPromise({</span>
-<span class="cstat-no" title="statement not covered" >    try: async ([octokit, repo], signal) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      const { data: { tree } } = await octokit.request(</span>
-<span class="cstat-no" title="statement not covered" >        'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',</span>
-<span class="cstat-no" title="statement not covered" >        {</span>
-<span class="cstat-no" title="statement not covered" >          owner: repo.owner,</span>
-<span class="cstat-no" title="statement not covered" >          repo: repo.name,</span>
-<span class="cstat-no" title="statement not covered" >          tree_sha: gitTreeShaHashOfDirectory,</span>
-<span class="cstat-no" title="statement not covered" >          request: { signal },</span>
-<span class="cstat-no" title="statement not covered" >          recursive: 'true',</span>
-<span class="cstat-no" title="statement not covered" >          headers: {</span>
-<span class="cstat-no" title="statement not covered" >            'X-GitHub-Api-Version': '2022-11-28'</span>
+<span class="cstat-no" title="statement not covered" >  gitTreeShaHashOfDirectory: string,</span>
+) =&gt;
+<span class="cstat-no" title="statement not covered" >  pipe(</span>
+<span class="cstat-no" title="statement not covered" >    all([OctokitTag, RepoConfigTag]),</span>
+<span class="cstat-no" title="statement not covered" >    tryMapPromise({</span>
+<span class="cstat-no" title="statement not covered" >      try: async ([octokit, repo], signal) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        const {</span>
+<span class="cstat-no" title="statement not covered" >          data: { tree },</span>
+<span class="cstat-no" title="statement not covered" >        } = await octokit.request(</span>
+<span class="cstat-no" title="statement not covered" >          'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',</span>
+<span class="cstat-no" title="statement not covered" >          {</span>
+<span class="cstat-no" title="statement not covered" >            owner: repo.owner,</span>
+<span class="cstat-no" title="statement not covered" >            repo: repo.name,</span>
+<span class="cstat-no" title="statement not covered" >            tree_sha: gitTreeShaHashOfDirectory,</span>
+<span class="cstat-no" title="statement not covered" >            request: { signal },</span>
+<span class="cstat-no" title="statement not covered" >            recursive: 'true',</span>
+<span class="cstat-no" title="statement not covered" >            headers: {</span>
+<span class="cstat-no" title="statement not covered" >              'X-GitHub-Api-Version': '2022-11-28',</span>
+<span class="cstat-no" title="statement not covered" >            },</span>
 <span class="cstat-no" title="statement not covered" >          },</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >      );</span>
+<span class="cstat-no" title="statement not covered" >        );</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return tree.filter(({ type }) =&gt; type === 'blob');</span>
-<span class="cstat-no" title="statement not covered" >    },</span>
-<span class="cstat-no" title="statement not covered" >    catch: (error) =&gt; (error instanceof RequestError)</span>
-<span class="cstat-no" title="statement not covered" >      ? error</span>
-<span class="cstat-no" title="statement not covered" >      : new UnknownException(error, "Failed to request git trees from GitHub")</span>
-<span class="cstat-no" title="statement not covered" >  }),</span>
-  // TODO: check if it's a directory I guess
-  // TODO: try, catch and explain 404 normally
-<span class="cstat-no" title="statement not covered" >  flatMap(decodeBlobs)</span>
-<span class="cstat-no" title="statement not covered" >);</span>
+<span class="cstat-no" title="statement not covered" >        return tree.filter(({ type }) =&gt; type === 'blob');</span>
+<span class="cstat-no" title="statement not covered" >      },</span>
+<span class="cstat-no" title="statement not covered" >      catch: error =&gt;</span>
+<span class="cstat-no" title="statement not covered" >        error instanceof RequestError</span>
+<span class="cstat-no" title="statement not covered" >          ? error</span>
+<span class="cstat-no" title="statement not covered" >          : new UnknownException(</span>
+<span class="cstat-no" title="statement not covered" >              error,</span>
+<span class="cstat-no" title="statement not covered" >              'Failed to request git trees from GitHub',</span>
+<span class="cstat-no" title="statement not covered" >            ),</span>
+<span class="cstat-no" title="statement not covered" >    }),</span>
+    // TODO: check if it's a directory I guess
+    // TODO: try, catch and explain 404 normally
+<span class="cstat-no" title="statement not covered" >    flatMap(decodeBlobs),</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >const BlobsSchema = Struct({</span>
 <span class="cstat-no" title="statement not covered" >  pathInsideDirectory: NonEmptyTrimmedString,</span>
@@ -241,7 +262,7 @@ import { OctokitTag } from './octokit.js';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:03:57.751Z
+                at 2025-01-16T08:23:34.262Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

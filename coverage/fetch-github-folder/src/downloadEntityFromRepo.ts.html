@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/42</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/42</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
@@ -122,7 +122,9 @@
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -132,14 +134,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,12 +149,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -166,6 +157,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,6 +176,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -187,7 +191,10 @@ import { createWriteStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { OutputConfigTag } from './config.js';
-import { getPathContentsMetaInfo, requestRawRepoPathContentsFromGitHubAPI } from './getPathContents/index.js';
+import {
+  getPathContentsMetaInfo,
+  requestRawRepoPathContentsFromGitHubAPI,
+} from './getPathContents/index.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
 import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamToFs.js';
 &nbsp;
@@ -196,50 +203,49 @@ import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamTo
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (pathContentsMetaInfo.type === 'dir')</span>
 <span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
-<span class="cstat-no" title="statement not covered" >      getReadableTarGzStreamOfRepoDirectory(</span>
-<span class="cstat-no" title="statement not covered" >        pathContentsMetaInfo.treeSha</span>
-<span class="cstat-no" title="statement not covered" >      ),</span>
+<span class="cstat-no" title="statement not covered" >      getReadableTarGzStreamOfRepoDirectory(pathContentsMetaInfo.treeSha),</span>
 <span class="cstat-no" title="statement not covered" >      unpackRepoFolderTarGzStreamToFs,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (pathContentsMetaInfo.meta === 'This file is small enough that GitHub API decided to inline it')</span>
+<span class="cstat-no" title="statement not covered" >  if (</span>
+<span class="cstat-no" title="statement not covered" >    pathContentsMetaInfo.meta ===</span>
+<span class="cstat-no" title="statement not covered" >    'This file is small enough that GitHub API decided to inline it'</span>
+  )
 <span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
 <span class="cstat-no" title="statement not covered" >      succeed(pathContentsMetaInfo.content),</span>
-<span class="cstat-no" title="statement not covered" >      DownloadAndWriteFileToFs</span>
+<span class="cstat-no" title="statement not covered" >      DownloadAndWriteFileToFs,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (pathContentsMetaInfo.meta === 'This file can be downloaded as a blob')</span>
+<span class="cstat-no" title="statement not covered" >  if (</span>
+<span class="cstat-no" title="statement not covered" >    pathContentsMetaInfo.meta === 'This file can be downloaded as a blob'</span>
+  )
 <span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
 <span class="cstat-no" title="statement not covered" >      requestRawRepoPathContentsFromGitHubAPI,</span>
 <span class="cstat-no" title="statement not covered" >      DownloadAndWriteFileToFs,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  yield* fail(new Error('LFS files are not yet supported'))</span>
-<span class="cstat-no" title="statement not covered" >})</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" >  yield* fail(new Error('LFS files are not yet supported'));</span>
+<span class="cstat-no" title="statement not covered" >});</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const DownloadAndWriteFileToFs = &lt;E, R&gt;(</span>
-<span class="cstat-no" title="statement not covered" >  self: Effect&lt;Readable, E, R&gt;</span>
-<span class="cstat-no" title="statement not covered" >) =&gt; gen(function* () {</span>
-<span class="cstat-no" title="statement not covered" >  const fileStream = yield* self;</span>
+<span class="cstat-no" title="statement not covered" >  self: Effect&lt;Readable, E, R&gt;,</span>
+) =&gt;
+<span class="cstat-no" title="statement not covered" >  gen(function* () {</span>
+<span class="cstat-no" title="statement not covered" >    const fileStream = yield* self;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const {</span>
-<span class="cstat-no" title="statement not covered" >    localPathAtWhichEntityFromRepoWillBeAvailable:</span>
-<span class="cstat-no" title="statement not covered" >      localDownloadedFilePath</span>
-<span class="cstat-no" title="statement not covered" >  } = yield* OutputConfigTag;</span>
+<span class="cstat-no" title="statement not covered" >    const {</span>
+<span class="cstat-no" title="statement not covered" >      localPathAtWhichEntityFromRepoWillBeAvailable:</span>
+<span class="cstat-no" title="statement not covered" >        localDownloadedFilePath,</span>
+<span class="cstat-no" title="statement not covered" >    } = yield* OutputConfigTag;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return yield* tryPromise({</span>
-<span class="cstat-no" title="statement not covered" >    try: (signal) =&gt; pipeline(</span>
-<span class="cstat-no" title="statement not covered" >      fileStream,</span>
-<span class="cstat-no" title="statement not covered" >      createWriteStream(localDownloadedFilePath),</span>
-<span class="cstat-no" title="statement not covered" >      { signal }</span>
-<span class="cstat-no" title="statement not covered" >    ),</span>
-<span class="cstat-no" title="statement not covered" >    catch: (error) =&gt; new Error(</span>
-<span class="cstat-no" title="statement not covered" >      'Failed blablabla',</span>
-<span class="cstat-no" title="statement not covered" >      { cause: error }</span>
-<span class="cstat-no" title="statement not covered" >    )</span>
-<span class="cstat-no" title="statement not covered" >  })</span>
-<span class="cstat-no" title="statement not covered" >})</span>
+<span class="cstat-no" title="statement not covered" >    return yield* tryPromise({</span>
+<span class="cstat-no" title="statement not covered" >      try: signal =&gt;</span>
+<span class="cstat-no" title="statement not covered" >        pipeline(fileStream, createWriteStream(localDownloadedFilePath), {</span>
+<span class="cstat-no" title="statement not covered" >          signal,</span>
+<span class="cstat-no" title="statement not covered" >        }),</span>
+<span class="cstat-no" title="statement not covered" >      catch: error =&gt; new Error('Failed blablabla', { cause: error }),</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -247,7 +253,7 @@ import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamTo
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:03:57.751Z
+                at 2025-01-16T08:23:34.262Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

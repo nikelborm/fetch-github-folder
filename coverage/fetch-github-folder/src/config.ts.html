@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">65.38% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/24</span>
+                <span class='fraction'>17/26</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">65.38% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/24</span>
+                <span class='fraction'>17/26</span>
             </div>
         
             
@@ -111,7 +111,9 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,6 +142,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
@@ -164,49 +168,51 @@ import { Tag } from 'effect/Context';
 import { pipe } from 'effect/Function';
 import type { Readonly } from 'ts-toolbelt/out/Object/Readonly.d.ts';
 &nbsp;
-export class RepoConfigTag extends Tag("RepoConfig")&lt;
+export class RepoConfigTag extends Tag('RepoConfig')&lt;
   RepoConfigTag,
   Readonly&lt;{
-    owner: string,
-    name: string,
+    owner: string;
+    name: string;
   }&gt;
 &gt;() {}
 &nbsp;
-export class InputConfigTag extends Tag("InputConfig")&lt;
+export class InputConfigTag extends Tag('InputConfig')&lt;
   InputConfigTag,
   Readonly&lt;{
-    pathToEntityInRepo: string,
-    gitRef: string,
+    pathToEntityInRepo: string;
+    gitRef: string;
   }&gt;
 &gt;() {}
 &nbsp;
-export class OutputConfigTag extends Tag("OutputConfig")&lt;
+export class OutputConfigTag extends Tag('OutputConfig')&lt;
   OutputConfigTag,
   Readonly&lt;{
-    localPathAtWhichEntityFromRepoWillBeAvailable: string
+    localPathAtWhichEntityFromRepoWillBeAvailable: string;
   }&gt;
 &gt;() {}
 &nbsp;
-export const createInputConfigContext = (
-  { repo, ...inputConfig }: InputConfigTag['Type'] &amp; { readonly repo: RepoConfigTag['Type'] }
-) =&gt; pipe(
-  Context.empty(),
-  Context.add(RepoConfigTag, repo),
-  Context.add(InputConfigTag, inputConfig)
-);
+export const createInputConfigContext = ({
+  repo,
+  ...inputConfig
+}: InputConfigTag['Type'] &amp; { readonly repo: RepoConfigTag['Type'] }) =&gt;
+  pipe(
+    Context.empty(),
+    Context.add(RepoConfigTag, repo),
+    Context.add(InputConfigTag, inputConfig),
+  );
 &nbsp;
 export const createSingleTargetConfigContext = <span class="fstat-no" title="function not covered" >({</span>
 <span class="cstat-no" title="statement not covered" >  localPathAtWhichEntityFromRepoWillBeAvailable,</span>
 <span class="cstat-no" title="statement not covered" >  ...inputConfig</span>
-<span class="cstat-no" title="statement not covered" >}: InputConfigTag['Type']</span>
-  &amp; { repo: RepoConfigTag['Type'] }
-  &amp; OutputConfigTag['Type']
-<span class="cstat-no" title="statement not covered" >) =&gt; pipe(</span>
-<span class="cstat-no" title="statement not covered" >  createInputConfigContext(inputConfig),</span>
-<span class="cstat-no" title="statement not covered" >  Context.add(OutputConfigTag, {</span>
-<span class="cstat-no" title="statement not covered" >    localPathAtWhichEntityFromRepoWillBeAvailable</span>
-<span class="cstat-no" title="statement not covered" >  })</span>
-<span class="cstat-no" title="statement not covered" >);</span>
+<span class="cstat-no" title="statement not covered" >}: InputConfigTag['Type'] &amp; {</span>
+  repo: RepoConfigTag['Type'];
+} &amp; OutputConfigTag['Type']) =&gt;
+<span class="cstat-no" title="statement not covered" >  pipe(</span>
+<span class="cstat-no" title="statement not covered" >    createInputConfigContext(inputConfig),</span>
+<span class="cstat-no" title="statement not covered" >    Context.add(OutputConfigTag, {</span>
+<span class="cstat-no" title="statement not covered" >      localPathAtWhichEntityFromRepoWillBeAvailable,</span>
+<span class="cstat-no" title="statement not covered" >    }),</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -214,7 +220,7 @@ export const createSingleTargetConfigContext = <span class="fstat-no" title="fun
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:03:57.751Z
+                at 2025-01-16T08:23:34.262Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

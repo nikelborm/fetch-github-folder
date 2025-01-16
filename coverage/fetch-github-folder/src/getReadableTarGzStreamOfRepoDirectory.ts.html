@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -103,7 +103,13 @@
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -113,6 +119,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -123,6 +130,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -143,7 +151,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { RequestError } from "@octokit/request-error";</span></span></span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { RequestError } from '@octokit/request-error';</span></span></span>
 import { UnknownException } from 'effect/Cause';
 import { all, map, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
@@ -152,37 +164,43 @@ import { ParseToReadableStream } from './parseToReadableStream.js';
 import { RepoConfigTag } from './config.js';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const getReadableTarGzStreamOfRepoDirectory = (</span>
-<span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree?: string</span>
-<span class="cstat-no" title="statement not covered" >) =&gt; pipe(</span>
-<span class="cstat-no" title="statement not covered" >  requestTarballFromGitHubAPI(gitRefWhichWillBeUsedToIdentifyGitTree),</span>
-<span class="cstat-no" title="statement not covered" >  map(({ data }) =&gt; data),</span>
-<span class="cstat-no" title="statement not covered" >  ParseToReadableStream</span>
-<span class="cstat-no" title="statement not covered" >);</span>
+<span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree?: string,</span>
+) =&gt;
+<span class="cstat-no" title="statement not covered" >  pipe(</span>
+<span class="cstat-no" title="statement not covered" >    requestTarballFromGitHubAPI(gitRefWhichWillBeUsedToIdentifyGitTree),</span>
+<span class="cstat-no" title="statement not covered" >    map(({ data }) =&gt; data),</span>
+<span class="cstat-no" title="statement not covered" >    ParseToReadableStream,</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
 &nbsp;
 // TODO: PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
 &nbsp;
 <span class="cstat-no" title="statement not covered" >const requestTarballFromGitHubAPI = (</span>
-<span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree = ''</span>
-<span class="cstat-no" title="statement not covered" >) =&gt; all([OctokitTag, RepoConfigTag]).pipe(tryMapPromise({</span>
-<span class="cstat-no" title="statement not covered" >  try: ([octokit, { owner, name }], signal) =&gt; octokit.request(</span>
-<span class="cstat-no" title="statement not covered" >    'GET /repos/{owner}/{repo}/tarball/{ref}',</span>
-<span class="cstat-no" title="statement not covered" >    {</span>
-<span class="cstat-no" title="statement not covered" >      owner,</span>
-<span class="cstat-no" title="statement not covered" >      repo: name,</span>
-<span class="cstat-no" title="statement not covered" >      ref: gitRefWhichWillBeUsedToIdentifyGitTree,</span>
-<span class="cstat-no" title="statement not covered" >      request: {</span>
-<span class="cstat-no" title="statement not covered" >        signal,</span>
-<span class="cstat-no" title="statement not covered" >        parseSuccessResponseBody: false,</span>
-<span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >      headers: {</span>
-<span class="cstat-no" title="statement not covered" >        'X-GitHub-Api-Version': '2022-11-28'</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  ),</span>
-<span class="cstat-no" title="statement not covered" >  catch: (error) =&gt; (error instanceof RequestError)</span>
-<span class="cstat-no" title="statement not covered" >    ? error // TODO: add the same extensive error parsing as in other places</span>
-<span class="cstat-no" title="statement not covered" >    : new UnknownException(error, "Failed to request tarball from GitHub")</span>
-<span class="cstat-no" title="statement not covered" >}));</span>
+<span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree = '',</span>
+) =&gt;
+<span class="cstat-no" title="statement not covered" >  all([OctokitTag, RepoConfigTag]).pipe(</span>
+<span class="cstat-no" title="statement not covered" >    tryMapPromise({</span>
+<span class="cstat-no" title="statement not covered" >      try: ([octokit, { owner, name }], signal) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >        octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {</span>
+<span class="cstat-no" title="statement not covered" >          owner,</span>
+<span class="cstat-no" title="statement not covered" >          repo: name,</span>
+<span class="cstat-no" title="statement not covered" >          ref: gitRefWhichWillBeUsedToIdentifyGitTree,</span>
+<span class="cstat-no" title="statement not covered" >          request: {</span>
+<span class="cstat-no" title="statement not covered" >            signal,</span>
+<span class="cstat-no" title="statement not covered" >            parseSuccessResponseBody: false,</span>
+<span class="cstat-no" title="statement not covered" >          },</span>
+<span class="cstat-no" title="statement not covered" >          headers: {</span>
+<span class="cstat-no" title="statement not covered" >            'X-GitHub-Api-Version': '2022-11-28',</span>
+<span class="cstat-no" title="statement not covered" >          },</span>
+<span class="cstat-no" title="statement not covered" >        }),</span>
+<span class="cstat-no" title="statement not covered" >      catch: error =&gt;</span>
+<span class="cstat-no" title="statement not covered" >        error instanceof RequestError</span>
+<span class="cstat-no" title="statement not covered" >          ? error // TODO: add the same extensive error parsing as in other places</span>
+<span class="cstat-no" title="statement not covered" >          : new UnknownException(</span>
+<span class="cstat-no" title="statement not covered" >              error,</span>
+<span class="cstat-no" title="statement not covered" >              'Failed to request tarball from GitHub',</span>
+<span class="cstat-no" title="statement not covered" >            ),</span>
+<span class="cstat-no" title="statement not covered" >    }),</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -190,7 +208,7 @@ import { RepoConfigTag } from './config.js';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:03:57.751Z
+                at 2025-01-16T08:23:34.262Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

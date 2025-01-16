@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.47% </span>
+                <span class="strong">92% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>43/46</span>
+                <span class='fraction'>46/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.47% </span>
+                <span class="strong">92% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>43/46</span>
+                <span class='fraction'>46/50</span>
             </div>
         
             
@@ -131,7 +131,11 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,6 +152,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -157,17 +164,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -176,6 +175,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -187,7 +196,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -209,31 +217,36 @@ import {
   Number as SchemaNumber,
   String as SchemaString,
   Struct,
-  Union
+  Union,
 } from 'effect/Schema';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { requestRepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
 &nbsp;
-export const requestMetaInfoAboutPathContentsFromGitHubAPI = gen(function* () {
-  const response = yield* requestRepoPathContentsFromGitHubAPI("object")
-    .pipe(TapLogBoth);
+export const requestMetaInfoAboutPathContentsFromGitHubAPI = gen(
+  function* () {
+    const response =
+      yield* requestRepoPathContentsFromGitHubAPI('object').pipe(
+        TapLogBoth,
+      );
 &nbsp;
-  return yield* mapLeft(
-    decodeResponse(response.data),
-    parseError =&gt; new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(
-<span class="cstat-no" title="statement not covered" >      parseError,</span>
-<span class="cstat-no" title="statement not covered" >      { response }</span>
-<span class="cstat-no" title="statement not covered" >    )</span>
-  );
-});
+    return yield* mapLeft(
+      decodeResponse(response.data),
+      parseError =&gt;
+<span class="cstat-no" title="statement not covered" >        new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(</span>
+<span class="cstat-no" title="statement not covered" >          parseError,</span>
+<span class="cstat-no" title="statement not covered" >          { response },</span>
+<span class="cstat-no" title="statement not covered" >        ),</span>
+    );
+  },
+);
 &nbsp;
 const GitSomethingFields = {
   size: SchemaNumber,
   name: SchemaString,
   path: SchemaString,
   sha: SchemaString,
-}
+};
 &nbsp;
 const dirLiteral = Literal('dir');
 const nonDirLiterals = Literal('file', 'submodule', 'symlink');
@@ -245,27 +258,26 @@ export const ResponseSchema = Union(
       type: Union(dirLiteral, nonDirLiterals),
       ...GitSomethingFields,
     }).pipe(ArraySchema),
-    ...GitSomethingFields
+    ...GitSomethingFields,
   }),
   Struct({
     type: Literal('file'),
     encoding: Literal('base64', 'none'),
     content: SchemaString,
     ...GitSomethingFields,
-  })
-)
-&nbsp;
-const decodeResponse = decodeUnknownEither(
-  ResponseSchema,
-  { exact: true }
+  }),
 );
 &nbsp;
+const decodeResponse = decodeUnknownEither(ResponseSchema, {
+  exact: true,
+});
+&nbsp;
 export class FailedToParseResponseFromRepoPathContentsMetaInfoAPI extends TaggedErrorVerifyingCause&lt;{
-  response: unknown,
+  response: unknown;
 }&gt;()(
   'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
   `Failed to parse response from repo path contents meta info API`,
-  ParseError
+  ParseError,
 ) {}
 &nbsp;</pre></td></tr></table></pre>
 
@@ -274,7 +286,7 @@ export class FailedToParseResponseFromRepoPathContentsMetaInfoAPI extends Tagged
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T08:03:57.751Z
+                at 2025-01-16T08:23:34.262Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
