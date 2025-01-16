@@ -127,7 +127,7 @@ export const CleanRepoEntityPathString = transformOrFail(
         // there, it's very intentional and no other elements in the path exist.
         const cleanPathToEntityInRepo = path
           .join(dirtyPathToEntityInRepo)
-          .replaceAll(/\/*$/g, '');
+          .replaceAll(/\/?$/g, '');
 
         if (cleanPathToEntityInRepo.startsWith('..'))
           return fail(
