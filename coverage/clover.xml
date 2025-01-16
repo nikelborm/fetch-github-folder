@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1737046082961" clover="3.2.0">
-  <project timestamp="1737046082961" name="All files">
-    <metrics statements="659" coveredstatements="335" conditionals="67" coveredconditionals="54" methods="21" coveredmethods="12" elements="747" coveredelements="401" complexity="0" loc="659" ncloc="659" packages="3" files="15" classes="15"/>
+<coverage generated="1737046179134" clover="3.2.0">
+  <project timestamp="1737046179134" name="All files">
+    <metrics statements="619" coveredstatements="335" conditionals="66" coveredconditionals="54" methods="20" coveredmethods="12" elements="705" coveredelements="401" complexity="0" loc="619" ncloc="619" packages="3" files="14" classes="14"/>
     <package name="fetch-github-folder">
       <metrics statements="135" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="fetch-github-folder.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/fetch-github-folder.ts">
@@ -144,7 +144,7 @@
       </file>
     </package>
     <package name="fetch-github-folder.src">
-      <metrics statements="281" coveredstatements="120" conditionals="29" coveredconditionals="20" methods="11" coveredmethods="6"/>
+      <metrics statements="241" coveredstatements="120" conditionals="28" coveredconditionals="20" methods="10" coveredmethods="6"/>
       <file name="TaggedErrorVerifyingCause.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/TaggedErrorVerifyingCause.ts">
         <metrics statements="35" coveredstatements="35" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
@@ -253,49 +253,6 @@
         <line num="59" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
-      </file>
-      <file name="downloadInfoAboutAllBlobsInDirectory.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadInfoAboutAllBlobsInDirectory.ts">
-        <metrics statements="40" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
       </file>
       <file name="errors.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/errors.ts">
         <metrics statements="50" coveredstatements="48" conditionals="9" coveredconditionals="5" methods="1" coveredmethods="1"/>
