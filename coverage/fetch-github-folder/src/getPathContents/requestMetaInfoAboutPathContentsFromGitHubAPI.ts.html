@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.64% </span>
+                <span class="strong">93.47% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>53/56</span>
+                <span class='fraction'>43/46</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.64% </span>
+                <span class="strong">93.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>53/56</span>
+                <span class='fraction'>43/46</span>
             </div>
         
             
@@ -131,23 +131,7 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a>
-<a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,27 +150,15 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -227,8 +199,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { pipe } from 'effect/Function';
-import { flatMap } from 'effect/Effect';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { gen } from 'effect/Effect';
 import { mapLeft } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
@@ -240,35 +211,22 @@ import {
   Struct,
   Union
 } from 'effect/Schema';
-import { Repo } from '../repo.interface.js';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { requestRepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
 &nbsp;
-export const requestMetaInfoAboutPathContentsFromGitHubAPI = ({
-  repo,
-  gitRef,
-  path
-}: {
-  repo: Repo,
-  path: string,
-  gitRef?: string | undefined,
-}) =&gt; pipe(
-  requestRepoPathContentsFromGitHubAPI({
-    repo,
-    gitRef,
-    format: "object",
-    path
-  }),
-  TapLogBoth,
-  flatMap((response) =&gt; mapLeft(
+export const requestMetaInfoAboutPathContentsFromGitHubAPI = gen(function* () {
+  const response = yield* requestRepoPathContentsFromGitHubAPI("object")
+    .pipe(TapLogBoth);
+&nbsp;
+  return yield* mapLeft(
     decodeResponse(response.data),
     parseError =&gt; new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(
 <span class="cstat-no" title="statement not covered" >      parseError,</span>
 <span class="cstat-no" title="statement not covered" >      { response }</span>
 <span class="cstat-no" title="statement not covered" >    )</span>
-  ))
-)
+  );
+});
 &nbsp;
 const GitSomethingFields = {
   size: SchemaNumber,
@@ -316,7 +274,7 @@ export class FailedToParseResponseFromRepoPathContentsMetaInfoAPI extends Tagged
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-15T03:36:49.312Z
+                at 2025-01-16T08:03:57.751Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

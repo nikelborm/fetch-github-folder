@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.14% </span>
+                <span class="strong">80.48% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>69/84</span>
+                <span class='fraction'>66/82</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.14% </span>
+                <span class="strong">80.48% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>69/84</span>
+                <span class='fraction'>66/82</span>
             </div>
         
             
@@ -254,7 +254,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -271,10 +271,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,14 +345,14 @@ export const parseGitLFSObject = ({
   contentAsBuffer,
   expectedContentSize,
   blobSha,
-  name,
-  path,
+  fileName,
+  pathToFileInRepo,
 }: {
   contentAsBuffer: Buffer&lt;ArrayBuffer&gt;,
   expectedContentSize: number,
   blobSha: string,
-  name: string;
-  path: string;
+  fileName: string;
+  pathToFileInRepo: string;
 }) =&gt; {
   // gitLFS info usually is no longer than MAX_GIT_LFS_INFO_SIZE bytes
   const contentAsString = contentAsBuffer
@@ -380,20 +380,20 @@ export const parseGitLFSObject = ({
   const thisIsGitLFSObject = matchedByRegexpAndParsedByEffectSchema
     &amp;&amp; sizeFromGitLFSInfoAlignsWithExpectedContentSize;
 &nbsp;
-  if (thisIsGitLFSObject) {
-    return right({
-      type: 'file',
-      name,
-      path,
-      blobSha,
-      size: expectedContentSize,
-      gitLFSObjectIdSha256: parsingResult.right.oidSha256,
-      gitLFSVersion: parsingResult.right.version,
-      meta: "This file can be downloaded as a git-LFS object"
-    } as const);
-  } else if (shouldFailIfItIsNotGitLFS) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    return left(new InconsistentExpectedAndRealContentSize({</span>
-<span class="cstat-no" title="statement not covered" >      path,</span>
+  if (thisIsGitLFSObject) return right({
+    type: 'file',
+    name: fileName,
+    path: pathToFileInRepo,
+    blobSha,
+    size: expectedContentSize,
+    gitLFSObjectIdSha256: parsingResult.right.oidSha256,
+    gitLFSVersion: parsingResult.right.version,
+    meta: "This file can be downloaded as a git-LFS object"
+  } as const);
+&nbsp;
+  if (shouldFailIfItIsNotGitLFS) <span class="branch-0 cbranch-no" title="branch not covered" >return left(</span>
+<span class="cstat-no" title="statement not covered" >    new InconsistentExpectedAndRealContentSize({</span>
+<span class="cstat-no" title="statement not covered" >      path: pathToFileInRepo,</span>
 <span class="cstat-no" title="statement not covered" >      actual: contentAsBuffer.byteLength,</span>
 <span class="cstat-no" title="statement not covered" >      expected: expectedContentSize,</span>
 <span class="cstat-no" title="statement not covered" >      gitLFSInfo: parsingResult.pipe(match({</span>
@@ -406,10 +406,10 @@ export const parseGitLFSObject = ({
 <span class="cstat-no" title="statement not covered" >          value: right</span>
 <span class="cstat-no" title="statement not covered" >        }),</span>
 <span class="cstat-no" title="statement not covered" >      }))</span>
-<span class="cstat-no" title="statement not covered" >    }))</span>
-  } else {
-    return right("This is not a git LFS object" as const)
-  }
+<span class="cstat-no" title="statement not covered" >    })</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
+&nbsp;
+  return right("This is not a git LFS object" as const);
 }
 &nbsp;
 &nbsp;
@@ -421,7 +421,7 @@ export const parseGitLFSObject = ({
 // and the only variable thing in it is the size at the end, and I assume
 // that supported file size is not greater than 100 GB
 const MAX_GIT_LFS_INFO_SIZE = 137;
-// Don't add g modifier, it breaks match groups for some reason
+// Don't add regexp /g modifier, it breaks match groups
 const gitLFSInfoRegexp = /^version (?&lt;version&gt;https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?&lt;oidSha256&gt;[0-9a-f]{64})\nsize (?&lt;size&gt;[1-9][0-9]{0,11})\n$/m
 &nbsp;
 const GitLFSInfoSchema = Struct({
@@ -478,7 +478,7 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-15T03:36:49.312Z
+                at 2025-01-16T08:03:57.751Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

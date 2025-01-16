@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.79% </span>
+                <span class="strong">89.36% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>44/49</span>
+                <span class='fraction'>42/47</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">76.19% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/20</span>
+                <span class='fraction'>16/21</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.79% </span>
+                <span class="strong">89.36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>44/49</span>
+                <span class='fraction'>42/47</span>
             </div>
         
             
@@ -131,14 +131,7 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,15 +153,10 @@
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
@@ -213,9 +201,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RequestError } from "@octokit/request-error";
 import type { OctokitResponse } from "@octokit/types";
-import { pipe } from 'effect/Function';
 import { UnknownException } from 'effect/Cause';
-import { tryMapPromise } from 'effect/Effect';
+import { gen, tryPromise } from 'effect/Effect';
+import { InputConfigTag, RepoConfigTag } from '../config.js';
 import {
   GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
@@ -227,29 +215,23 @@ import {
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
 } from '../errors.js';
 import { OctokitTag } from '../octokit.js';
-import { Repo } from '../repo.interface.js';
 &nbsp;
-export const requestRepoPathContentsFromGitHubAPI = ({
-  repo,
-  gitRef,
-  format,
-  path,
-  streamBody
-}: {
-  repo: Repo,
-  path: string,
-  format: 'object' | 'raw'
-  gitRef?: string | undefined,
+export const requestRepoPathContentsFromGitHubAPI = (
+  format: 'object' | 'raw',
   streamBody?: boolean
-}) =&gt; pipe(
-  OctokitTag,
-  tryMapPromise({
-    try: (octokit, signal) =&gt; octokit.request(
+) =&gt; gen(function * () {
+  const octokit = yield* OctokitTag;
+&nbsp;
+  const { gitRef, pathToEntityInRepo } = yield* InputConfigTag;
+  const repo = yield* RepoConfigTag;
+&nbsp;
+  return yield* tryPromise({
+    try: (signal) =&gt; octokit.request(
       'GET /repos/{owner}/{repo}/contents/{path}',
       {
         owner: repo.owner,
         repo: repo.name,
-        path,
+        path: pathToEntityInRepo,
         ...(gitRef &amp;&amp; { ref: gitRef }),
         request: {
           signal,
@@ -281,8 +263,8 @@ export const requestRepoPathContentsFromGitHubAPI = ({
       : error.status &gt;= 400
       ? new GitHubApiGeneralUserError(error<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
 <span class="cstat-no" title="statement not covered" >      : error</span>
-  }),
-)
+  })
+})
 &nbsp;
 type ResponseWithError = OctokitResponse&lt;{ message?: string } | undefined, number&gt;
 &nbsp;</pre></td></tr></table></pre>
@@ -292,7 +274,7 @@ type ResponseWithError = OctokitResponse&lt;{ message?: string } | undefined, nu
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-15T03:36:49.312Z
+                at 2025-01-16T08:03:57.751Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
