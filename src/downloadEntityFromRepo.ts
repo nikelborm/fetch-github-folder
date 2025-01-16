@@ -1,93 +1,59 @@
+import { Effect, fail, gen, succeed, tryPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { Repo } from './repo.interface.js';
-import { fail, gen, tryPromise } from 'effect/Effect';
-import { Path } from '@effect/platform/Path';
-import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
-import { getPathContentsMetaInfo, requestRawRepoPathContentsFromGitHubAPI } from './getPathContents/index.js';
-import { downloadRepoDirAndPutItIntoFs } from './downloadRepoDirAndPutItIntoFs/index.js';
-import { pipeline } from 'node:stream/promises';
 import { createWriteStream } from 'node:fs';
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import { OutputConfigTag } from './config.js';
+import { getPathContentsMetaInfo, requestRawRepoPathContentsFromGitHubAPI } from './getPathContents/index.js';
+import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
+import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamToFs.js';
 
-export const downloadEntityFromRepo = ({
-  repo,
-  pathToEntityInRepo: dirtyPathToEntityInRepo,
-  gitRef,
-  localPathAtWhichEntityFromRepoWillBeAvailable,
-}: {
-  repo: Repo,
-  pathToEntityInRepo: string,
-  localPathAtWhichEntityFromRepoWillBeAvailable: string,
-  gitRef?: string | undefined,
-}) => gen(function* () {
-  const path = yield* Path;
-
-  // dot can be there only when that's all there is. path.join(...)
-  // removes all './', so '.' will never be just left by themself. If it's
-  // there, it's very intentional and no other elements in the path exist.
-  const pathToEntityInRepo = path.join(dirtyPathToEntityInRepo);
-
-  if (pathToEntityInRepo.startsWith('..'))
-    return yield* new AttemptedToGetDataAboveRepoRoot({
-      problematicPath: pathToEntityInRepo
-    });
-
-  const pathContentsMetaInfo = yield* getPathContentsMetaInfo({
-    repo,
-    gitRef,
-    path: pathToEntityInRepo,
-  });
+export const downloadEntityFromRepo = gen(function* () {
+  const pathContentsMetaInfo = yield* getPathContentsMetaInfo;
 
   if (pathContentsMetaInfo.type === 'dir')
-    return yield* downloadRepoDirAndPutItIntoFs({
-      repo,
-      gitRefWhichWillBeUsedToIdentifyGitTree: pathContentsMetaInfo.treeSha,
-      pathToLocalDirWhichWillHaveContentsOfRepoDir:
-        localPathAtWhichEntityFromRepoWillBeAvailable,
-    })
+    return yield* pipe(
+      getReadableTarGzStreamOfRepoDirectory(
+        pathContentsMetaInfo.treeSha
+      ),
+      unpackRepoFolderTarGzStreamToFs,
+    );
 
   if (pathContentsMetaInfo.meta === 'This file is small enough that GitHub API decided to inline it')
-    return yield* tryPromise({
-      try: (signal) => pipeline(
-        pathContentsMetaInfo.content,
-        createWriteStream(
-          localPathAtWhichEntityFromRepoWillBeAvailable,
-        ),
-        { signal }
-      ),
-      catch: (error) => new Error(
-        'Failed ',
-        { cause: error }
-      )
-    })
+    return yield* pipe(
+      succeed(pathContentsMetaInfo.content),
+      DownloadAndWriteFileToFs
+    );
 
-  if (pathContentsMetaInfo.meta === 'This file can be downloaded as a blob') {
-    const fileStream = yield* requestRawRepoPathContentsFromGitHubAPI({
-      repo,
-      path: pathContentsMetaInfo.path,
-      gitRef: pathContentsMetaInfo.blobSha
-    })
-    return yield* tryPromise({
-      try: (signal) => pipeline(
-        fileStream,
-        createWriteStream(
-          localPathAtWhichEntityFromRepoWillBeAvailable,
-        ),
-        { signal }
-      ),
-      catch: (error) => new Error(
-        'Failed ',
-        { cause: error }
-      )
-    })
-  }
+  if (pathContentsMetaInfo.meta === 'This file can be downloaded as a blob')
+    return yield* pipe(
+      requestRawRepoPathContentsFromGitHubAPI,
+      DownloadAndWriteFileToFs,
+    );
+
   yield* fail(new Error('LFS files are not yet supported'))
-  // pathContentsMetaInfo
 })
 
 
-export class AttemptedToGetDataAboveRepoRoot extends TaggedErrorVerifyingCause<{
-  problematicPath: string
-}>()(
-  'AttemptedToGetDataAboveRepoRoot',
-  'Error: Can\'t request contents that lie higher than the root of the repo'
-) {}
+export const DownloadAndWriteFileToFs = <E, R>(
+  self: Effect<Readable, E, R>
+) => gen(function* () {
+  const fileStream = yield* self;
+
+  const {
+    localPathAtWhichEntityFromRepoWillBeAvailable:
+      localDownloadedFilePath
+  } = yield* OutputConfigTag;
+
+  return yield* tryPromise({
+    try: (signal) => pipeline(
+      fileStream,
+      createWriteStream(localDownloadedFilePath),
+      { signal }
+    ),
+    catch: (error) => new Error(
+      'Failed blablabla',
+      { cause: error }
+    )
+  })
+})

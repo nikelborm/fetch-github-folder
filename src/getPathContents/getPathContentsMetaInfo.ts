@@ -1,6 +1,5 @@
 import { gen, succeed } from 'effect/Effect';
 import { ParseToReadableStream } from '../parseToReadableStream.js';
-import { Repo } from '../repo.interface.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { parseGitLFSObject } from './parseGitLFSObject.js';
 import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfoAboutPathContentsFromGitHubAPI.js';
@@ -15,20 +14,8 @@ import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfo
 //   OctokitTag
 // >
 
-export const getPathContentsMetaInfo = ({
-  repo,
-  gitRef,
-  path: requestedPath
-}: {
-  repo: Repo,
-  path: string,
-  gitRef?: string | undefined,
-}) => gen(function* () {
-  const response = yield* requestMetaInfoAboutPathContentsFromGitHubAPI({
-    repo,
-    gitRef,
-    path: requestedPath
-  });
+export const getPathContentsMetaInfo = gen(function* () {
+  const response = yield* requestMetaInfoAboutPathContentsFromGitHubAPI;
 
   const { type, name, path, sha, size } = response;
 
@@ -85,8 +72,8 @@ export const getPathContentsMetaInfo = ({
       contentAsBuffer,
       blobSha: sha,
       expectedContentSize: size,
-      name,
-      path,
+      fileName: name,
+      pathToFileInRepo: path,
     });
 
     if (potentialGitLFSObject !== "This is not a git LFS object")

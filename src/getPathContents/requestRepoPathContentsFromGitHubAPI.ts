@@ -1,8 +1,8 @@
 import { RequestError } from "@octokit/request-error";
 import type { OctokitResponse } from "@octokit/types";
-import { pipe } from 'effect/Function';
 import { UnknownException } from 'effect/Cause';
-import { tryMapPromise } from 'effect/Effect';
+import { gen, tryPromise } from 'effect/Effect';
+import { InputConfigTag, RepoConfigTag } from 'src/config.js';
 import {
   GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
@@ -14,29 +14,23 @@ import {
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
 } from '../errors.js';
 import { OctokitTag } from '../octokit.js';
-import { Repo } from '../repo.interface.js';
 
-export const requestRepoPathContentsFromGitHubAPI = ({
-  repo,
-  gitRef,
-  format,
-  path,
-  streamBody
-}: {
-  repo: Repo,
-  path: string,
-  format: 'object' | 'raw'
-  gitRef?: string | undefined,
+export const requestRepoPathContentsFromGitHubAPI = (
+  format: 'object' | 'raw',
   streamBody?: boolean
-}) => pipe(
-  OctokitTag,
-  tryMapPromise({
-    try: (octokit, signal) => octokit.request(
+) => gen(function * () {
+  const octokit = yield* OctokitTag;
+
+  const { gitRef, pathToEntityInRepo } = yield* InputConfigTag;
+  const repo = yield* RepoConfigTag;
+
+  return yield* tryPromise({
+    try: (signal) => octokit.request(
       'GET /repos/{owner}/{repo}/contents/{path}',
       {
         owner: repo.owner,
         repo: repo.name,
-        path,
+        path: pathToEntityInRepo,
         ...(gitRef && { ref: gitRef }),
         request: {
           signal,
@@ -68,7 +62,7 @@ export const requestRepoPathContentsFromGitHubAPI = ({
       : error.status >= 400
       ? new GitHubApiGeneralUserError(error)
       : error
-  }),
-)
+  })
+})
 
 type ResponseWithError = OctokitResponse<{ message?: string } | undefined, number>

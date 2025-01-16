@@ -1,27 +1,28 @@
 import { RequestError } from "@octokit/request-error";
-import { pipe } from 'effect/Function';
 import { UnknownException } from 'effect/Cause';
 import {
-  type Effect,
+  all,
   flatMap,
-  tryMapPromise,
+  tryMapPromise
 } from 'effect/Effect';
-import { ParseError } from 'effect/ParseResult';
+import { pipe } from 'effect/Function';
 import { Array as ArraySchema, decodeUnknownEither, NonEmptyTrimmedString, Struct } from 'effect/Schema';
+import { RepoConfigTag } from './config.js';
 import { OctokitTag } from './octokit.js';
-import { Repo } from './repo.interface.js';
 
-export const downloadInfoAboutAllBlobsInDirectory = (
-  repo: Repo,
-  gitTreeShaHashOfDirectory: string
-): Effect<readonly Readonly<{
+
+/* : Effect<readonly Readonly<{
   pathInsideDirectory: string;
   url: string;
   fileMode: string;
-}>[], RequestError | UnknownException | ParseError, OctokitTag> => pipe(
-  OctokitTag,
+}>[], RequestError | UnknownException | ParseError, OctokitTag> */
+
+export const downloadInfoAboutAllBlobsInDirectory = (
+  gitTreeShaHashOfDirectory: string
+) => pipe(
+  all([OctokitTag, RepoConfigTag]),
   tryMapPromise({
-    try: async (octokit, signal) => {
+    try: async ([octokit, repo], signal) => {
       const { data: { tree } } = await octokit.request(
         'GET /repos/{owner}/{repo}/git/trees/{tree_sha}',
         {

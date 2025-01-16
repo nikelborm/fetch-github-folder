@@ -1,23 +1,20 @@
-import { tryMapPromise } from "effect/Effect";
+import { Effect, all, tryMapPromise } from "effect/Effect";
 import { pipe } from 'effect/Function';
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
-import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
-import type { Repo } from '../repo.interface.js';
+import { Readable } from 'node:stream';
+import { OutputConfigTag } from 'src/config.js';
 
-export const downloadRepoDirAndPutItIntoFs = ({
-  repo,
-  gitRefWhichWillBeUsedToIdentifyGitTree,
-  pathToLocalDirWhichWillHaveContentsOfRepoDir,
-}: {
-  repo: Repo,
-  pathToLocalDirWhichWillHaveContentsOfRepoDir: string,
-  gitRefWhichWillBeUsedToIdentifyGitTree?: string | undefined,
-}) => pipe(
-  getReadableTarGzStreamOfRepoDirectory(repo, gitRefWhichWillBeUsedToIdentifyGitTree),
+export const unpackRepoFolderTarGzStreamToFs = <E, R>(
+  self: Effect<Readable, E, R>
+) => pipe(
+  all([self, OutputConfigTag]),
   tryMapPromise({
-    try: (tarGzStream, signal) => pipeline(
+    try: ([tarGzStream, {
+      localPathAtWhichEntityFromRepoWillBeAvailable:
+        pathToLocalDirWhichWillHaveContentsOfRepoDir
+    }], signal) => pipeline(
       tarGzStream,
       createGunzip(),
       extract(pathToLocalDirWhichWillHaveContentsOfRepoDir, {
@@ -35,5 +32,5 @@ export const downloadRepoDirAndPutItIntoFs = ({
       'Failed to extract received from GitHub .tar.gz archive',
       { cause: error }
     )
-  }),
+  })
 )

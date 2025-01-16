@@ -1,16 +1,15 @@
 import { RequestError } from "@octokit/request-error";
 import { UnknownException } from 'effect/Cause';
-import { map, tryMapPromise } from 'effect/Effect';
+import { all, map, tryMapPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { OctokitTag } from '../octokit.js';
-import { ParseToReadableStream } from '../parseToReadableStream.js';
-import { Repo } from '../repo.interface.js';
+import { OctokitTag } from './octokit.js';
+import { ParseToReadableStream } from './parseToReadableStream.js';
+import { RepoConfigTag } from './config.js';
 
 export const getReadableTarGzStreamOfRepoDirectory = (
-  repo: Repo,
   gitRefWhichWillBeUsedToIdentifyGitTree?: string
 ) => pipe(
-  requestTarballFromGitHubAPI(repo, gitRefWhichWillBeUsedToIdentifyGitTree),
+  requestTarballFromGitHubAPI(gitRefWhichWillBeUsedToIdentifyGitTree),
   map(({ data }) => data),
   ParseToReadableStream
 );
@@ -18,14 +17,13 @@ export const getReadableTarGzStreamOfRepoDirectory = (
 // TODO: PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
 
 const requestTarballFromGitHubAPI = (
-  repo: Repo,
   gitRefWhichWillBeUsedToIdentifyGitTree = ''
-) => OctokitTag.pipe(tryMapPromise({
-  try: (octokit, signal) => octokit.request(
+) => all([OctokitTag, RepoConfigTag]).pipe(tryMapPromise({
+  try: ([octokit, { owner, name }], signal) => octokit.request(
     'GET /repos/{owner}/{repo}/tarball/{ref}',
     {
-      owner: repo.owner,
-      repo: repo.name,
+      owner,
+      repo: name,
       ref: gitRefWhichWillBeUsedToIdentifyGitTree,
       request: {
         signal,

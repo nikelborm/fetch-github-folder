@@ -1,5 +1,4 @@
-import { pipe } from 'effect/Function';
-import { flatMap } from 'effect/Effect';
+import { gen } from 'effect/Effect';
 import { mapLeft } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
@@ -11,35 +10,22 @@ import {
   Struct,
   Union
 } from 'effect/Schema';
-import { Repo } from '../repo.interface.js';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { requestRepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
 
-export const requestMetaInfoAboutPathContentsFromGitHubAPI = ({
-  repo,
-  gitRef,
-  path
-}: {
-  repo: Repo,
-  path: string,
-  gitRef?: string | undefined,
-}) => pipe(
-  requestRepoPathContentsFromGitHubAPI({
-    repo,
-    gitRef,
-    format: "object",
-    path
-  }),
-  TapLogBoth,
-  flatMap((response) => mapLeft(
+export const requestMetaInfoAboutPathContentsFromGitHubAPI = gen(function* () {
+  const response = yield* requestRepoPathContentsFromGitHubAPI("object")
+    .pipe(TapLogBoth);
+
+  return yield* mapLeft(
     decodeResponse(response.data),
     parseError => new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(
       parseError,
       { response }
     )
-  ))
-)
+  );
+});
 
 const GitSomethingFields = {
   size: SchemaNumber,

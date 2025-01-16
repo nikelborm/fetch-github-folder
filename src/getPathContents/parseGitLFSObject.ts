@@ -8,14 +8,14 @@ export const parseGitLFSObject = ({
   contentAsBuffer,
   expectedContentSize,
   blobSha,
-  name,
-  path,
+  fileName,
+  pathToFileInRepo,
 }: {
   contentAsBuffer: Buffer<ArrayBuffer>,
   expectedContentSize: number,
   blobSha: string,
-  name: string;
-  path: string;
+  fileName: string;
+  pathToFileInRepo: string;
 }) => {
   // gitLFS info usually is no longer than MAX_GIT_LFS_INFO_SIZE bytes
   const contentAsString = contentAsBuffer
@@ -43,20 +43,20 @@ export const parseGitLFSObject = ({
   const thisIsGitLFSObject = matchedByRegexpAndParsedByEffectSchema
     && sizeFromGitLFSInfoAlignsWithExpectedContentSize;
 
-  if (thisIsGitLFSObject) {
-    return right({
-      type: 'file',
-      name,
-      path,
-      blobSha,
-      size: expectedContentSize,
-      gitLFSObjectIdSha256: parsingResult.right.oidSha256,
-      gitLFSVersion: parsingResult.right.version,
-      meta: "This file can be downloaded as a git-LFS object"
-    } as const);
-  } else if (shouldFailIfItIsNotGitLFS) {
-    return left(new InconsistentExpectedAndRealContentSize({
-      path,
+  if (thisIsGitLFSObject) return right({
+    type: 'file',
+    name: fileName,
+    path: pathToFileInRepo,
+    blobSha,
+    size: expectedContentSize,
+    gitLFSObjectIdSha256: parsingResult.right.oidSha256,
+    gitLFSVersion: parsingResult.right.version,
+    meta: "This file can be downloaded as a git-LFS object"
+  } as const);
+
+  if (shouldFailIfItIsNotGitLFS) return left(
+    new InconsistentExpectedAndRealContentSize({
+      path: pathToFileInRepo,
       actual: contentAsBuffer.byteLength,
       expected: expectedContentSize,
       gitLFSInfo: parsingResult.pipe(match({
@@ -69,10 +69,10 @@ export const parseGitLFSObject = ({
           value: right
         }),
       }))
-    }))
-  } else {
-    return right("This is not a git LFS object" as const)
-  }
+    })
+  );
+
+  return right("This is not a git LFS object" as const);
 }
 
 
@@ -84,7 +84,7 @@ export const parseGitLFSObject = ({
 // and the only variable thing in it is the size at the end, and I assume
 // that supported file size is not greater than 100 GB
 const MAX_GIT_LFS_INFO_SIZE = 137;
-// Don't add g modifier, it breaks match groups for some reason
+// Don't add regexp /g modifier, it breaks match groups
 const gitLFSInfoRegexp = /^version (?<version>https:\/\/git-lfs\.github\.com\/spec\/v1)\noid sha256:(?<oidSha256>[0-9a-f]{64})\nsize (?<size>[1-9][0-9]{0,11})\n$/m
 
 const GitLFSInfoSchema = Struct({
