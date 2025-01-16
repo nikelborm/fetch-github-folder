@@ -28,6 +28,8 @@
 [![Sonar Technical Debt Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
 [![Sonar Maintainability Grade](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
 [![Sonar Vulnerabilities Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
+![OSS Lifecycle status](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fnikelborm%2Ffetch-github-folder%2Fblob%2Fmain%2FOSSMETADATA)
+
 <!-- [![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder)](update_link_later) -->
 <!-- [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) -->
 <sup>(Don't judge me for my obsession with badges)</sup>
