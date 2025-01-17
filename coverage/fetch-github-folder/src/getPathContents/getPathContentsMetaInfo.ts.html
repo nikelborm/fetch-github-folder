@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>46/46</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>46/46</span>
             </div>
         
             
@@ -184,6 +184,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -193,6 +194,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -229,35 +231,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { gen, succeed } from 'effect/Effect';
 import { ParseToReadableStream } from '../parseToReadableStream.js';
@@ -278,28 +278,30 @@ import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfo
 export const getPathContentsMetaInfo = gen(function* () {
   const response = yield* requestMetaInfoAboutPathContentsFromGitHubAPI;
 &nbsp;
-  const { type, name, path, sha, size } = response;
+  const { type, name, path, sha: treeSha, size } = response;
 &nbsp;
   if (type === 'dir') {
     const { entries } = response;
-    if (!name || !path)
+&nbsp;
+    if (name &amp;&amp; path)
       return {
         type,
-        treeSha: sha,
+        name,
+        path,
+        treeSha,
         entries,
-        meta: 'This root directory of the repo can be downloaded as a git tree',
+        meta: 'This nested directory can be downloaded as a git tree',
       } as const;
+&nbsp;
     return {
       type,
-      name,
-      path,
-      treeSha: sha,
+      treeSha,
       entries,
-      meta: 'This nested directory can be downloaded as a git tree',
+      meta: 'This root directory of the repo can be downloaded as a git tree',
     } as const;
   }
 &nbsp;
-  const { content, encoding, sha: _, ...base } = response;
+  const { content, encoding, sha: blobSha, ...base } = response;
 &nbsp;
   // This is quite forgiving implementation. I had the choice to throw
   // errors whenever GitHub's API didn't follow its documentation. I even
@@ -327,35 +329,33 @@ export const getPathContentsMetaInfo = gen(function* () {
   //    elsewhere"
 &nbsp;
   // In the end it leads to much lower complexity with a ton of IFs removed
-  if (encoding !== 'none') {
-    const contentAsBuffer = Buffer.from(content, encoding);
 &nbsp;
-    const potentialGitLFSObject = yield* parseGitLFSObject({
-      contentAsBuffer,
-      blobSha: sha,
-      expectedContentSize: size,
-      fileName: name,
-      pathToFileInRepo: path,
-    });
-&nbsp;
-    if (potentialGitLFSObject !== 'This is not a git LFS object')
-      return potentialGitLFSObject;
-&nbsp;
-    const stream = yield* ParseToReadableStream(succeed(contentAsBuffer));
-&nbsp;
+  if (encoding === 'none')
     return {
       ...base,
-      blobSha: sha,
-      content: stream,
-      meta: 'This file is small enough that GitHub API decided to inline it',
-    } as const;
-  } else {
-    return {
-      ...base,
-      blobSha: sha,
+      blobSha,
       meta: 'This file can be downloaded as a blob',
     } as const;
-  }
+&nbsp;
+  const contentAsBuffer = Buffer.from(content, encoding);
+&nbsp;
+  const potentialGitLFSObject = yield* parseGitLFSObject({
+    contentAsBuffer,
+    blobSha,
+    expectedContentSize: size,
+    fileName: name,
+    pathToFileInRepo: path,
+  });
+&nbsp;
+  if (typeof potentialGitLFSObject === 'object')
+    return potentialGitLFSObject;
+&nbsp;
+  return {
+    ...base,
+    blobSha,
+    contentStream: ParseToReadableStream(succeed(contentAsBuffer)),
+    meta: 'This file is small enough that GitHub API decided to inline it',
+  } as const;
 }).pipe(TapLogBoth);
 &nbsp;</pre></td></tr></table></pre>
 
@@ -364,7 +364,7 @@ export const getPathContentsMetaInfo = gen(function* () {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T20:26:26.755Z
+                at 2025-01-17T03:19:00.608Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

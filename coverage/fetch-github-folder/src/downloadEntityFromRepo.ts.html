@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/39</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/39</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -101,33 +101,7 @@
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,38 +139,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { Effect, fail, gen, succeed, tryPromise } from 'effect/Effect';</span></span></span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { fail, gen } from 'effect/Effect';</span></span></span>
 import { pipe } from 'effect/Function';
-import { createWriteStream } from 'node:fs';
-import { Readable } from 'node:stream';
-import { pipeline } from 'node:stream/promises';
-import { OutputConfigTag } from './config.js';
 import {
   getPathContentsMetaInfo,
   requestRawRepoPathContentsFromGitHubAPI,
 } from './getPathContents/index.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
 import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamToFs.js';
+import { writeFileStreamToDestinationPath } from './writeFileStreamToDestinationPath.js';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const downloadEntityFromRepo = gen(function* () {</span>
 <span class="cstat-no" title="statement not covered" >  const pathContentsMetaInfo = yield* getPathContentsMetaInfo;</span>
@@ -212,8 +163,8 @@ import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamTo
 <span class="cstat-no" title="statement not covered" >    'This file is small enough that GitHub API decided to inline it'</span>
   )
 <span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
-<span class="cstat-no" title="statement not covered" >      succeed(pathContentsMetaInfo.content),</span>
-<span class="cstat-no" title="statement not covered" >      DownloadAndWriteFileToFs,</span>
+<span class="cstat-no" title="statement not covered" >      pathContentsMetaInfo.contentStream,</span>
+<span class="cstat-no" title="statement not covered" >      writeFileStreamToDestinationPath,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (</span>
@@ -221,31 +172,11 @@ import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamTo
   )
 <span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
 <span class="cstat-no" title="statement not covered" >      requestRawRepoPathContentsFromGitHubAPI,</span>
-<span class="cstat-no" title="statement not covered" >      DownloadAndWriteFileToFs,</span>
+<span class="cstat-no" title="statement not covered" >      writeFileStreamToDestinationPath,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  yield* fail(new Error('LFS files are not yet supported'));</span>
 <span class="cstat-no" title="statement not covered" >});</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >export const DownloadAndWriteFileToFs = &lt;E, R&gt;(</span>
-<span class="cstat-no" title="statement not covered" >  self: Effect&lt;Readable, E, R&gt;,</span>
-) =&gt;
-<span class="cstat-no" title="statement not covered" >  gen(function* () {</span>
-<span class="cstat-no" title="statement not covered" >    const fileStream = yield* self;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    const {</span>
-<span class="cstat-no" title="statement not covered" >      localPathAtWhichEntityFromRepoWillBeAvailable:</span>
-<span class="cstat-no" title="statement not covered" >        localDownloadedFilePath,</span>
-<span class="cstat-no" title="statement not covered" >    } = yield* OutputConfigTag;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    return yield* tryPromise({</span>
-<span class="cstat-no" title="statement not covered" >      try: signal =&gt;</span>
-<span class="cstat-no" title="statement not covered" >        pipeline(fileStream, createWriteStream(localDownloadedFilePath), {</span>
-<span class="cstat-no" title="statement not covered" >          signal,</span>
-<span class="cstat-no" title="statement not covered" >        }),</span>
-<span class="cstat-no" title="statement not covered" >      catch: error =&gt; new Error('Failed blablabla', { cause: error }),</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -253,7 +184,7 @@ import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamTo
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-16T20:26:26.755Z
+                at 2025-01-17T03:19:00.608Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
