@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">78.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>72/90</span>
+                <span class='fraction'>63/80</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">78.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>72/90</span>
+                <span class='fraction'>63/80</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -197,21 +197,7 @@
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
 <a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a>
-<a name='L145'></a><a href='#L145'>145</a>
-<a name='L146'></a><a href='#L146'>146</a>
-<a name='L147'></a><a href='#L147'>147</a>
-<a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L135'></a><a href='#L135'>135</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -226,12 +212,6 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -267,16 +247,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -329,7 +302,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -373,15 +345,9 @@ import { outdent } from 'outdent';
 export const parseGitLFSObject = ({
   contentAsBuffer,
   expectedContentSize,
-  blobSha,
-  fileName,
-  pathToFileInRepo,
 }: {
   contentAsBuffer: Buffer&lt;ArrayBuffer&gt;;
   expectedContentSize: number;
-  blobSha: string;
-  fileName: string;
-  pathToFileInRepo: string;
 }) =&gt; {
   // gitLFS info usually is no longer than MAX_GIT_LFS_INFO_SIZE bytes
   const contentAsString = contentAsBuffer
@@ -399,33 +365,26 @@ export const parseGitLFSObject = ({
   );
 &nbsp;
   const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
-  const sizeFromGitLFSInfoAlignsWithExpectedContentSize =
+  const doesSizeFromGitLFSInfoAlignWithExpectedContentSize =
     isRight(parsingResult) &amp;&amp;
     parsingResult.right.size === expectedContentSize;
 &nbsp;
   const shouldFailIfItIsNotGitLFS =
     contentAsBuffer.byteLength !== expectedContentSize;
 &nbsp;
-  const thisIsGitLFSObject =
+  const isThisAGitLFSObject =
     matchedByRegexpAndParsedByEffectSchema &amp;&amp;
-    sizeFromGitLFSInfoAlignsWithExpectedContentSize;
+    doesSizeFromGitLFSInfoAlignWithExpectedContentSize;
 &nbsp;
-  if (thisIsGitLFSObject)
+  if (isThisAGitLFSObject)
     return right({
-      type: 'file',
-      name: fileName,
-      path: pathToFileInRepo,
-      blobSha,
-      size: expectedContentSize,
       gitLFSObjectIdSha256: parsingResult.right.oidSha256,
       gitLFSVersion: parsingResult.right.version,
-      meta: 'This file can be downloaded as a git-LFS object',
     } as const);
 &nbsp;
   if (shouldFailIfItIsNotGitLFS)
 <span class="branch-0 cbranch-no" title="branch not covered" >    return left(</span>
 <span class="cstat-no" title="statement not covered" >      new InconsistentExpectedAndRealContentSize({</span>
-<span class="cstat-no" title="statement not covered" >        path: pathToFileInRepo,</span>
 <span class="cstat-no" title="statement not covered" >        actual: contentAsBuffer.byteLength,</span>
 <span class="cstat-no" title="statement not covered" >        expected: expectedContentSize,</span>
 <span class="cstat-no" title="statement not covered" >        gitLFSInfo: parsingResult.pipe(</span>
@@ -477,7 +436,6 @@ export class FailedToParseGitLFSInfo extends TaggedErrorVerifyingCause&lt;{
 ) {}
 &nbsp;
 export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifyingCause&lt;{
-  path: string;
   actual: number;
   expected: number;
   gitLFSInfo:
@@ -492,19 +450,19 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
 }&gt;()(
   'InconsistentExpectedAndRealContentSize',
   ctx =&gt;
-    `Got file ${ctx.path} with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
+    `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
   void 0,
   {
     comment: outdent({ newline: ' ' })`
-    If we weren't successful in parsing it as git LFS object
-    announcement using RegExp and Effect.Schema, we just do a basic size
-    consistency check. The check implements the second marker of it
-    being a Git LFS object as a backup to checking does "content" look
-    like a Git LFS object. If GitHub API's "size" field is different
-    from actual size of "content" field, it means either our schema with
-    regexp fucked up, or GitHub API did. If it doesn't throw, it means
-    there's no reason to assume it's a Git LFS object.
-  `,
+      If we weren't successful in parsing it as git LFS object
+      announcement using RegExp and Effect.Schema, we just do a basic size
+      consistency check. The check implements the second marker of it
+      being a Git LFS object as a backup to checking does "content" look
+      like a Git LFS object. If GitHub API's "size" field is different
+      from actual size of "content" field, it means either our schema with
+      regexp fucked up, or GitHub API did. If it doesn't throw, it means
+      there's no reason to assume it's a Git LFS object.
+    `,
   },
 ) {}
 &nbsp;</pre></td></tr></table></pre>
@@ -514,7 +472,7 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-17T04:39:39.095Z
+                at 2025-01-17T05:10:31.047Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
