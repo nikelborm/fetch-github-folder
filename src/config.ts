@@ -1,5 +1,4 @@
-import { Context } from 'effect';
-import { Tag } from 'effect/Context';
+import { Tag, empty, add } from 'effect/Context';
 import { pipe } from 'effect/Function';
 import type { Readonly } from 'ts-toolbelt/out/Object/Readonly.d.ts';
 
@@ -31,9 +30,9 @@ export const createInputConfigContext = ({
   ...inputConfig
 }: InputConfigTag['Type'] & { readonly repo: RepoConfigTag['Type'] }) =>
   pipe(
-    Context.empty(),
-    Context.add(RepoConfigTag, repo),
-    Context.add(InputConfigTag, inputConfig),
+    empty(),
+    add(RepoConfigTag, repo),
+    add(InputConfigTag, inputConfig),
   );
 
 export const createSingleTargetConfigContext = ({
@@ -44,7 +43,7 @@ export const createSingleTargetConfigContext = ({
 } & OutputConfigTag['Type']) =>
   pipe(
     createInputConfigContext(inputConfig),
-    Context.add(OutputConfigTag, {
+    add(OutputConfigTag, {
       localPathAtWhichEntityFromRepoWillBeAvailable,
     }),
   );

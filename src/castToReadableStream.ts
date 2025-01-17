@@ -3,7 +3,7 @@ import { Readable } from 'node:stream';
 import { ReadableStream } from 'node:stream/web';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
-export const ParseToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
+export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
   gen(function* () {
     const data = yield* self;
 
@@ -19,10 +19,10 @@ export const ParseToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
 
     if (data instanceof Readable) return data;
 
-    return yield* new FailedToParseDataToReadableStream();
+    return yield* new FailedToCastDataToReadableStream();
   });
 
-export class FailedToParseDataToReadableStream extends TaggedErrorVerifyingCause()(
-  'FailedToParseDataToReadableStream',
-  'Failed to parse data to readable stream',
+export class FailedToCastDataToReadableStream extends TaggedErrorVerifyingCause()(
+  'FailedToCastDataToReadableStream',
+  'Error: Failed to cast data to Readable stream, type of argument is not familiar',
 ) {}

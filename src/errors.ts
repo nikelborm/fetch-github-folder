@@ -59,6 +59,7 @@ export const parseCommonGitHubApiErrors = (error: RequestError) => {
   // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
   if (error.status === 403) return new GitHubApiAuthRatelimited(error);
 
+  // docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28
   if (error.status === 429) return new GitHubApiRatelimited(error);
 
   if (error.status === 404)

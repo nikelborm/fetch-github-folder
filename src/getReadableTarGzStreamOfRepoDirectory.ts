@@ -8,7 +8,7 @@ import {
   parseCommonGitHubApiErrors,
 } from './errors.js';
 import { OctokitTag } from './octokit.js';
-import { ParseToReadableStream } from './parseToReadableStream.js';
+import { CastToReadableStream } from './castToReadableStream.js';
 
 export const getReadableTarGzStreamOfRepoDirectory = (
   gitRefWhichWillBeUsedToIdentifyGitTree?: string,
@@ -16,7 +16,7 @@ export const getReadableTarGzStreamOfRepoDirectory = (
   pipe(
     requestTarballFromGitHubAPI(gitRefWhichWillBeUsedToIdentifyGitTree),
     map(({ data }) => data),
-    ParseToReadableStream,
+    CastToReadableStream,
   );
 
 const requestTarballFromGitHubAPI = (

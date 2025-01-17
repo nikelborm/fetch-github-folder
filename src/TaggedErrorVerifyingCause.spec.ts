@@ -10,7 +10,6 @@ import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 it('Should have expected fields from both contexts: dynamic and static ', ctx => {
   const dynamicContext = {
     actual: 12,
-    path: '/asd/asd',
     expected: 13,
     gitLFSInfo: {
       meta: 'Parsed successfully',
@@ -28,7 +27,6 @@ it('Should have expected fields from both contexts: dynamic and static ', ctx =>
 
   const extractedNeedFields = (({
     actual,
-    path,
     _tag,
     name,
     message,
@@ -37,7 +35,6 @@ it('Should have expected fields from both contexts: dynamic and static ', ctx =>
     comment,
   }) => ({
     actual,
-    path,
     _tag,
     name,
     message,
@@ -49,8 +46,7 @@ it('Should have expected fields from both contexts: dynamic and static ', ctx =>
   ctx.expect(extractedNeedFields).toEqual({
     _tag: 'InconsistentExpectedAndRealContentSize',
     name: 'InconsistentExpectedAndRealContentSize',
-    message:
-      'Got file /asd/asd with size 12 bytes while expecting 13 bytes',
+    message: 'Got file with size 12 bytes while expecting 13 bytes',
     comment: outdent({ newline: ' ' })`
       If we weren't successful in parsing it as git LFS object
       announcement using RegExp and Effect.Schema, we just do a basic size

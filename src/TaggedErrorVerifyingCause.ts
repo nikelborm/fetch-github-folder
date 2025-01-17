@@ -1,6 +1,5 @@
 import type { YieldableError } from 'effect/Cause';
-import { Equals } from 'tsafe';
-import type { Readonly } from 'ts-toolbelt/out/Object/Readonly.d.ts';
+import type { Equals } from 'tsafe';
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
 import type { ParseError } from 'effect/ParseResult';
@@ -20,9 +19,7 @@ export type GetSimpleFormError<T> = T extends object
   : T;
 
 type VoidifyEmptyObject<O extends object> = Prettify<
-  Equals<O, {}> extends true
-    ? void
-    : Readonly<GetSimpleFormError<O>, string, 'deep'>
+  Equals<O, {}> extends true ? void : Readonly<GetSimpleFormError<O>>
 >;
 
 export const TaggedErrorVerifyingCause =

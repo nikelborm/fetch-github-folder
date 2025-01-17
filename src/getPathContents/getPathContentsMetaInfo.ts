@@ -1,5 +1,5 @@
 import { gen, succeed } from 'effect/Effect';
-import { ParseToReadableStream } from '../parseToReadableStream.js';
+import { CastToReadableStream } from '../castToReadableStream.js';
 import { TapLogBoth } from '../TapLogBoth.js';
 import { parseGitLFSObject } from './parseGitLFSObject.js';
 import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfoAboutPathContentsFromGitHubAPI.js';
@@ -17,28 +17,28 @@ import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfo
 export const getPathContentsMetaInfo = gen(function* () {
   const response = yield* requestMetaInfoAboutPathContentsFromGitHubAPI;
 
-  const { type, name, path, sha, size } = response;
+  const { type, name, path, size } = response;
 
   if (type === 'dir') {
-    const { entries } = response;
-    if (!name || !path)
+    const { entries, sha: treeSha } = response;
+
+    if (name && path)
       return {
         type,
-        treeSha: sha,
+        name,
+        path,
+        treeSha,
         entries,
-        meta: 'This root directory of the repo can be downloaded as a git tree',
+        meta: 'This nested directory can be downloaded as a git tree',
       } as const;
+
     return {
       type,
-      name,
-      path,
-      treeSha: sha,
+      treeSha,
       entries,
-      meta: 'This nested directory can be downloaded as a git tree',
+      meta: 'This root directory of the repo can be downloaded as a git tree',
     } as const;
   }
-
-  const { content, encoding, sha: _, ...base } = response;
 
   // This is quite forgiving implementation. I had the choice to throw
   // errors whenever GitHub's API didn't follow its documentation. I even
@@ -66,33 +66,33 @@ export const getPathContentsMetaInfo = gen(function* () {
   //    elsewhere"
 
   // In the end it leads to much lower complexity with a ton of IFs removed
-  if (encoding !== 'none') {
-    const contentAsBuffer = Buffer.from(content, encoding);
 
-    const potentialGitLFSObject = yield* parseGitLFSObject({
-      contentAsBuffer,
-      blobSha: sha,
-      expectedContentSize: size,
-      fileName: name,
-      pathToFileInRepo: path,
-    });
+  const { content, encoding, sha: blobSha, ..._ } = response;
+  const base = { ..._, blobSha };
 
-    if (potentialGitLFSObject !== 'This is not a git LFS object')
-      return potentialGitLFSObject;
-
-    const stream = yield* ParseToReadableStream(succeed(contentAsBuffer));
-
+  if (encoding === 'none')
     return {
       ...base,
-      blobSha: sha,
-      content: stream,
-      meta: 'This file is small enough that GitHub API decided to inline it',
-    } as const;
-  } else {
-    return {
-      ...base,
-      blobSha: sha,
       meta: 'This file can be downloaded as a blob',
     } as const;
-  }
+
+  const contentAsBuffer = Buffer.from(content, encoding);
+
+  const potentialGitLFSObject = yield* parseGitLFSObject({
+    contentAsBuffer,
+    expectedContentSize: size,
+  });
+
+  if (typeof potentialGitLFSObject === 'object')
+    return {
+      ...base,
+      ...potentialGitLFSObject,
+      meta: 'This file can be downloaded as a git-LFS object',
+    } as const;
+
+  return {
+    ...base,
+    contentStream: CastToReadableStream(succeed(contentAsBuffer)),
+    meta: 'This file is small enough that GitHub API decided to inline it',
+  } as const;
 }).pipe(TapLogBoth);

@@ -1,5 +1,6 @@
 # <img src="https://nikelborm.github.io/fetch-github-folder/logo.png" align="right" width="40px" height="40px"/> fetch-github-folder :lizard:
 
+[![Open in VS Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20VS%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://github.dev/nikelborm/fetch-github-folder)
 [![NPM package version](https://badge.fury.io/js/fetch-github-folder.svg)](https://www.npmjs.com/package/fetch-github-folder)
 [![NPM downloads](https://img.shields.io/npm/dm/fetch-github-folder.svg?style=flat)](https://npmjs.org/package/fetch-github-folder)
 [![NPM Last Update](https://img.shields.io/npm/last-update/fetch-github-folder)](https://npmjs.org/package/fetch-github-folder)
@@ -120,14 +121,16 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 2. support creating downloading plans, where user can specify more than one entity (folder/file) to download
 3. support git submodules
 4. add autodeterminator that this is a public repo and we don't need an API key
-5. Maybe find something useful in [download-directory repo](https://github.com/download-directory/download-directory.github.io/)
-6. tests
-7. more options for symbolic links and git submodules
-8. complete git LFS support
-9. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
-10. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-11. add codacy, coderabbit, CodeQL, scorecard.dev
-12. <https://github.com/nikelborm/fetch-github-folder/community>
-13. <https://www.codefactor.io/repository/github/nikelborm/fetch-github-folder/issues>
-14. <https://codeclimate.com/github/nikelborm/fetch-github-folder/issues>
-15. <https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=nikelborm_fetch-github-folder>
+5. Smart recognition and parsing of different links and making downloading plan out of them
+6. Desktop URL handler, so that the CLI can handle some GitHub as vscode does
+7. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
+8. progress bar with stages
+9. tests
+10. more options for symbolic links and git submodules
+11. complete git LFS support
+12. add retries for reliability and delay in case of rate-limits
+13. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
+14. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
+15. Borrow https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts
+16. add codacy, coderabbit, CodeQL, scorecard.dev
+17. <https://github.com/nikelborm/fetch-github-folder/community>

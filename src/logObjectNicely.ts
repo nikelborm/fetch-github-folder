@@ -1,7 +1,7 @@
-import { Console } from 'effect';
+import { dir } from 'effect/Console';
 
 export const LogObjectNicely = (item: unknown) =>
-  Console.dir(item, {
+  dir(item, {
     colors: true,
     compact: false,
     depth: null,

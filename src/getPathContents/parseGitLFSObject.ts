@@ -12,15 +12,9 @@ import { outdent } from 'outdent';
 export const parseGitLFSObject = ({
   contentAsBuffer,
   expectedContentSize,
-  blobSha,
-  fileName,
-  pathToFileInRepo,
 }: {
   contentAsBuffer: Buffer<ArrayBuffer>;
   expectedContentSize: number;
-  blobSha: string;
-  fileName: string;
-  pathToFileInRepo: string;
 }) => {
   // gitLFS info usually is no longer than MAX_GIT_LFS_INFO_SIZE bytes
   const contentAsString = contentAsBuffer
@@ -38,33 +32,26 @@ export const parseGitLFSObject = ({
   );
 
   const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
-  const sizeFromGitLFSInfoAlignsWithExpectedContentSize =
+  const doesSizeFromGitLFSInfoAlignWithExpectedContentSize =
     isRight(parsingResult) &&
     parsingResult.right.size === expectedContentSize;
 
   const shouldFailIfItIsNotGitLFS =
     contentAsBuffer.byteLength !== expectedContentSize;
 
-  const thisIsGitLFSObject =
+  const isThisAGitLFSObject =
     matchedByRegexpAndParsedByEffectSchema &&
-    sizeFromGitLFSInfoAlignsWithExpectedContentSize;
+    doesSizeFromGitLFSInfoAlignWithExpectedContentSize;
 
-  if (thisIsGitLFSObject)
+  if (isThisAGitLFSObject)
     return right({
-      type: 'file',
-      name: fileName,
-      path: pathToFileInRepo,
-      blobSha,
-      size: expectedContentSize,
       gitLFSObjectIdSha256: parsingResult.right.oidSha256,
       gitLFSVersion: parsingResult.right.version,
-      meta: 'This file can be downloaded as a git-LFS object',
     } as const);
 
   if (shouldFailIfItIsNotGitLFS)
     return left(
       new InconsistentExpectedAndRealContentSize({
-        path: pathToFileInRepo,
         actual: contentAsBuffer.byteLength,
         expected: expectedContentSize,
         gitLFSInfo: parsingResult.pipe(
@@ -116,7 +103,6 @@ export class FailedToParseGitLFSInfo extends TaggedErrorVerifyingCause<{
 ) {}
 
 export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifyingCause<{
-  path: string;
   actual: number;
   expected: number;
   gitLFSInfo:
@@ -131,18 +117,18 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
 }>()(
   'InconsistentExpectedAndRealContentSize',
   ctx =>
-    `Got file ${ctx.path} with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
+    `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
   void 0,
   {
     comment: outdent({ newline: ' ' })`
-    If we weren't successful in parsing it as git LFS object
-    announcement using RegExp and Effect.Schema, we just do a basic size
-    consistency check. The check implements the second marker of it
-    being a Git LFS object as a backup to checking does "content" look
-    like a Git LFS object. If GitHub API's "size" field is different
-    from actual size of "content" field, it means either our schema with
-    regexp fucked up, or GitHub API did. If it doesn't throw, it means
-    there's no reason to assume it's a Git LFS object.
-  `,
+      If we weren't successful in parsing it as git LFS object
+      announcement using RegExp and Effect.Schema, we just do a basic size
+      consistency check. The check implements the second marker of it
+      being a Git LFS object as a backup to checking does "content" look
+      like a Git LFS object. If GitHub API's "size" field is different
+      from actual size of "content" field, it means either our schema with
+      regexp fucked up, or GitHub API did. If it doesn't throw, it means
+      there's no reason to assume it's a Git LFS object.
+    `,
   },
 ) {}
