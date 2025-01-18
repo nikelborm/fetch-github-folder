@@ -115,22 +115,24 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 1. Set env variables in `.env` file
 2. Run `npm start`
 
-## TODO
+## TODO by priority
 
-1. add possibility for quick request of token through browser (script opens a window and runs the request as authorized user)
-2. support creating downloading plans, where user can specify more than one entity (folder/file) to download
-3. support git submodules
-4. add autodeterminator that this is a public repo and we don't need an API key
-5. Smart recognition and parsing of different links and making downloading plan out of them
-6. Desktop URL handler, so that the CLI can handle some GitHub as vscode does
-7. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
-8. progress bar with stages
-9. tests
-10. more options for symbolic links and git submodules
-11. complete git LFS support
-12. add retries for reliability and delay in case of rate-limits
+1. support git LFS
+2. tests
+3. Better Readme
+4. support creating downloading plans, where user can specify more than one entity (folder/file) to download
+5. At least primitive support for passing auth tokens. Hide auth token behind Effect.Redacted (do not provide CLI option for token. only either env, or prompt)
+6. add possibility for quick request of token through browser (script opens a window and runs the request as authorized user)
+7. support git submodules
+8. support symbolic links?
+9. reflect responses and determine that this is a public repo and we don't need an API key
+10. Smart recognition and parsing of different github links and making downloading plan out of them
+11. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
+12. add retries for reliability and delay in case of rate-limits (Borrow [jpb06/effect-github-stats/.../handle-octokit-request-error.ts](https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts))
 13. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
 14. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-15. Borrow https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts
-16. add codacy, coderabbit, CodeQL, scorecard.dev
-17. <https://github.com/nikelborm/fetch-github-folder/community>
+15. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
+16. progress bar with stages
+17. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
+18. add codacy, coderabbit, CodeQL, scorecard.dev
+19. <https://github.com/nikelborm/fetch-github-folder/community>
