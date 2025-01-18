@@ -8,15 +8,16 @@ export default {
   output: {
     dir: 'dist/minified',
     format: 'es',
+    sourcemap: true,
     compact: true,
   },
   plugins: [
     nodeResolve(),
     commonjs(),
-    terser(),
     visualizer({
-      sourcemap: 'true',
+      sourcemap: true,
       filename: 'gh-page/bundled_deps/index.html',
     }),
+    terser(),
   ],
 };

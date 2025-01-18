@@ -6,7 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'vite.config.ts'
-      - 'rollup.config.ts'
+      - 'rollup.config.js'
       - 'gh-page/**'
 
 jobs:
