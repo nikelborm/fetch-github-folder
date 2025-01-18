@@ -6,8 +6,8 @@ import {
   NumberFromString,
   Struct,
 } from 'effect/Schema';
-import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { outdent } from 'outdent';
+import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 
 export const parseGitLFSObject = ({
   contentAsBuffer,
@@ -54,18 +54,16 @@ export const parseGitLFSObject = ({
       new InconsistentExpectedAndRealContentSize({
         actual: contentAsBuffer.byteLength,
         expected: expectedContentSize,
-        gitLFSInfo: parsingResult.pipe(
-          match({
-            onLeft: left => ({
-              meta: 'Failed to parse',
-              error: left,
-            }),
-            onRight: right => ({
-              meta: 'Parsed successfully',
-              value: right,
-            }),
+        gitLFSInfo: match(parsingResult, {
+          onLeft: left => ({
+            meta: 'Failed to parse',
+            error: left,
           }),
-        ),
+          onRight: right => ({
+            meta: 'Parsed successfully',
+            value: right,
+          }),
+        }),
       }),
     );
 

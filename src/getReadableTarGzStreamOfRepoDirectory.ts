@@ -22,35 +22,33 @@ export const getReadableTarGzStreamOfRepoDirectory = (
 const requestTarballFromGitHubAPI = (
   gitRefWhichWillBeUsedToIdentifyGitTree = '',
 ) =>
-  all([OctokitTag, RepoConfigTag]).pipe(
-    tryMapPromise({
-      try: ([octokit, { owner, name }], signal) =>
-        octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {
-          owner,
-          repo: name,
-          ref: gitRefWhichWillBeUsedToIdentifyGitTree,
-          request: {
-            signal,
-            parseSuccessResponseBody: false,
-          },
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28',
-          },
-        }),
-      catch: error => {
-        if (!(error instanceof RequestError))
-          return new UnknownException(
-            error,
-            'Failed to request .tar.gz file from GitHub API',
-          );
+  tryMapPromise(all([OctokitTag, RepoConfigTag]), {
+    try: ([octokit, { owner, name }], signal) =>
+      octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {
+        owner,
+        repo: name,
+        ref: gitRefWhichWillBeUsedToIdentifyGitTree,
+        request: {
+          signal,
+          parseSuccessResponseBody: false,
+        },
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      }),
+    catch: error => {
+      if (!(error instanceof RequestError))
+        return new UnknownException(
+          error,
+          'Failed to request .tar.gz file from GitHub API',
+        );
 
-        if (error.status === 400)
-          return new GitHubApiGeneralUserError(error, {
-            notes:
-              'Error happened probably because you asked for empty repo',
-          });
+      if (error.status === 400)
+        return new GitHubApiGeneralUserError(error, {
+          notes:
+            'Error happened probably because you asked for empty repo',
+        });
 
-        return parseCommonGitHubApiErrors(error);
-      },
-    }),
-  );
+      return parseCommonGitHubApiErrors(error);
+    },
+  });

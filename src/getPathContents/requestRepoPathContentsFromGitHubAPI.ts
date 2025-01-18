@@ -11,7 +11,7 @@ import {
 } from '../errors.js';
 import { OctokitTag } from '../octokit.js';
 
-export const requestRepoPathContentsFromGitHubAPI = (
+export const RepoPathContentsFromGitHubAPI = (
   format: 'object' | 'raw',
   streamBody?: boolean,
 ) =>

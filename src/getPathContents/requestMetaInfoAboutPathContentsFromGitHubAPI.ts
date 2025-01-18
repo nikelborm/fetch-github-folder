@@ -10,16 +10,15 @@ import {
   Struct,
   Union,
 } from 'effect/Schema';
+import { TapLogBoth } from '../logObjectPretty.js';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
-import { TapLogBoth } from '../TapLogBoth.js';
-import { requestRepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
+import { RepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
 
-export const requestMetaInfoAboutPathContentsFromGitHubAPI = gen(
+export const ParsedMetaInfoAboutPathContentsFromGitHubAPI = gen(
   function* () {
-    const response =
-      yield* requestRepoPathContentsFromGitHubAPI('object').pipe(
-        TapLogBoth,
-      );
+    const response = yield* TapLogBoth(
+      RepoPathContentsFromGitHubAPI('object'),
+    );
 
     return yield* mapLeft(
       decodeResponse(response.data),

@@ -9,7 +9,7 @@ export default defineConfig({
       exclude: [
         ...coverageConfigDefaults.exclude,
         'destination/**',
-        '**/{scratchpad,index,TapLogBoth,logObjectNicely,repo.interface}[.][jt]s',
+        '**/{scratchpad,index,logObjectPretty,repo.interface}[.][jt]s',
       ],
     },
   },

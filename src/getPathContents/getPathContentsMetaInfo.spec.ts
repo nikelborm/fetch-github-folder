@@ -30,10 +30,10 @@ import {
 } from '../errors.js';
 import { OctokitTag } from '../octokit.js';
 import type { IRepo } from '../repo.interface.js';
-import { getPathContentsMetaInfo } from './getPathContentsMetaInfo.js';
+import { PathContentsMetaInfo } from './getPathContentsMetaInfo.js';
 
 type EffectReadyErrors =
-  typeof getPathContentsMetaInfo extends Effect<unknown, infer U, unknown>
+  typeof PathContentsMetaInfo extends Effect<unknown, infer U, unknown>
     ? Extract<U, { _tag: unknown }>
     : never;
 
@@ -64,7 +64,7 @@ const expectError = <
     `Should throw ${ExpectedErrorClass.name} when ${when}`,
     ctx =>
       pipe(
-        getPathContentsMetaInfo,
+        PathContentsMetaInfo,
         flip,
         map(e => ctx.expect(e).toBeInstanceOf(ExpectedErrorClass)),
         provide(
@@ -151,7 +151,7 @@ const expectNotFail = (
   pathToEntityInRepo: string,
   testEffect: (
     ctx: TaskContext<RunnerTestCase<{}>> & TestContext,
-    pathContentsMetaInfo: typeof getPathContentsMetaInfo,
+    pathContentsMetaInfo: typeof PathContentsMetaInfo,
   ) => Effect<
     unknown,
     unknown,
@@ -163,7 +163,7 @@ const expectNotFail = (
     'Should return ' + descriptionOfWhatItShouldReturn,
     ctx =>
       pipe(
-        testEffect(ctx, getPathContentsMetaInfo),
+        testEffect(ctx, PathContentsMetaInfo),
         provide(
           createInputConfigContext({
             pathToEntityInRepo,
@@ -276,7 +276,7 @@ expectNotFail(
 
       ctx.expect({
         ...rest,
-        content: yield* contentStream.pipe(andThen(text)),
+        content: yield* andThen(contentStream, text),
       }).toMatchInlineSnapshot(`
         {
           "blobSha": "e0581c6516af41608a222765cfb582f0bf89ed47",
@@ -309,7 +309,7 @@ expectNotFail(
       ctx
         .expect({
           ...rest,
-          content: yield* contentStream.pipe(andThen(text)),
+          content: yield* andThen(contentStream, text),
         })
         .toEqual({
           type: 'file',
@@ -378,7 +378,7 @@ expectNotFail(
 
       ctx.expect({
         ...rest,
-        content: yield* contentStream.pipe(andThen(text)),
+        content: yield* andThen(contentStream, text),
       }).toMatchInlineSnapshot(`
         {
           "blobSha": "24ebb076f9e46157c4abdc6e7b69a775eb38d6a4",

@@ -1,8 +1,8 @@
 import { gen, succeed } from 'effect/Effect';
 import { CastToReadableStream } from '../castToReadableStream.js';
-import { TapLogBoth } from '../TapLogBoth.js';
+import { TapLogBoth } from '../logObjectPretty.js';
 import { parseGitLFSObject } from './parseGitLFSObject.js';
-import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfoAboutPathContentsFromGitHubAPI.js';
+import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfoAboutPathContentsFromGitHubAPI.js';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],
@@ -14,8 +14,8 @@ import { requestMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfo
 //   OctokitTag
 // >
 
-export const getPathContentsMetaInfo = gen(function* () {
-  const response = yield* requestMetaInfoAboutPathContentsFromGitHubAPI;
+export const PathContentsMetaInfo = gen(function* () {
+  const response = yield* ParsedMetaInfoAboutPathContentsFromGitHubAPI;
 
   const { type, name, path, size } = response;
 
