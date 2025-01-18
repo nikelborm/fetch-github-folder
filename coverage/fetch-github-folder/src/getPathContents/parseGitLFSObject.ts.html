@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.75% </span>
+                <span class="strong">80.76% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>63/80</span>
+                <span class='fraction'>63/78</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.75% </span>
+                <span class="strong">80.76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>63/80</span>
+                <span class='fraction'>63/78</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -195,9 +195,7 @@
 <a name='L130'></a><a href='#L130'>130</a>
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -250,8 +248,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -339,8 +335,8 @@ import {
   NumberFromString,
   Struct,
 } from 'effect/Schema';
-import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { outdent } from 'outdent';
+import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 &nbsp;
 export const parseGitLFSObject = ({
   contentAsBuffer,
@@ -387,18 +383,16 @@ export const parseGitLFSObject = ({
 <span class="cstat-no" title="statement not covered" >      new InconsistentExpectedAndRealContentSize({</span>
 <span class="cstat-no" title="statement not covered" >        actual: contentAsBuffer.byteLength,</span>
 <span class="cstat-no" title="statement not covered" >        expected: expectedContentSize,</span>
-<span class="cstat-no" title="statement not covered" >        gitLFSInfo: parsingResult.pipe(</span>
-<span class="cstat-no" title="statement not covered" >          match({</span>
-<span class="cstat-no" title="statement not covered" >            onLeft: <span class="fstat-no" title="function not covered" >left =&gt; ({</span></span>
-<span class="cstat-no" title="statement not covered" >              meta: 'Failed to parse',</span>
-<span class="cstat-no" title="statement not covered" >              error: left,</span>
-<span class="cstat-no" title="statement not covered" >            }),</span>
-<span class="cstat-no" title="statement not covered" >            onRight: <span class="fstat-no" title="function not covered" >right =&gt; ({</span></span>
-<span class="cstat-no" title="statement not covered" >              meta: 'Parsed successfully',</span>
-<span class="cstat-no" title="statement not covered" >              value: right,</span>
-<span class="cstat-no" title="statement not covered" >            }),</span>
+<span class="cstat-no" title="statement not covered" >        gitLFSInfo: match(parsingResult, {</span>
+<span class="cstat-no" title="statement not covered" >          onLeft: <span class="fstat-no" title="function not covered" >left =&gt; ({</span></span>
+<span class="cstat-no" title="statement not covered" >            meta: 'Failed to parse',</span>
+<span class="cstat-no" title="statement not covered" >            error: left,</span>
 <span class="cstat-no" title="statement not covered" >          }),</span>
-<span class="cstat-no" title="statement not covered" >        ),</span>
+<span class="cstat-no" title="statement not covered" >          onRight: <span class="fstat-no" title="function not covered" >right =&gt; ({</span></span>
+<span class="cstat-no" title="statement not covered" >            meta: 'Parsed successfully',</span>
+<span class="cstat-no" title="statement not covered" >            value: right,</span>
+<span class="cstat-no" title="statement not covered" >          }),</span>
+<span class="cstat-no" title="statement not covered" >        }),</span>
 <span class="cstat-no" title="statement not covered" >      }),</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
@@ -472,7 +466,7 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-17T05:51:42.033Z
+                at 2025-01-18T12:56:48.457Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

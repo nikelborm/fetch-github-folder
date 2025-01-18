@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/20</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/20</span>
             </div>
         
             
@@ -97,12 +97,7 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -118,7 +113,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -127,12 +121,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -140,39 +132,35 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { fail, gen } from 'effect/Effect';</span></span></span>
-import { pipe } from 'effect/Function';
 import {
-  getPathContentsMetaInfo,
-  requestRawRepoPathContentsFromGitHubAPI,
+  PathContentsMetaInfo,
+  RawStreamOfRepoPathContentsFromGitHubAPI,
 } from './getPathContents/index.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
 import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamToFs.js';
 import { writeFileStreamToDestinationPath } from './writeFileStreamToDestinationPath.js';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const downloadEntityFromRepo = gen(function* () {</span>
-<span class="cstat-no" title="statement not covered" >  const pathContentsMetaInfo = yield* getPathContentsMetaInfo;</span>
+<span class="cstat-no" title="statement not covered" >  const pathContentsMetaInfo = yield* PathContentsMetaInfo;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (pathContentsMetaInfo.type === 'dir')</span>
-<span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
+<span class="cstat-no" title="statement not covered" >    return yield* unpackRepoFolderTarGzStreamToFs(</span>
 <span class="cstat-no" title="statement not covered" >      getReadableTarGzStreamOfRepoDirectory(pathContentsMetaInfo.treeSha),</span>
-<span class="cstat-no" title="statement not covered" >      unpackRepoFolderTarGzStreamToFs,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (</span>
 <span class="cstat-no" title="statement not covered" >    pathContentsMetaInfo.meta ===</span>
 <span class="cstat-no" title="statement not covered" >    'This file is small enough that GitHub API decided to inline it'</span>
   )
-<span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
+<span class="cstat-no" title="statement not covered" >    return yield* writeFileStreamToDestinationPath(</span>
 <span class="cstat-no" title="statement not covered" >      pathContentsMetaInfo.contentStream,</span>
-<span class="cstat-no" title="statement not covered" >      writeFileStreamToDestinationPath,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (</span>
 <span class="cstat-no" title="statement not covered" >    pathContentsMetaInfo.meta === 'This file can be downloaded as a blob'</span>
   )
-<span class="cstat-no" title="statement not covered" >    return yield* pipe(</span>
-<span class="cstat-no" title="statement not covered" >      requestRawRepoPathContentsFromGitHubAPI,</span>
-<span class="cstat-no" title="statement not covered" >      writeFileStreamToDestinationPath,</span>
+<span class="cstat-no" title="statement not covered" >    return yield* writeFileStreamToDestinationPath(</span>
+<span class="cstat-no" title="statement not covered" >      RawStreamOfRepoPathContentsFromGitHubAPI,</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  yield* fail(new Error('LFS files are not yet supported'));</span>
@@ -184,7 +172,7 @@ import { writeFileStreamToDestinationPath } from './writeFileStreamToDestination
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-17T05:51:42.033Z
+                at 2025-01-18T12:56:48.457Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

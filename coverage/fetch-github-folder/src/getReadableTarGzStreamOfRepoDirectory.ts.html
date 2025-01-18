@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/40</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/40</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
@@ -117,9 +117,7 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,7 +161,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -171,7 +168,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -199,38 +195,36 @@ import { CastToReadableStream } from './castToReadableStream.js';
 <span class="cstat-no" title="statement not covered" >const requestTarballFromGitHubAPI = (</span>
 <span class="cstat-no" title="statement not covered" >  gitRefWhichWillBeUsedToIdentifyGitTree = '',</span>
 ) =&gt;
-<span class="cstat-no" title="statement not covered" >  all([OctokitTag, RepoConfigTag]).pipe(</span>
-<span class="cstat-no" title="statement not covered" >    tryMapPromise({</span>
-<span class="cstat-no" title="statement not covered" >      try: ([octokit, { owner, name }], signal) =&gt;</span>
-<span class="cstat-no" title="statement not covered" >        octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {</span>
-<span class="cstat-no" title="statement not covered" >          owner,</span>
-<span class="cstat-no" title="statement not covered" >          repo: name,</span>
-<span class="cstat-no" title="statement not covered" >          ref: gitRefWhichWillBeUsedToIdentifyGitTree,</span>
-<span class="cstat-no" title="statement not covered" >          request: {</span>
-<span class="cstat-no" title="statement not covered" >            signal,</span>
-<span class="cstat-no" title="statement not covered" >            parseSuccessResponseBody: false,</span>
-<span class="cstat-no" title="statement not covered" >          },</span>
-<span class="cstat-no" title="statement not covered" >          headers: {</span>
-<span class="cstat-no" title="statement not covered" >            'X-GitHub-Api-Version': '2022-11-28',</span>
-<span class="cstat-no" title="statement not covered" >          },</span>
-<span class="cstat-no" title="statement not covered" >        }),</span>
-<span class="cstat-no" title="statement not covered" >      catch: error =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!(error instanceof RequestError))</span>
-<span class="cstat-no" title="statement not covered" >          return new UnknownException(</span>
-<span class="cstat-no" title="statement not covered" >            error,</span>
-<span class="cstat-no" title="statement not covered" >            'Failed to request .tar.gz file from GitHub API',</span>
-<span class="cstat-no" title="statement not covered" >          );</span>
+<span class="cstat-no" title="statement not covered" >  tryMapPromise(all([OctokitTag, RepoConfigTag]), {</span>
+<span class="cstat-no" title="statement not covered" >    try: ([octokit, { owner, name }], signal) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >      octokit.request('GET /repos/{owner}/{repo}/tarball/{ref}', {</span>
+<span class="cstat-no" title="statement not covered" >        owner,</span>
+<span class="cstat-no" title="statement not covered" >        repo: name,</span>
+<span class="cstat-no" title="statement not covered" >        ref: gitRefWhichWillBeUsedToIdentifyGitTree,</span>
+<span class="cstat-no" title="statement not covered" >        request: {</span>
+<span class="cstat-no" title="statement not covered" >          signal,</span>
+<span class="cstat-no" title="statement not covered" >          parseSuccessResponseBody: false,</span>
+<span class="cstat-no" title="statement not covered" >        },</span>
+<span class="cstat-no" title="statement not covered" >        headers: {</span>
+<span class="cstat-no" title="statement not covered" >          'X-GitHub-Api-Version': '2022-11-28',</span>
+<span class="cstat-no" title="statement not covered" >        },</span>
+<span class="cstat-no" title="statement not covered" >      }),</span>
+<span class="cstat-no" title="statement not covered" >    catch: error =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      if (!(error instanceof RequestError))</span>
+<span class="cstat-no" title="statement not covered" >        return new UnknownException(</span>
+<span class="cstat-no" title="statement not covered" >          error,</span>
+<span class="cstat-no" title="statement not covered" >          'Failed to request .tar.gz file from GitHub API',</span>
+<span class="cstat-no" title="statement not covered" >        );</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (error.status === 400)</span>
-<span class="cstat-no" title="statement not covered" >          return new GitHubApiGeneralUserError(error, {</span>
-<span class="cstat-no" title="statement not covered" >            notes:</span>
-<span class="cstat-no" title="statement not covered" >              'Error happened probably because you asked for empty repo',</span>
-<span class="cstat-no" title="statement not covered" >          });</span>
+<span class="cstat-no" title="statement not covered" >      if (error.status === 400)</span>
+<span class="cstat-no" title="statement not covered" >        return new GitHubApiGeneralUserError(error, {</span>
+<span class="cstat-no" title="statement not covered" >          notes:</span>
+<span class="cstat-no" title="statement not covered" >            'Error happened probably because you asked for empty repo',</span>
+<span class="cstat-no" title="statement not covered" >        });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return parseCommonGitHubApiErrors(error);</span>
-<span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >    }),</span>
-<span class="cstat-no" title="statement not covered" >  );</span>
+<span class="cstat-no" title="statement not covered" >      return parseCommonGitHubApiErrors(error);</span>
+<span class="cstat-no" title="statement not covered" >    },</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -238,7 +232,7 @@ import { CastToReadableStream } from './castToReadableStream.js';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-17T05:51:42.033Z
+                at 2025-01-18T12:56:48.457Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
