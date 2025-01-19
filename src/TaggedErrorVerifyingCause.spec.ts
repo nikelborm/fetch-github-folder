@@ -6,19 +6,17 @@ import {
   InconsistentExpectedAndRealContentSize,
 } from './getPathContents/parseGitLFSObject.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import { right } from 'effect/Either';
 
 it('Should have expected fields from both contexts: dynamic and static ', ctx => {
   const dynamicContext = {
     actual: 12,
     expected: 13,
-    gitLFSInfo: {
-      meta: 'Parsed successfully',
-      value: {
-        oidSha256: 'iosdvhksjsl',
-        size: 14,
-        version: 'lakdvfhjaljskhk',
-      },
-    },
+    gitLFSInfo: right({
+      oidSha256: 'iosdvhksjsl',
+      size: 14,
+      version: 'lakdvfhjaljskhk',
+    }),
   } as const;
 
   const error = new InconsistentExpectedAndRealContentSize(dynamicContext);
