@@ -1,4 +1,11 @@
-import { isRight, left, mapLeft, match, right } from 'effect/Either';
+import {
+  Either,
+  isRight,
+  left,
+  mapLeft,
+  match,
+  right,
+} from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
   decodeUnknownEither,
@@ -54,16 +61,7 @@ export const parseGitLFSObject = ({
       new InconsistentExpectedAndRealContentSize({
         actual: contentAsBuffer.byteLength,
         expected: expectedContentSize,
-        gitLFSInfo: match(parsingResult, {
-          onLeft: left => ({
-            meta: 'Failed to parse',
-            error: left,
-          }),
-          onRight: right => ({
-            meta: 'Parsed successfully',
-            value: right,
-          }),
-        }),
+        gitLFSInfo: parsingResult,
       }),
     );
 
@@ -103,15 +101,10 @@ export class FailedToParseGitLFSInfo extends TaggedErrorVerifyingCause<{
 export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifyingCause<{
   actual: number;
   expected: number;
-  gitLFSInfo:
-    | {
-        meta: 'Parsed successfully';
-        value: (typeof GitLFSInfoSchema)['Type'];
-      }
-    | {
-        meta: 'Failed to parse';
-        error: FailedToParseGitLFSInfo;
-      };
+  gitLFSInfo: Either<
+    (typeof GitLFSInfoSchema)['Type'],
+    FailedToParseGitLFSInfo
+  >;
 }>()(
   'InconsistentExpectedAndRealContentSize',
   ctx =>
