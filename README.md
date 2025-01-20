@@ -136,7 +136,7 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 16. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
 17. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
 18. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
-19. progress bar with stages
+19. progress bar with stages (use [parischap/effect-libs/ansi-styles](https://github.com/parischap/effect-libs/tree/master/packages/ansi-styles)?)
 20. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
 21. add codacy, coderabbit, CodeQL, scorecard.dev
 22. <https://github.com/nikelborm/fetch-github-folder/community>

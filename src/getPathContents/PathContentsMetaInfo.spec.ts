@@ -25,7 +25,7 @@ import {
 import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
-import { FailedToCastDataToReadableStream } from 'src/castToReadableStream.js';
+import { FailedToCastDataToReadableStream } from '../castToReadableStream.js';
 import { assert, typeGuard } from 'tsafe';
 import { InputConfigTag, provideInputConfig } from '../configContext.js';
 import {
