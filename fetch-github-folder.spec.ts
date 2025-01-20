@@ -49,23 +49,6 @@ const getPurelyContentDependentHashOfDirectory = (directoryPath: string) =>
     PlatformCommand.string,
   );
 
-const bareCloneGitRepo = ({
-  entireGitRepoDestinationPath,
-  gitRepoName,
-  gitRepoOwner,
-}: {
-  gitRepoName: string;
-  gitRepoOwner: string;
-  entireGitRepoDestinationPath: string;
-}) =>
-  PlatformCommand.make(
-    'git',
-    'clone',
-    '--depth=1',
-    `git@github.com:${gitRepoOwner}/${gitRepoName}.git`,
-    entireGitRepoDestinationPath,
-  ).pipe(PlatformCommand.string);
-
 const appCommand = CliCommand.make(
   'fetch-github-folder',
   {
@@ -107,11 +90,12 @@ const MainLive = gen(function* () {
 type Params = {
   gitRepoName: string;
   gitRepoOwner: string;
+  gitRef: string;
   tempDirPath: string;
 };
 
 const bareCloneAndHashRepoContents = fn('bareCloneAndHashRepoContents')(
-  function* ({ gitRepoName, gitRepoOwner, tempDirPath }: Params) {
+  function* ({ gitRepoName, gitRepoOwner, tempDirPath, gitRef }: Params) {
     const fs = yield* FileSystem;
     const path = yield* Path;
     const entireGitRepoDestinationPath = path.join(
@@ -119,11 +103,18 @@ const bareCloneAndHashRepoContents = fn('bareCloneAndHashRepoContents')(
       'originalGitRepo/',
     );
 
-    yield* bareCloneGitRepo({
+    yield* PlatformCommand.make(
+      'git',
+      'clone',
+      '--depth=1',
+      `git@github.com:${gitRepoOwner}/${gitRepoName}.git`,
       entireGitRepoDestinationPath,
-      gitRepoName,
-      gitRepoOwner,
-    });
+    ).pipe(PlatformCommand.string);
+
+    yield* PlatformCommand.make('git', 'checkout', gitRef).pipe(
+      PlatformCommand.workingDirectory(entireGitRepoDestinationPath),
+      PlatformCommand.string,
+    );
 
     yield* fs.remove(path.join(entireGitRepoDestinationPath, '.git'), {
       recursive: true,
@@ -136,7 +127,7 @@ const bareCloneAndHashRepoContents = fn('bareCloneAndHashRepoContents')(
 );
 
 const cliFetchAndHashRepoContents = fn('cliFetchAndHashRepoContents')(
-  function* ({ gitRepoName, gitRepoOwner, tempDirPath }: Params) {
+  function* ({ gitRepoName, gitRepoOwner, tempDirPath, gitRef }: Params) {
     const path = yield* Path;
     const dirPathOfGitRepoFetchedWithOurCli = path.join(
       tempDirPath,
@@ -147,7 +138,7 @@ const cliFetchAndHashRepoContents = fn('cliFetchAndHashRepoContents')(
       `--repoOwner=${gitRepoOwner}`,
       `--repoName=${gitRepoName}`,
       `--destinationPath=${dirPathOfGitRepoFetchedWithOurCli}`,
-      '--gitRef=5a09db85dc75ad5509f72a2812d7e90a23228641',
+      `--gitRef=${gitRef}`,
     ]);
 
     return yield* getPurelyContentDependentHashOfDirectory(
@@ -184,6 +175,7 @@ describe('fetch-github-folder-cli', () => {
           yield* fetchAndHashBothDirs({
             gitRepoOwner: defaultRepo.owner,
             gitRepoName: defaultRepo.name,
+            gitRef: 'main',
           });
 
         ctx
@@ -206,6 +198,7 @@ describe('fetch-github-folder-cli', () => {
           yield* fetchAndHashBothDirs({
             gitRepoOwner: 'nikelborm',
             gitRepoName: 'nikelborm',
+            gitRef: 'main',
           });
 
         ctx
