@@ -11,7 +11,7 @@ import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
 import { pipe } from 'effect';
 import { all, fn, gen, provide } from 'effect/Effect';
-import { mergeAll, provideMerge, unwrapEffect } from 'effect/Layer';
+import { mergeAll, provideMerge } from 'effect/Layer';
 import {
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,

@@ -26,6 +26,7 @@ import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { FailedToCastDataToReadableStream } from 'src/castToReadableStream.js';
+import { assert, typeGuard } from 'tsafe';
 import { InputConfigTag, provideInputConfig } from '../configContext.js';
 import {
   GitHubApiAuthRatelimited,
@@ -113,23 +114,23 @@ const testValidityOfErrorThrownByEffect =
           )
           .toBeInstanceOf(ExpectedErrorClass);
 
-        function assertOnlyExpectedErrors<T>(
-          errorToCheck: T,
-        ): asserts errorToCheck is Exclude<
-          T,
-          InstanceType<(typeof UnexpectedErrors)[number]>
-        > {
-          UnexpectedErrors.forEach(ErrorClassThatShouldNotBeReturned => {
-            ctx
-              .expect(
-                errorToCheck,
-                `Error thrown by ${effectDescription} should not be instance of ${ErrorClassThatShouldNotBeReturned.name}`,
-              )
-              .not.toBeInstanceOf(ErrorClassThatShouldNotBeReturned);
-          });
+        for (const ErrorClassThatShouldNotBeReturned of UnexpectedErrors) {
+          ctx
+            .expect(
+              err,
+              `Error thrown by ${effectDescription} should not be instance of ${ErrorClassThatShouldNotBeReturned.name}`,
+            )
+            .not.toBeInstanceOf(ErrorClassThatShouldNotBeReturned);
         }
 
-        assertOnlyExpectedErrors(err);
+        assert(
+          typeGuard<
+            Exclude<
+              ErrorExpectedToBeThrown,
+              InstanceType<(typeof UnexpectedErrors)[number]>
+            >
+          >(err, true),
+        );
 
         return succeed(err);
       }),
