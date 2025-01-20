@@ -1,4 +1,10 @@
-import { it, RunnerTestCase, TaskContext, TestContext } from '@effect/vitest';
+import {
+  describe,
+  it,
+  RunnerTestCase,
+  TaskContext,
+  TestContext,
+} from '@effect/vitest';
 import { Octokit } from '@octokit/core';
 import { RequestError } from '@octokit/request-error';
 import { UnknownException } from 'effect/Cause';
@@ -12,6 +18,7 @@ import {
   flatten,
   gen,
   map,
+  provide,
   provideService,
   succeed,
 } from 'effect/Effect';
@@ -30,10 +37,10 @@ import {
   GitHubApiRepoIsEmpty,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from '../errors.js';
-import { OctokitTag, provideOctokit } from '../octokit.js';
+import { OctokitLayer, OctokitTag } from '../octokit.js';
 import type { IRepo } from '../repo.interface.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
-import { PathContentsMetaInfo } from './pathContentsMetaInfo.js';
+import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
 import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.js';
 
 const defaultRepo = {
@@ -104,7 +111,7 @@ const expectError = <
           const newVal = vals[chosenEffectName].pipe(
             asVoid as <E, R>(self: Effect<any, E, R>) => Effect<void, E, R>,
             provideInputConfig(inputConfig),
-            provideOctokit({ auth: authToken }),
+            provide(OctokitLayer({ auth: authToken })),
             either,
             map(function (res) {
               if (isRight(res))
@@ -181,70 +188,6 @@ const expectError = <
     { concurrent: true },
   );
 
-expectError({
-  when: 'asked for empty repo',
-  ExpectedErrorClass: GitHubApiRepoIsEmpty,
-  path: 'levelParent/levelChild/temp2.txt',
-  repo: {
-    owner: 'fetch-gh-folder-tests',
-    name: 'empty-repo',
-  },
-});
-
-expectError({
-  when: 'provided bad auth token',
-  ExpectedErrorClass: GitHubApiBadCredentials,
-  path: '',
-  repo: {
-    owner: 'asd',
-    name: 'ssd',
-  },
-  authToken: 'bad auth token',
-});
-
-expectError({
-  when: 'asked for a private repo',
-  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
-  path: '',
-  repo: {
-    owner: 'fetch-gh-folder-tests',
-    name: 'real-private-repo',
-  },
-});
-
-expectError({
-  when: 'asked for nonexistent repo',
-  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
-  path: '',
-  repo: {
-    owner: 'fetch-gh-folder-tests',
-    name: 'llllllllllllllllllllllllllll',
-  },
-});
-
-expectError({
-  when: 'asked for nonexistent owner',
-  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
-  path: '',
-  repo: {
-    owner: 'llllllllllllllllllllllllllll',
-    name: 'llllllllllllllllllllllllllll',
-  },
-});
-
-expectError({
-  when: 'given broken path',
-  ExpectedErrorClass: GitHubApiGeneralUserError,
-  path: '///',
-});
-
-expectError({
-  when: 'given broken git ref',
-  ExpectedErrorClass: GitHubApiNoCommitFoundForGitRef,
-  path: '',
-  gitRef: '807070987097809870987',
-});
-
 const expectNotFail = (
   descriptionOfWhatItShouldReturn: string,
   pathToEntityInRepo: string,
@@ -272,9 +215,77 @@ const expectNotFail = (
     { concurrent: true },
   );
 
-expectNotFail(`children of root directory`, '', (ctx, pathContentsMetaInfo) =>
-  map(pathContentsMetaInfo, e =>
-    ctx.expect(e).toMatchInlineSnapshot(`
+describe('PathContentsMetaInfo', () => {
+  expectError({
+    when: 'asked for empty repo',
+    ExpectedErrorClass: GitHubApiRepoIsEmpty,
+    path: 'levelParent/levelChild/temp2.txt',
+    repo: {
+      owner: 'fetch-gh-folder-tests',
+      name: 'empty-repo',
+    },
+  });
+
+  expectError({
+    when: 'provided bad auth token',
+    ExpectedErrorClass: GitHubApiBadCredentials,
+    path: '',
+    repo: {
+      owner: 'asd',
+      name: 'ssd',
+    },
+    authToken: 'bad auth token',
+  });
+
+  expectError({
+    when: 'asked for a private repo',
+    ExpectedErrorClass:
+      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+    path: '',
+    repo: {
+      owner: 'fetch-gh-folder-tests',
+      name: 'real-private-repo',
+    },
+  });
+
+  expectError({
+    when: 'asked for nonexistent repo',
+    ExpectedErrorClass:
+      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+    path: '',
+    repo: {
+      owner: 'fetch-gh-folder-tests',
+      name: 'llllllllllllllllllllllllllll',
+    },
+  });
+
+  expectError({
+    when: 'asked for nonexistent owner',
+    ExpectedErrorClass:
+      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+    path: '',
+    repo: {
+      owner: 'llllllllllllllllllllllllllll',
+      name: 'llllllllllllllllllllllllllll',
+    },
+  });
+
+  expectError({
+    when: 'given broken path',
+    ExpectedErrorClass: GitHubApiGeneralUserError,
+    path: '///',
+  });
+
+  expectError({
+    when: 'given broken git ref',
+    ExpectedErrorClass: GitHubApiNoCommitFoundForGitRef,
+    path: '',
+    gitRef: '807070987097809870987',
+  });
+
+  expectNotFail(`children of root directory`, '', (ctx, pathContentsMetaInfo) =>
+    map(pathContentsMetaInfo, e =>
+      ctx.expect(e).toMatchInlineSnapshot(`
         {
           "entries": [
             {
@@ -346,28 +357,28 @@ expectNotFail(`children of root directory`, '', (ctx, pathContentsMetaInfo) =>
           "type": "dir",
         }
       `),
-  ),
-);
+    ),
+  );
 
-expectNotFail(
-  `little inlined file directly in root directory`,
-  'README.md',
-  (ctx, pathContentsMetaInfo) =>
-    gen(function* () {
-      const info = yield* pathContentsMetaInfo;
+  expectNotFail(
+    `little inlined file directly in root directory`,
+    'README.md',
+    (ctx, pathContentsMetaInfo) =>
+      gen(function* () {
+        const info = yield* pathContentsMetaInfo;
 
-      if (
-        info.meta !==
-        'This file is small enough that GitHub API decided to inline it'
-      )
-        throw new Error("File wasn't inlined");
+        if (
+          info.meta !==
+          'This file is small enough that GitHub API decided to inline it'
+        )
+          throw new Error("File wasn't inlined");
 
-      const { contentStream, ...rest } = info;
+        const { contentStream, ...rest } = info;
 
-      ctx.expect({
-        ...rest,
-        content: yield* andThen(contentStream, text),
-      }).toMatchInlineSnapshot(`
+        ctx.expect({
+          ...rest,
+          content: yield* andThen(contentStream, text),
+        }).toMatchInlineSnapshot(`
         {
           "blobSha": "e0581c6516af41608a222765cfb582f0bf89ed47",
           "content": "# public-repo",
@@ -378,47 +389,47 @@ expectNotFail(
           "type": "file",
         }
       `);
-    }),
-);
+      }),
+  );
 
-expectNotFail(
-  `inlined file with size 1 byte less than 1mb placed directly in root directory`,
-  '1023kb+1023b_file.txt',
-  (ctx, pathContentsMetaInfo) =>
-    gen(function* () {
-      const info = yield* pathContentsMetaInfo;
+  expectNotFail(
+    `inlined file with size 1 byte less than 1mb placed directly in root directory`,
+    '1023kb+1023b_file.txt',
+    (ctx, pathContentsMetaInfo) =>
+      gen(function* () {
+        const info = yield* pathContentsMetaInfo;
 
-      if (
-        info.meta !==
-        'This file is small enough that GitHub API decided to inline it'
-      )
-        throw new Error("File wasn't inlined");
+        if (
+          info.meta !==
+          'This file is small enough that GitHub API decided to inline it'
+        )
+          throw new Error("File wasn't inlined");
 
-      const { contentStream, ...rest } = info;
+        const { contentStream, ...rest } = info;
 
-      ctx
-        .expect({
-          ...rest,
-          content: yield* andThen(contentStream, text),
-        })
-        .toEqual({
-          type: 'file',
-          size: 1024 * 1024 - 1,
-          name: '1023kb+1023b_file.txt',
-          path: '1023kb+1023b_file.txt',
-          blobSha: '4ef7ad24ca43c487151fc6a194eb40fb715bf689',
-          meta: 'This file is small enough that GitHub API decided to inline it',
-          content: 'a'.repeat(1024 * 1024 - 1),
-        });
-    }),
-);
+        ctx
+          .expect({
+            ...rest,
+            content: yield* andThen(contentStream, text),
+          })
+          .toEqual({
+            type: 'file',
+            size: 1024 * 1024 - 1,
+            name: '1023kb+1023b_file.txt',
+            path: '1023kb+1023b_file.txt',
+            blobSha: '4ef7ad24ca43c487151fc6a194eb40fb715bf689',
+            meta: 'This file is small enough that GitHub API decided to inline it',
+            content: 'a'.repeat(1024 * 1024 - 1),
+          });
+      }),
+  );
 
-expectNotFail(
-  `blob info for file with size exactly 1mb`,
-  '1mb_file.txt',
-  (ctx, pathContentsMetaInfo) =>
-    map(pathContentsMetaInfo, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
+  expectNotFail(
+    `blob info for file with size exactly 1mb`,
+    '1mb_file.txt',
+    (ctx, pathContentsMetaInfo) =>
+      map(pathContentsMetaInfo, e =>
+        ctx.expect(e).toMatchInlineSnapshot(`
         {
           "blobSha": "7c7377879f52df073befeb0cb7df4d1a4b6b7563",
           "meta": "This file can be downloaded as a blob",
@@ -428,12 +439,12 @@ expectNotFail(
           "type": "file",
         }
       `),
-    ),
-);
+      ),
+  );
 
-expectNotFail(`Git-LFS info`, '100mb_file.txt', (ctx, pathContentsMetaInfo) =>
-  map(pathContentsMetaInfo, e =>
-    ctx.expect(e).toMatchInlineSnapshot(`
+  expectNotFail(`Git-LFS info`, '100mb_file.txt', (ctx, pathContentsMetaInfo) =>
+    map(pathContentsMetaInfo, e =>
+      ctx.expect(e).toMatchInlineSnapshot(`
         {
           "blobSha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
           "gitLFSObjectIdSha256": "cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6",
@@ -445,28 +456,28 @@ expectNotFail(`Git-LFS info`, '100mb_file.txt', (ctx, pathContentsMetaInfo) =>
           "type": "file",
         }
       `),
-  ),
-);
+    ),
+  );
 
-expectNotFail(
-  `little inlined file inside of a nested directory`,
-  'parentFolderDirectlyInRoot/childFolder/nestedFile.md',
-  (ctx, pathContentsMetaInfo) =>
-    gen(function* () {
-      const info = yield* pathContentsMetaInfo;
+  expectNotFail(
+    `little inlined file inside of a nested directory`,
+    'parentFolderDirectlyInRoot/childFolder/nestedFile.md',
+    (ctx, pathContentsMetaInfo) =>
+      gen(function* () {
+        const info = yield* pathContentsMetaInfo;
 
-      if (
-        info.meta !==
-        'This file is small enough that GitHub API decided to inline it'
-      )
-        throw new Error("File wasn't inlined");
+        if (
+          info.meta !==
+          'This file is small enough that GitHub API decided to inline it'
+        )
+          throw new Error("File wasn't inlined");
 
-      const { contentStream, ...rest } = info;
+        const { contentStream, ...rest } = info;
 
-      ctx.expect({
-        ...rest,
-        content: yield* andThen(contentStream, text),
-      }).toMatchInlineSnapshot(`
+        ctx.expect({
+          ...rest,
+          content: yield* andThen(contentStream, text),
+        }).toMatchInlineSnapshot(`
         {
           "blobSha": "24ebb076f9e46157c4abdc6e7b69a775eb38d6a4",
           "content": "# Nested file
@@ -478,15 +489,15 @@ expectNotFail(
           "type": "file",
         }
       `);
-    }),
-);
+      }),
+  );
 
-expectNotFail(
-  `children of nested directory`,
-  'parentFolderDirectlyInRoot/childFolder',
-  (ctx, pathContentsMetaInfo) =>
-    map(pathContentsMetaInfo, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
+  expectNotFail(
+    `children of nested directory`,
+    'parentFolderDirectlyInRoot/childFolder',
+    (ctx, pathContentsMetaInfo) =>
+      map(pathContentsMetaInfo, e =>
+        ctx.expect(e).toMatchInlineSnapshot(`
         {
           "entries": [
             {
@@ -504,5 +515,6 @@ expectNotFail(
           "type": "dir",
         }
       `),
-    ),
-);
+      ),
+  );
+});

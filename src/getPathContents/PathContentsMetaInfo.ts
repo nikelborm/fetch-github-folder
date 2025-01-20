@@ -1,7 +1,7 @@
 import { gen, succeed } from 'effect/Effect';
 import { CastToReadableStream } from '../castToReadableStream.js';
 import { TapLogBoth } from '../logObjectPretty.js';
-import { parseGitLFSObject } from './parseGitLFSObject.js';
+import { parseGitLFSObjectEither } from './parseGitLFSObjectEither.js';
 import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 
 // : Effect<
@@ -78,7 +78,7 @@ export const PathContentsMetaInfo = gen(function* () {
 
   const contentAsBuffer = Buffer.from(content, encoding);
 
-  const potentialGitLFSObject = yield* parseGitLFSObject({
+  const potentialGitLFSObject = yield* parseGitLFSObjectEither({
     contentAsBuffer,
     expectedContentSize: size,
   });

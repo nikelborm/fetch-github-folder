@@ -1,24 +1,23 @@
 #!/usr/bin/env node
 
 import { make, run } from '@effect/cli/Command';
-import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';
 import { layer as NodeFileSystemLayer } from '@effect/platform-node-shared/NodeFileSystem';
 import { layer as NodePathLayer } from '@effect/platform-node-shared/NodePath';
+import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';
 import { runMain } from '@effect/platform-node-shared/NodeRuntime';
-import { Octokit as OctokitClient } from '@octokit/core';
-import { provide, provideService } from 'effect/Effect';
+import { provide } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import {
-  OctokitTag,
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,
   gitRefCLIOptionBackedByEnv,
+  OctokitLayer,
   pathToEntityInRepoCLIOptionBackedByEnv,
-  provideOctokit,
   provideSingleDownloadTargetConfig,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.js';
+import { CliConfig } from '@effect/cli';
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh
@@ -53,8 +52,11 @@ pipe(
   provide(NodeFileSystemLayer),
   provide(NodePathLayer),
   provide(NodeTerminalLayer),
-  provideOctokit({
-    // auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
-  }),
+  provide(CliConfig.layer({ showTypes: false })),
+  provide(
+    OctokitLayer({
+      // auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
+    }),
+  ),
   runMain,
 );

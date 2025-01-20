@@ -9,7 +9,7 @@ import {
 import { outdent } from 'outdent';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 
-export const parseGitLFSObject = ({
+export const parseGitLFSObjectEither = ({
   contentAsBuffer,
   expectedContentSize,
 }: {

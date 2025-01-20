@@ -9,6 +9,5 @@ export * from './logObjectPretty.js';
 export * from './octokit.js';
 export * from './repo.interface.js';
 export * from './TaggedErrorVerifyingCause.js';
-export * from './TaggedErrorVerifyingCause.spec.js';
 export * from './unpackRepoFolderTarGzStreamToFs.js';
 export * from './writeFileStreamToDestinationPath.js';
