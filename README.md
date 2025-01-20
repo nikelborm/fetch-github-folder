@@ -33,6 +33,7 @@
 
 <!-- [![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder)](update_link_later) -->
 <!-- [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) -->
+
 <sup>(Don't judge me for my obsession with badges)</sup>
 
 > [!CAUTION]
@@ -126,14 +127,15 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 7. add possibility for quick request of token through browser (script opens a window and runs the request as authorized user)
 8. support git submodules
 9. support symbolic links?
-10. reflect responses and determine that this is a public repo and we don't need an API key
-11. Smart recognition and parsing of different github links and making downloading plan out of them
-12. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
-13. add retries for reliability and delay in case of rate-limits (Borrow [jpb06/effect-github-stats/.../handle-octokit-request-error.ts](https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts))
-14. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
-15. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-16. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
-17. progress bar with stages
-18. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
-19. add codacy, coderabbit, CodeQL, scorecard.dev
-20. <https://github.com/nikelborm/fetch-github-folder/community>
+10. support for other git providers: bitbucket, gitlab, forgejo, gitea, codeberg
+11. reflect responses and determine that this is a public repo and we don't need an API key
+12. Smart recognition and parsing of different github links and making downloading plan out of them
+13. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
+14. add retries for reliability and delay in case of rate-limits (Borrow [jpb06/effect-github-stats/.../handle-octokit-request-error.ts](https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts))
+15. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
+16. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
+17. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
+18. progress bar with stages
+19. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
+20. add codacy, coderabbit, CodeQL, scorecard.dev
+21. <https://github.com/nikelborm/fetch-github-folder/community>

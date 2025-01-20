@@ -15,10 +15,7 @@ export const LogSuccessObjectPretty = <A, E, R>(self: Effect<A, E, R>) =>
 export const LogErrorObjectPretty = <A, E, R>(self: Effect<A, E, R>) =>
   tapError(self, LogObjectPretty);
 
-export const TapLogBoth = flow(
-  LogSuccessObjectPretty,
-  LogErrorObjectPretty,
-);
+export const TapLogBoth = flow(LogSuccessObjectPretty, LogErrorObjectPretty);
 
 export const logObjectPretty = (item: unknown) =>
   console.dir(item, {

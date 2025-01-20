@@ -2,7 +2,7 @@ import { RequestError } from '@octokit/request-error';
 import type { OctokitResponse } from '@octokit/types';
 import { UnknownException } from 'effect/Cause';
 import { gen, tryPromise } from 'effect/Effect';
-import { InputConfigTag, RepoConfigTag } from '../config.js';
+import { InputConfigTag } from '../configContext.js';
 import {
   GitHubApiNoCommitFoundForGitRef,
   GitHubApiRepoIsEmpty,
@@ -18,8 +18,7 @@ export const RepoPathContentsFromGitHubAPI = (
   gen(function* () {
     const octokit = yield* OctokitTag;
 
-    const { gitRef, pathToEntityInRepo } = yield* InputConfigTag;
-    const repo = yield* RepoConfigTag;
+    const { gitRef, pathToEntityInRepo, repo } = yield* InputConfigTag;
 
     return yield* tryPromise({
       try: signal =>
@@ -63,15 +62,10 @@ const parseNotFoundErrors = (
   if (potentialErrorMessage === 'This repository is empty.')
     return new GitHubApiRepoIsEmpty(error);
 
-  if (
-    gitRef &&
-    potentialErrorMessage.startsWith('No commit found for the ref')
-  )
+  if (gitRef && potentialErrorMessage.startsWith('No commit found for the ref'))
     return new GitHubApiNoCommitFoundForGitRef(error, { gitRef });
 
-  return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(
-    error,
-  );
+  return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(error);
 };
 
 type ResponseWithError = OctokitResponse<

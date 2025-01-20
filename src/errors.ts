@@ -63,9 +63,7 @@ export const parseCommonGitHubApiErrors = (error: RequestError) => {
   if (error.status === 429) return new GitHubApiRatelimited(error);
 
   if (error.status === 404)
-    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(
-      error,
-    );
+    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(error);
 
   if (error.status >= 500) return new GitHubApiGeneralServerError(error);
 

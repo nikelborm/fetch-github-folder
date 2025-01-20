@@ -166,8 +166,7 @@ it('Should pass cause and full context when message renderer is called and Expec
   ctx.expect(extractedNeedFields).toEqual({
     _tag: 'CustomTaggedError',
     name: 'CustomTaggedError',
-    message:
-      'CustomCauseErrorClass,test message,Dynamic context field1,123',
+    message: 'CustomCauseErrorClass,test message,Dynamic context field1,123',
     cause: causeOriginal,
     dynamicContextField1: 'Dynamic context field1',
     staticContextField2: 123,

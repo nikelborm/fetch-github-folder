@@ -1,9 +1,4 @@
-import {
-  it,
-  RunnerTestCase,
-  TaskContext,
-  TestContext,
-} from '@effect/vitest';
+import { it, RunnerTestCase, TaskContext, TestContext } from '@effect/vitest';
 import { Octokit } from '@octokit/core';
 import {
   andThen,
@@ -16,11 +11,7 @@ import {
 } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
-import {
-  createInputConfigContext,
-  InputConfigTag,
-  RepoConfigTag,
-} from '../config.js';
+import { InputConfigTag, provideInputConfig } from '../configContext.js';
 import {
   GitHubApiBadCredentials,
   GitHubApiGeneralUserError,
@@ -28,7 +19,7 @@ import {
   GitHubApiRepoIsEmpty,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from '../errors.js';
-import { OctokitTag } from '../octokit.js';
+import { OctokitTag, provideOctokit } from '../octokit.js';
 import type { IRepo } from '../repo.interface.js';
 import { PathContentsMetaInfo } from './getPathContentsMetaInfo.js';
 
@@ -67,14 +58,12 @@ const expectError = <
         PathContentsMetaInfo,
         flip,
         map(e => ctx.expect(e).toBeInstanceOf(ExpectedErrorClass)),
-        provide(
-          createInputConfigContext({
-            repo,
-            gitRef,
-            pathToEntityInRepo: path,
-          }),
-        ),
-        provideService(OctokitTag, new Octokit({ auth: authToken })),
+        provideInputConfig({
+          repo,
+          gitRef,
+          pathToEntityInRepo: path,
+        }),
+        provideOctokit({ auth: authToken }),
       ),
     { concurrent: true },
   );
@@ -102,8 +91,7 @@ expectError({
 
 expectError({
   when: 'asked for a private repo',
-  ExpectedErrorClass:
-    GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
   path: '',
   repo: {
     owner: 'fetch-gh-folder-tests',
@@ -113,8 +101,7 @@ expectError({
 
 expectError({
   when: 'asked for nonexistent repo',
-  ExpectedErrorClass:
-    GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
   path: '',
   repo: {
     owner: 'fetch-gh-folder-tests',
@@ -124,8 +111,7 @@ expectError({
 
 expectError({
   when: 'asked for nonexistent owner',
-  ExpectedErrorClass:
-    GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+  ExpectedErrorClass: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
   path: '',
   repo: {
     owner: 'llllllllllllllllllllllllllll',
@@ -152,11 +138,7 @@ const expectNotFail = (
   testEffect: (
     ctx: TaskContext<RunnerTestCase<{}>> & TestContext,
     pathContentsMetaInfo: typeof PathContentsMetaInfo,
-  ) => Effect<
-    unknown,
-    unknown,
-    OctokitTag | RepoConfigTag | InputConfigTag
-  >,
+  ) => Effect<unknown, unknown, OctokitTag | InputConfigTag>,
   authToken: string = '',
 ) =>
   it.effect(
@@ -164,13 +146,11 @@ const expectNotFail = (
     ctx =>
       pipe(
         testEffect(ctx, PathContentsMetaInfo),
-        provide(
-          createInputConfigContext({
-            pathToEntityInRepo,
-            gitRef: '',
-            repo: defaultRepo,
-          }),
-        ),
+        provideInputConfig({
+          pathToEntityInRepo,
+          gitRef: '',
+          repo: defaultRepo,
+        }),
         provideService(
           OctokitTag,
           new Octokit(authToken ? { auth: authToken } : void 0),
@@ -179,12 +159,9 @@ const expectNotFail = (
     { concurrent: true },
   );
 
-expectNotFail(
-  `children of root directory`,
-  '',
-  (ctx, pathContentsMetaInfo) =>
-    map(pathContentsMetaInfo, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
+expectNotFail(`children of root directory`, '', (ctx, pathContentsMetaInfo) =>
+  map(pathContentsMetaInfo, e =>
+    ctx.expect(e).toMatchInlineSnapshot(`
         {
           "entries": [
             {
@@ -256,7 +233,7 @@ expectNotFail(
           "type": "dir",
         }
       `),
-    ),
+  ),
 );
 
 expectNotFail(
@@ -341,12 +318,9 @@ expectNotFail(
     ),
 );
 
-expectNotFail(
-  `Git-LFS info`,
-  '100mb_file.txt',
-  (ctx, pathContentsMetaInfo) =>
-    map(pathContentsMetaInfo, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
+expectNotFail(`Git-LFS info`, '100mb_file.txt', (ctx, pathContentsMetaInfo) =>
+  map(pathContentsMetaInfo, e =>
+    ctx.expect(e).toMatchInlineSnapshot(`
         {
           "blobSha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
           "gitLFSObjectIdSha256": "cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6",
@@ -358,7 +332,7 @@ expectNotFail(
           "type": "file",
         }
       `),
-    ),
+  ),
 );
 
 expectNotFail(

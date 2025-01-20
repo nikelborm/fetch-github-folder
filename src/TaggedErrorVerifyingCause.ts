@@ -27,9 +27,7 @@ export const TaggedErrorVerifyingCause =
   <
     const ErrorName extends string,
     ExpectedCauseClass extends WideErrorConstructor | undefined,
-    CauseArgTuple extends [ExpectedCauseClass] extends [
-      WideErrorConstructor,
-    ]
+    CauseArgTuple extends [ExpectedCauseClass] extends [WideErrorConstructor]
       ? [cause: InstanceType<ExpectedCauseClass>]
       : [],
     ConstructorArgs extends [
@@ -51,9 +49,7 @@ export const TaggedErrorVerifyingCause =
           ([ExpectedCauseClass] extends [WideErrorConstructor]
             ? // To improve TS performance I wrap it in GetSimpleFormError
               {
-                cause: GetSimpleFormError<
-                  InstanceType<ExpectedCauseClass>
-                >;
+                cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>;
               }
             : {})
       >,

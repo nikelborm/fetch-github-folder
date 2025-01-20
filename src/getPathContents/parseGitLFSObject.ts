@@ -1,11 +1,4 @@
-import {
-  Either,
-  isRight,
-  left,
-  mapLeft,
-  match,
-  right,
-} from 'effect/Either';
+import { Either, isRight, left, mapLeft, match, right } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
   decodeUnknownEither,
@@ -29,9 +22,7 @@ export const parseGitLFSObject = ({
     .toString('utf8');
 
   const parsingResult = mapLeft(
-    decodeGitLFSInfoSchema(
-      contentAsString.match(gitLFSInfoRegexp)?.groups,
-    ),
+    decodeGitLFSInfoSchema(contentAsString.match(gitLFSInfoRegexp)?.groups),
     cause =>
       new FailedToParseGitLFSInfo(cause, {
         partOfContentThatCouldBeGitLFSInfo: contentAsString,
@@ -40,8 +31,7 @@ export const parseGitLFSObject = ({
 
   const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
   const doesSizeFromGitLFSInfoAlignWithExpectedContentSize =
-    isRight(parsingResult) &&
-    parsingResult.right.size === expectedContentSize;
+    isRight(parsingResult) && parsingResult.right.size === expectedContentSize;
 
   const shouldFailIfItIsNotGitLFS =
     contentAsBuffer.byteLength !== expectedContentSize;

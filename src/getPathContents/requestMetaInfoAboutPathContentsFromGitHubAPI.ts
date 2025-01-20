@@ -14,22 +14,17 @@ import { TapLogBoth } from '../logObjectPretty.js';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
 import { RepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
 
-export const ParsedMetaInfoAboutPathContentsFromGitHubAPI = gen(
-  function* () {
-    const response = yield* TapLogBoth(
-      RepoPathContentsFromGitHubAPI('object'),
-    );
+export const ParsedMetaInfoAboutPathContentsFromGitHubAPI = gen(function* () {
+  const response = yield* TapLogBoth(RepoPathContentsFromGitHubAPI('object'));
 
-    return yield* mapLeft(
-      decodeResponse(response.data),
-      parseError =>
-        new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(
-          parseError,
-          { response },
-        ),
-    );
-  },
-);
+  return yield* mapLeft(
+    decodeResponse(response.data),
+    parseError =>
+      new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(parseError, {
+        response,
+      }),
+  );
+});
 
 const GitSomethingFields = {
   size: SchemaNumber,

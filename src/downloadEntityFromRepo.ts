@@ -23,9 +23,7 @@ export const downloadEntityFromRepo = gen(function* () {
       pathContentsMetaInfo.contentStream,
     );
 
-  if (
-    pathContentsMetaInfo.meta === 'This file can be downloaded as a blob'
-  )
+  if (pathContentsMetaInfo.meta === 'This file can be downloaded as a blob')
     return yield* writeFileStreamToDestinationPath(
       RawStreamOfRepoPathContentsFromGitHubAPI,
     );

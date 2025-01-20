@@ -3,7 +3,7 @@ import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
-import { OutputConfigTag } from './config.js';
+import { OutputConfigTag } from './configContext.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 export const unpackRepoFolderTarGzStreamToFs = <E, R>(
@@ -33,8 +33,7 @@ export const unpackRepoFolderTarGzStreamToFs = <E, R>(
           }),
           { signal },
         ),
-      catch: cause =>
-        new FailedToUnpackRepoFolderTarGzStreamToFs({ cause }),
+      catch: cause => new FailedToUnpackRepoFolderTarGzStreamToFs({ cause }),
     });
   });
 
