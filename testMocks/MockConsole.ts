@@ -34,7 +34,7 @@ export const make = Effect.gen(function* (_) {
   const getLines: MockConsole['getLines'] = (params = {}) =>
     Ref.get(lines).pipe(
       Effect.map(lines =>
-        params.stripAnsi || false ? Array.map(lines, stripAnsi) : lines,
+        params.stripAnsi ? Array.map(lines, stripAnsi) : lines,
       ),
     );
 

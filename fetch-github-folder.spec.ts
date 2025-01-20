@@ -76,16 +76,13 @@ const cli = (args: ReadonlyArray<string>) =>
     ...args,
   ]);
 
-const MainLive = gen(function* () {
-  // const console = yield* MockConsole.make;
-  return mergeAll(
-    NodePath.layer,
-    NodeTerminal.layer,
-    NodeCommandExecutor.layer,
-    OctokitLayer(),
-    // setConsole(console),
-  ).pipe(provideMerge(NodeFileSystem.layer));
-}).pipe(unwrapEffect);
+const MainLive = mergeAll(
+  NodePath.layer,
+  NodeTerminal.layer,
+  NodeCommandExecutor.layer,
+  OctokitLayer(),
+  // setConsole(console),
+).pipe(provideMerge(NodeFileSystem.layer));
 
 type Params = {
   gitRepoName: string;

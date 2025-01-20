@@ -1,6 +1,5 @@
 import { Octokit as OctokitClient, OctokitOptions } from '@octokit/core';
 import { Tag, type TagClass } from 'effect/Context';
-import { provideService } from 'effect/Effect';
 import { succeed } from 'effect/Layer';
 
 // This bullshit is needed to please JSR

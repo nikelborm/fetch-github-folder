@@ -1,4 +1,4 @@
-import { Either, isRight, left, mapLeft, match, right } from 'effect/Either';
+import { Either, isRight, left, mapLeft, right } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
   decodeUnknownEither,

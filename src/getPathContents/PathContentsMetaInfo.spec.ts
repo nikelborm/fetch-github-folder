@@ -12,10 +12,10 @@ import {
   all,
   andThen,
   asVoid,
+  die,
   Effect,
   either,
-  fail,
-  flatten,
+  flatMap,
   gen,
   map,
   provide,
@@ -57,106 +57,121 @@ const UnexpectedErrors = [
   FailedToCastDataToReadableStream,
 ];
 
-const expectError = <
-  const ExpectedErrorClass extends
-    (typeof UnexpectedErrors)[number] extends new (
-      ...args: any
-    ) => infer UnexpectedErrorInstance
-      ? Exclude<
-          typeof RawStreamOfRepoPathContentsFromGitHubAPI extends Effect<
-            unknown,
-            infer AllPotentialErrorInstances,
-            unknown
-          >
-            ? AllPotentialErrorInstances
-            : never,
-          UnexpectedErrorInstance
-        >
-      : never,
->({
+type ErrorExpectedToBeThrown = (typeof UnexpectedErrors)[number] extends new (
+  ...args: any
+) => infer UnexpectedErrorInstance
+  ? Exclude<
+      typeof RawStreamOfRepoPathContentsFromGitHubAPI extends Effect<
+        unknown,
+        infer AllPotentialErrorInstances,
+        unknown
+      >
+        ? AllPotentialErrorInstances
+        : never,
+      UnexpectedErrorInstance
+    >
+  : never;
+
+type TestCtx = TaskContext<RunnerTestCase<{}>> & TestContext;
+
+const effectsToTestForErrors = {
+  RawStreamOfRepoPathContentsFromGitHubAPI,
+  UnparsedMetaInfoAboutPathContentsFromGitHubAPI,
+};
+
+const testValidityOfErrorThrownByEffect =
+  <const ExpectedErrorClass extends ErrorExpectedToBeThrown>(
+    ctx: TestCtx,
+    ExpectedErrorClass: new (...args: any) => ExpectedErrorClass,
+    effectDescription: string,
+  ) =>
+  <
+    EffectToTest extends
+      (typeof effectsToTestForErrors)[keyof typeof effectsToTestForErrors],
+  >(
+    effectToTest: EffectToTest,
+  ) =>
+    effectToTest.pipe(
+      asVoid as <E, R>(self: Effect<any, E, R>) => Effect<void, E, R>,
+      either,
+      flatMap(function (res) {
+        if (isRight(res))
+          return die({
+            message:
+              `Effect ${effectDescription} succeeded when expected to fail` as const,
+            unexpectedlySuccessfulResult: res.right,
+          });
+
+        const err = res.left;
+
+        ctx
+          .expect(
+            err,
+            `Error thrown by ${effectDescription} was expected to be instance of ${
+              ExpectedErrorClass.name
+            }, but it's instance of ${err.constructor.name} instead`,
+          )
+          .toBeInstanceOf(ExpectedErrorClass);
+
+        function assertOnlyExpectedErrors<T>(
+          errorToCheck: T,
+        ): asserts errorToCheck is Exclude<
+          T,
+          InstanceType<(typeof UnexpectedErrors)[number]>
+        > {
+          UnexpectedErrors.forEach(ErrorClassThatShouldNotBeReturned => {
+            ctx
+              .expect(
+                errorToCheck,
+                `Error thrown by ${effectDescription} should not be instance of ${ErrorClassThatShouldNotBeReturned.name}`,
+              )
+              .not.toBeInstanceOf(ErrorClassThatShouldNotBeReturned);
+          });
+        }
+
+        assertOnlyExpectedErrors(err);
+
+        return succeed(err);
+      }),
+    );
+
+const expectError = <const ExpectedErrorClass extends ErrorExpectedToBeThrown>({
   when,
   ExpectedErrorClass,
   authToken,
   repo = defaultRepo,
   gitRef = '',
-  path,
+  pathToEntityInRepo,
 }: {
   when: string;
   ExpectedErrorClass: new (...args: any) => ExpectedErrorClass;
   authToken?: string | undefined;
   repo?: IRepo;
   gitRef?: string | undefined;
-  path: string;
+  pathToEntityInRepo: string;
 }) =>
   it.effect(
     `Should throw ${ExpectedErrorClass.name} when ${when}`,
     ctx =>
       gen(function* () {
-        const vals = {
-          RawStreamOfRepoPathContentsFromGitHubAPI,
-          UnparsedMetaInfoAboutPathContentsFromGitHubAPI,
-        } as const;
-
-        const inputConfig = {
-          repo,
-          gitRef,
-          pathToEntityInRepo: path,
-        };
-
-        const testThrownErrorOfASingleEffect = <T extends keyof typeof vals>(
+        const validateErrorOf = <T extends keyof typeof effectsToTestForErrors>(
           chosenEffectName: T,
         ) => {
-          const effectDescription = `${chosenEffectName} (${JSON.stringify(inputConfig)})`;
-
-          const newVal = vals[chosenEffectName].pipe(
-            asVoid as <E, R>(self: Effect<any, E, R>) => Effect<void, E, R>,
+          const inputConfig = {
+            repo,
+            gitRef,
+            pathToEntityInRepo,
+          };
+          const newKey = `ExpectedFailureOf${chosenEffectName}` as const;
+          const newVal = effectsToTestForErrors[chosenEffectName].pipe(
+            testValidityOfErrorThrownByEffect(
+              ctx,
+              ExpectedErrorClass,
+              `${chosenEffectName} (${JSON.stringify(inputConfig)})`,
+            ),
             provideInputConfig(inputConfig),
             provide(OctokitLayer({ auth: authToken })),
-            either,
-            map(function (res) {
-              if (isRight(res))
-                return fail({
-                  message:
-                    `Effect ${effectDescription} succeeded when expected to fail` as const,
-                  unexpectedlySuccessfulResult: res.right,
-                });
-
-              const err = res.left;
-
-              ctx
-                .expect(
-                  err,
-                  `Error thrown by ${effectDescription} was expected to be instance of ${
-                    ExpectedErrorClass.name
-                  }, but it's instance of ${err.constructor.name} instead`,
-                )
-                .toBeInstanceOf(ExpectedErrorClass);
-
-              function assertOnlyExpectedErrors<T>(
-                errorToCheck: T,
-              ): asserts errorToCheck is Exclude<
-                T,
-                InstanceType<(typeof UnexpectedErrors)[number]>
-              > {
-                UnexpectedErrors.forEach(ErrorClassThatShouldNotBeReturned => {
-                  ctx
-                    .expect(
-                      errorToCheck,
-                      `Error thrown by ${effectDescription} should not be instance of ${ExpectedErrorClass.name}`,
-                    )
-                    .not.toBeInstanceOf(ErrorClassThatShouldNotBeReturned);
-                });
-              }
-
-              assertOnlyExpectedErrors(err);
-
-              return succeed(err);
-            }),
-            flatten,
           );
-
-          const newKey = `ExpectedFailureOf${chosenEffectName}` as const;
-
           return { [newKey]: newVal } as {
             [k in typeof newKey]: typeof newVal;
           };
@@ -167,10 +182,8 @@ const expectError = <
           ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
         } = yield* all(
           {
-            ...testThrownErrorOfASingleEffect(
-              'RawStreamOfRepoPathContentsFromGitHubAPI',
-            ),
-            ...testThrownErrorOfASingleEffect(
+            ...validateErrorOf('RawStreamOfRepoPathContentsFromGitHubAPI'),
+            ...validateErrorOf(
               'UnparsedMetaInfoAboutPathContentsFromGitHubAPI',
             ),
           },
@@ -192,7 +205,7 @@ const expectNotFail = (
   descriptionOfWhatItShouldReturn: string,
   pathToEntityInRepo: string,
   testEffect: (
-    ctx: TaskContext<RunnerTestCase<{}>> & TestContext,
+    ctx: TestCtx,
     pathContentsMetaInfo: typeof PathContentsMetaInfo,
   ) => Effect<unknown, unknown, OctokitTag | InputConfigTag>,
   authToken: string = '',
@@ -219,7 +232,7 @@ describe('PathContentsMetaInfo', () => {
   expectError({
     when: 'asked for empty repo',
     ExpectedErrorClass: GitHubApiRepoIsEmpty,
-    path: 'levelParent/levelChild/temp2.txt',
+    pathToEntityInRepo: 'levelParent/levelChild/temp2.txt',
     repo: {
       owner: 'fetch-gh-folder-tests',
       name: 'empty-repo',
@@ -229,7 +242,7 @@ describe('PathContentsMetaInfo', () => {
   expectError({
     when: 'provided bad auth token',
     ExpectedErrorClass: GitHubApiBadCredentials,
-    path: '',
+    pathToEntityInRepo: '',
     repo: {
       owner: 'asd',
       name: 'ssd',
@@ -241,7 +254,7 @@ describe('PathContentsMetaInfo', () => {
     when: 'asked for a private repo',
     ExpectedErrorClass:
       GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
-    path: '',
+    pathToEntityInRepo: '',
     repo: {
       owner: 'fetch-gh-folder-tests',
       name: 'real-private-repo',
@@ -252,7 +265,7 @@ describe('PathContentsMetaInfo', () => {
     when: 'asked for nonexistent repo',
     ExpectedErrorClass:
       GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
-    path: '',
+    pathToEntityInRepo: '',
     repo: {
       owner: 'fetch-gh-folder-tests',
       name: 'llllllllllllllllllllllllllll',
@@ -263,7 +276,7 @@ describe('PathContentsMetaInfo', () => {
     when: 'asked for nonexistent owner',
     ExpectedErrorClass:
       GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
-    path: '',
+    pathToEntityInRepo: '',
     repo: {
       owner: 'llllllllllllllllllllllllllll',
       name: 'llllllllllllllllllllllllllll',
@@ -273,13 +286,13 @@ describe('PathContentsMetaInfo', () => {
   expectError({
     when: 'given broken path',
     ExpectedErrorClass: GitHubApiGeneralUserError,
-    path: '///',
+    pathToEntityInRepo: '///',
   });
 
   expectError({
     when: 'given broken git ref',
     ExpectedErrorClass: GitHubApiNoCommitFoundForGitRef,
-    path: '',
+    pathToEntityInRepo: '',
     gitRef: '807070987097809870987',
   });
 
