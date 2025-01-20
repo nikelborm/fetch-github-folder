@@ -1,4 +1,5 @@
 import { Command as CliCommand } from '@effect/cli';
+import { nonEmptyString, withDefault } from 'effect/Config';
 import { Command as PlatformCommand } from '@effect/platform';
 import {
   NodeCommandExecutor,
@@ -48,6 +49,11 @@ const getPurelyContentDependentHashOfDirectory = (directoryPath: string) =>
     PlatformCommand.pipeTo(PlatformCommand.make('head', '-c', '64')),
     PlatformCommand.string,
   );
+
+const DestinationPathConfig = pipe(
+  nonEmptyString('TMPDIR'),
+  withDefault('/tmp'),
+);
 
 const appCommand = CliCommand.make(
   'fetch-github-folder',
@@ -148,7 +154,8 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
   repo: Omit<Params, 'tempDirPath'>,
 ) {
   const fs = yield* FileSystem;
-  const tempDirPath = yield* fs.makeTempDirectoryScoped();
+  const prefix = yield* DestinationPathConfig;
+  const tempDirPath = yield* fs.makeTempDirectoryScoped({ prefix });
   const params = {
     ...repo,
     tempDirPath,
