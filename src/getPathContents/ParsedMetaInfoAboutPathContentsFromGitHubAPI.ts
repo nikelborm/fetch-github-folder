@@ -12,10 +12,15 @@ import {
 } from 'effect/Schema';
 import { TapLogBoth } from '../logObjectPretty.js';
 import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
-import { RepoPathContentsFromGitHubAPI } from './requestRepoPathContentsFromGitHubAPI.js';
+import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';
+
+export const UnparsedMetaInfoAboutPathContentsFromGitHubAPI =
+  RepoPathContentsFromGitHubAPI('object');
 
 export const ParsedMetaInfoAboutPathContentsFromGitHubAPI = gen(function* () {
-  const response = yield* TapLogBoth(RepoPathContentsFromGitHubAPI('object'));
+  const response = yield* TapLogBoth(
+    UnparsedMetaInfoAboutPathContentsFromGitHubAPI,
+  );
 
   return yield* mapLeft(
     decodeResponse(response.data),

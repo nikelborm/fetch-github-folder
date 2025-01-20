@@ -1,2 +1,2 @@
-export * from './getPathContentsMetaInfo.js';
-export * from './requestRawRepoPathContentsFromGitHubAPI.js';
+export * from './pathContentsMetaInfo.js';
+export * from './RawStreamOfRepoPathContentsFromGitHubAPI.js';

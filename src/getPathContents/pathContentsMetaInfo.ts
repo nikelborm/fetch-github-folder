@@ -2,7 +2,7 @@ import { gen, succeed } from 'effect/Effect';
 import { CastToReadableStream } from '../castToReadableStream.js';
 import { TapLogBoth } from '../logObjectPretty.js';
 import { parseGitLFSObject } from './parseGitLFSObject.js';
-import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './requestMetaInfoAboutPathContentsFromGitHubAPI.js';
+import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 
 // : Effect<
 //   (typeof ResponseSchema)['Type'],

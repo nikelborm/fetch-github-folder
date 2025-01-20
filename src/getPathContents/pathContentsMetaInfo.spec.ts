@@ -1,41 +1,71 @@
 import { it, RunnerTestCase, TaskContext, TestContext } from '@effect/vitest';
 import { Octokit } from '@octokit/core';
+import { RequestError } from '@octokit/request-error';
+import { UnknownException } from 'effect/Cause';
 import {
+  all,
   andThen,
+  asVoid,
   Effect,
-  flip,
+  either,
+  fail,
+  flatten,
   gen,
   map,
-  provide,
   provideService,
+  succeed,
 } from 'effect/Effect';
+import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
+import { FailedToCastDataToReadableStream } from 'src/castToReadableStream.js';
 import { InputConfigTag, provideInputConfig } from '../configContext.js';
 import {
+  GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
+  GitHubApiGeneralServerError,
   GitHubApiGeneralUserError,
   GitHubApiNoCommitFoundForGitRef,
+  GitHubApiRatelimited,
   GitHubApiRepoIsEmpty,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from '../errors.js';
 import { OctokitTag, provideOctokit } from '../octokit.js';
 import type { IRepo } from '../repo.interface.js';
-import { PathContentsMetaInfo } from './getPathContentsMetaInfo.js';
-
-type EffectReadyErrors =
-  typeof PathContentsMetaInfo extends Effect<unknown, infer U, unknown>
-    ? Extract<U, { _tag: unknown }>
-    : never;
+import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
+import { PathContentsMetaInfo } from './pathContentsMetaInfo.js';
+import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.js';
 
 const defaultRepo = {
   owner: 'fetch-gh-folder-tests',
   name: 'public-repo',
 };
 
+const UnexpectedErrors = [
+  RequestError,
+  UnknownException,
+  GitHubApiAuthRatelimited,
+  GitHubApiRatelimited,
+  GitHubApiGeneralServerError,
+  FailedToCastDataToReadableStream,
+];
+
 const expectError = <
-  const Instance extends EffectReadyErrors,
-  Args extends unknown[],
+  const ExpectedErrorClass extends
+    (typeof UnexpectedErrors)[number] extends new (
+      ...args: any
+    ) => infer UnexpectedErrorInstance
+      ? Exclude<
+          typeof RawStreamOfRepoPathContentsFromGitHubAPI extends Effect<
+            unknown,
+            infer AllPotentialErrorInstances,
+            unknown
+          >
+            ? AllPotentialErrorInstances
+            : never,
+          UnexpectedErrorInstance
+        >
+      : never,
 >({
   when,
   ExpectedErrorClass,
@@ -45,7 +75,7 @@ const expectError = <
   path,
 }: {
   when: string;
-  ExpectedErrorClass: new (...args: Args) => Instance;
+  ExpectedErrorClass: new (...args: any) => ExpectedErrorClass;
   authToken?: string | undefined;
   repo?: IRepo;
   gitRef?: string | undefined;
@@ -54,17 +84,100 @@ const expectError = <
   it.effect(
     `Should throw ${ExpectedErrorClass.name} when ${when}`,
     ctx =>
-      pipe(
-        PathContentsMetaInfo,
-        flip,
-        map(e => ctx.expect(e).toBeInstanceOf(ExpectedErrorClass)),
-        provideInputConfig({
+      gen(function* () {
+        const vals = {
+          RawStreamOfRepoPathContentsFromGitHubAPI,
+          UnparsedMetaInfoAboutPathContentsFromGitHubAPI,
+        } as const;
+
+        const inputConfig = {
           repo,
           gitRef,
           pathToEntityInRepo: path,
-        }),
-        provideOctokit({ auth: authToken }),
-      ),
+        };
+
+        const testThrownErrorOfASingleEffect = <T extends keyof typeof vals>(
+          chosenEffectName: T,
+        ) => {
+          const effectDescription = `${chosenEffectName} (${JSON.stringify(inputConfig)})`;
+
+          const newVal = vals[chosenEffectName].pipe(
+            asVoid as <E, R>(self: Effect<any, E, R>) => Effect<void, E, R>,
+            provideInputConfig(inputConfig),
+            provideOctokit({ auth: authToken }),
+            either,
+            map(function (res) {
+              if (isRight(res))
+                return fail({
+                  message:
+                    `Effect ${effectDescription} succeeded when expected to fail` as const,
+                  unexpectedlySuccessfulResult: res.right,
+                });
+
+              const err = res.left;
+
+              ctx
+                .expect(
+                  err,
+                  `Error thrown by ${effectDescription} was expected to be instance of ${
+                    ExpectedErrorClass.name
+                  }, but it's instance of ${err.constructor.name} instead`,
+                )
+                .toBeInstanceOf(ExpectedErrorClass);
+
+              function assertOnlyExpectedErrors<T>(
+                errorToCheck: T,
+              ): asserts errorToCheck is Exclude<
+                T,
+                InstanceType<(typeof UnexpectedErrors)[number]>
+              > {
+                UnexpectedErrors.forEach(ErrorClassThatShouldNotBeReturned => {
+                  ctx
+                    .expect(
+                      errorToCheck,
+                      `Error thrown by ${effectDescription} should not be instance of ${ExpectedErrorClass.name}`,
+                    )
+                    .not.toBeInstanceOf(ErrorClassThatShouldNotBeReturned);
+                });
+              }
+
+              assertOnlyExpectedErrors(err);
+
+              return succeed(err);
+            }),
+            flatten,
+          );
+
+          const newKey = `ExpectedFailureOf${chosenEffectName}` as const;
+
+          return { [newKey]: newVal } as {
+            [k in typeof newKey]: typeof newVal;
+          };
+        };
+
+        const {
+          ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
+          ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
+        } = yield* all(
+          {
+            ...testThrownErrorOfASingleEffect(
+              'RawStreamOfRepoPathContentsFromGitHubAPI',
+            ),
+            ...testThrownErrorOfASingleEffect(
+              'UnparsedMetaInfoAboutPathContentsFromGitHubAPI',
+            ),
+          },
+          { concurrency: 'unbounded' },
+        );
+
+        ctx
+          .expect(
+            ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
+          )
+          .toStrictEqual(
+            ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
+          );
+      }),
     { concurrent: true },
   );
 
