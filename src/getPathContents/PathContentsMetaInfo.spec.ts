@@ -151,55 +151,48 @@ const expectError = <const ExpectedErrorClass extends ErrorExpectedToBeThrown>({
   gitRef?: string | undefined;
   pathToEntityInRepo: string;
 }) =>
-  it.effect(
-    `Should throw ${ExpectedErrorClass.name} when ${when}`,
-    ctx =>
-      gen(function* () {
-        const validateErrorOf = <T extends keyof typeof effectsToTestForErrors>(
-          chosenEffectName: T,
-        ) => {
-          const inputConfig = {
-            repo,
-            gitRef,
-            pathToEntityInRepo,
-          };
-          const newKey = `ExpectedFailureOf${chosenEffectName}` as const;
-          const newVal = effectsToTestForErrors[chosenEffectName].pipe(
-            testValidityOfErrorThrownByEffect(
-              ctx,
-              ExpectedErrorClass,
-              `${chosenEffectName} (${JSON.stringify(inputConfig)})`,
-            ),
-            provideInputConfig(inputConfig),
-            provide(OctokitLayer({ auth: authToken })),
-          );
-          return { [newKey]: newVal } as {
-            [k in typeof newKey]: typeof newVal;
-          };
+  it.effect(`Should throw ${ExpectedErrorClass.name} when ${when}`, ctx =>
+    gen(function* () {
+      const validateErrorOf = <T extends keyof typeof effectsToTestForErrors>(
+        chosenEffectName: T,
+      ) => {
+        const inputConfig = {
+          repo,
+          gitRef,
+          pathToEntityInRepo,
         };
-
-        const {
-          ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
-          ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
-        } = yield* all(
-          {
-            ...validateErrorOf('RawStreamOfRepoPathContentsFromGitHubAPI'),
-            ...validateErrorOf(
-              'UnparsedMetaInfoAboutPathContentsFromGitHubAPI',
-            ),
-          },
-          { concurrency: 'unbounded' },
+        const newKey = `ExpectedFailureOf${chosenEffectName}` as const;
+        const newVal = effectsToTestForErrors[chosenEffectName].pipe(
+          testValidityOfErrorThrownByEffect(
+            ctx,
+            ExpectedErrorClass,
+            `${chosenEffectName} (${JSON.stringify(inputConfig)})`,
+          ),
+          provideInputConfig(inputConfig),
+          provide(OctokitLayer({ auth: authToken })),
         );
+        return { [newKey]: newVal } as {
+          [k in typeof newKey]: typeof newVal;
+        };
+      };
 
-        ctx
-          .expect(
-            ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
-          )
-          .toStrictEqual(
-            ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
-          );
-      }),
-    { concurrent: true },
+      const {
+        ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
+        ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
+      } = yield* all(
+        {
+          ...validateErrorOf('RawStreamOfRepoPathContentsFromGitHubAPI'),
+          ...validateErrorOf('UnparsedMetaInfoAboutPathContentsFromGitHubAPI'),
+        },
+        { concurrency: 'unbounded' },
+      );
+
+      ctx
+        .expect(ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI)
+        .toStrictEqual(
+          ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
+        );
+    }),
   );
 
 const expectNotFail = (
@@ -211,25 +204,22 @@ const expectNotFail = (
   ) => Effect<unknown, unknown, OctokitTag | InputConfigTag>,
   authToken: string = '',
 ) =>
-  it.effect(
-    'Should return ' + descriptionOfWhatItShouldReturn,
-    ctx =>
-      pipe(
-        testEffect(ctx, PathContentsMetaInfo),
-        provideInputConfig({
-          pathToEntityInRepo,
-          gitRef: '',
-          repo: defaultRepo,
-        }),
-        provideService(
-          OctokitTag,
-          new Octokit(authToken ? { auth: authToken } : void 0),
-        ),
+  it.effect('Should return ' + descriptionOfWhatItShouldReturn, ctx =>
+    pipe(
+      testEffect(ctx, PathContentsMetaInfo),
+      provideInputConfig({
+        pathToEntityInRepo,
+        gitRef: '',
+        repo: defaultRepo,
+      }),
+      provideService(
+        OctokitTag,
+        new Octokit(authToken ? { auth: authToken } : void 0),
       ),
-    { concurrent: true },
+    ),
   );
 
-describe('PathContentsMetaInfo', () => {
+describe('PathContentsMetaInfo', { concurrent: true }, () => {
   expectError({
     when: 'asked for empty repo',
     ExpectedErrorClass: GitHubApiRepoIsEmpty,

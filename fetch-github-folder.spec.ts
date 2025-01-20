@@ -163,9 +163,10 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
   );
 });
 
-describe('fetch-github-folder-cli', () => {
+describe('fetch-github-folder-cli', { concurrent: true }, () => {
   it.scoped(
     `Git Repo ${defaultRepo.owner}/${defaultRepo.name} fetched by our cli, should be the same as repo cloned by git itself`,
+
     ctx =>
       gen(function* () {
         const { hashOfOriginalGitRepo, hashOfGitRepoFetchedUsingOurCLI } =
@@ -182,11 +183,9 @@ describe('fetch-github-folder-cli', () => {
           )
           .toBe(hashOfOriginalGitRepo);
       }).pipe(provide(MainLive)),
-    { concurrent: true, timeout: 0 /* long because of 100mb git LFS file  */ },
+    { timeout: 0 /* long because of 100mb git LFS file  */ },
   );
-});
 
-describe('fetch-github-folder-cli', () => {
   it.scoped(
     `Git Repo nikelborm/nikelborm fetched by our cli, should be the same as repo cloned by git itself`,
     ctx =>
@@ -205,6 +204,5 @@ describe('fetch-github-folder-cli', () => {
           )
           .toBe(hashOfOriginalGitRepo);
       }).pipe(provide(MainLive)),
-    { concurrent: true },
   );
 });

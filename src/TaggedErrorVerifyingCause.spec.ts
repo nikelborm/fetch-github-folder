@@ -8,7 +8,7 @@ import {
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 import { right } from 'effect/Either';
 
-describe('TaggedErrorVerifyingCause', () => {
+describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
   it('Should have expected fields from both contexts: dynamic and static ', ctx => {
     const dynamicContext = {
       actual: 12,

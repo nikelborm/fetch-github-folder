@@ -130,13 +130,14 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 10. better error reporting
 11. support for other git providers: bitbucket, gitlab, forgejo, gitea, codeberg
 12. reflect responses and determine that this is a public repo and we don't need an API key
-13. Smart recognition and parsing of different github links and making downloading plan out of them
-14. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
-15. add retries for reliability and delay in case of rate-limits (Borrow [jpb06/effect-github-stats/.../handle-octokit-request-error.ts](https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts))
-16. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
-17. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-18. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
-19. progress bar with stages (use [parischap/effect-libs/ansi-styles](https://github.com/parischap/effect-libs/tree/master/packages/ansi-styles)?)
-20. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
-21. add codacy, coderabbit, CodeQL, scorecard.dev
-22. <https://github.com/nikelborm/fetch-github-folder/community>
+13. test with bun, deno [lishaduck/effect-utils/platform-deno](https://github.com/lishaduck/effect-utils/tree/main/packages/platform-deno), and other runtimes, add to github action, report to JSR
+14. Smart recognition and parsing of different github links and making downloading plan out of them
+15. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
+16. add retries for reliability and delay in case of rate-limits (Borrow [jpb06/effect-github-stats/.../handle-octokit-request-error.ts](https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts))
+17. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
+18. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
+19. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
+20. progress bar with stages (use [parischap/effect-libs/ansi-styles](https://github.com/parischap/effect-libs/tree/master/packages/ansi-styles)?)
+21. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
+22. add codacy, coderabbit, CodeQL, scorecard.dev
+23. <https://github.com/nikelborm/fetch-github-folder/community>
