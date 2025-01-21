@@ -168,27 +168,27 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
 });
 
 describe('fetch-github-folder-cli', { concurrent: true }, () => {
-  // it.scoped(
-  //   `Git Repo ${defaultRepo.owner}/${defaultRepo.name} fetched by our cli, should be the same as repo cloned by git itself`,
+  it.scoped(
+    `Git Repo ${defaultRepo.owner}/${defaultRepo.name} fetched by our cli, should be the same as repo cloned by git itself`,
 
-  //   ctx =>
-  //     gen(function* () {
-  //       const { hashOfOriginalGitRepo, hashOfGitRepoFetchedUsingOurCLI } =
-  //         yield* fetchAndHashBothDirs({
-  //           gitRepoOwner: defaultRepo.owner,
-  //           gitRepoName: defaultRepo.name,
-  //           gitRef: 'main',
-  //         });
+    ctx =>
+      gen(function* () {
+        const { hashOfOriginalGitRepo, hashOfGitRepoFetchedUsingOurCLI } =
+          yield* fetchAndHashBothDirs({
+            gitRepoOwner: defaultRepo.owner,
+            gitRepoName: defaultRepo.name,
+            gitRef: 'main',
+          });
 
-  //       ctx
-  //         .expect(
-  //           hashOfGitRepoFetchedUsingOurCLI,
-  //           `Hash of directory fetched by our CLI ("${hashOfGitRepoFetchedUsingOurCLI}") isn't equal to hash of directory cloned with native Git ("${hashOfOriginalGitRepo}"). Does your git client has git LFS activated?`,
-  //         )
-  //         .toBe(hashOfOriginalGitRepo);
-  //     }).pipe(provide(MainLive)),
-  //   { timeout: 0 /* long because of 100mb git LFS file  */ },
-  // );
+        ctx
+          .expect(
+            hashOfGitRepoFetchedUsingOurCLI,
+            `Hash of directory fetched by our CLI ("${hashOfGitRepoFetchedUsingOurCLI}") isn't equal to hash of directory cloned with native Git ("${hashOfOriginalGitRepo}"). Does your git client has git LFS activated?`,
+          )
+          .toBe(hashOfOriginalGitRepo);
+      }).pipe(provide(MainLive)),
+    { timeout: 0 /* long because of 100mb git LFS file  */ },
+  );
 
   it.scoped(
     `Git Repo nikelborm/nikelborm fetched by our cli, should be the same as repo cloned by git itself`,
