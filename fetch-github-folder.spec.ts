@@ -11,7 +11,8 @@ import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
 import { pipe } from 'effect';
-import { all, fn, gen, log, provide } from 'effect/Effect';
+import { all, fn, gen, provide } from 'effect/Effect';
+import { log } from 'effect/Console';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import {
   destinationPathCLIOptionBackedByEnv,
