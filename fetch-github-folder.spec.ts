@@ -1,5 +1,4 @@
 import { Command as CliCommand } from '@effect/cli';
-import { nonEmptyString, withDefault } from 'effect/Config';
 import { Command as PlatformCommand } from '@effect/platform';
 import {
   NodeCommandExecutor,
@@ -11,8 +10,8 @@ import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
 import { pipe } from 'effect';
+import { nonEmptyString, withDefault } from 'effect/Config';
 import { all, fn, gen, provide } from 'effect/Effect';
-import { log } from 'effect/Console';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import {
   destinationPathCLIOptionBackedByEnv,
@@ -108,7 +107,7 @@ const bareCloneAndHashRepoContents = fn('bareCloneAndHashRepoContents')(
       'git',
       'clone',
       '--depth=1',
-      `git@github.com:${gitRepoOwner}/${gitRepoName}.git`,
+      `https://github.com/${gitRepoOwner}/${gitRepoName}.git`,
       entireGitRepoDestinationPath,
     ).pipe(PlatformCommand.string);
 
@@ -153,9 +152,7 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
 ) {
   const fs = yield* FileSystem;
   const prefix = yield* TmpDirConfig;
-  yield* log(`prefix=`, prefix);
   const tempDirPath = yield* fs.makeTempDirectoryScoped({ prefix });
-  yield* log(`tempDirPath=`, tempDirPath);
   const params = {
     ...repo,
     tempDirPath,

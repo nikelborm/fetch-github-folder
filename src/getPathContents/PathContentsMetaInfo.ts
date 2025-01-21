@@ -1,6 +1,6 @@
 import { gen, succeed } from 'effect/Effect';
 import { CastToReadableStream } from '../castToReadableStream.js';
-import { TapLogBoth } from '../logObjectPretty.js';
+
 import { parseGitLFSObjectEither } from './parseGitLFSObjectEither.js';
 import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 
@@ -95,4 +95,4 @@ export const PathContentsMetaInfo = gen(function* () {
     contentStream: CastToReadableStream(succeed(contentAsBuffer)),
     meta: 'This file is small enough that GitHub API decided to inline it',
   } as const;
-}).pipe(TapLogBoth);
+});
