@@ -12,8 +12,8 @@ import type {
   GitHubApiRepoIsEmpty,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from './errors.js';
-import type { FailedToParseResponseFromRepoPathContentsMetaInfoAPI } from './getPathContents/index.js';
 import {
+  type FailedToParseResponseFromRepoPathContentsMetaInfoAPI,
   type InconsistentExpectedAndRealContentSize,
   PathContentsMetaInfo,
   RawStreamOfRepoPathContentsFromGitHubAPI,
