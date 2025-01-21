@@ -10,7 +10,8 @@ import { CommandExecutor } from '@effect/platform/CommandExecutor';
 import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
-import { pipe, Stream } from 'effect';
+import { pipe } from 'effect/Function';
+import { decodeText, runFold, Stream } from 'effect/Stream';
 import { all, fn, gen, map, provide } from 'effect/Effect';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import {
@@ -81,6 +82,14 @@ class CommandFinishedWithNonZeroCode extends TaggedErrorVerifyingCause<{
   'Error: Command finished with non zero code',
 ) {}
 
+const Uint8ArrayStreamToString = <E, R>(
+  stream: Stream<Uint8Array<ArrayBufferLike>, E, R>,
+) =>
+  stream.pipe(
+    decodeText(),
+    runFold('', (a, b) => a + b),
+  );
+
 const runCommandAndGetCommandOutputAndFailIfNonZeroCode = (
   command: PlatformCommand.Command,
 ) =>
@@ -92,14 +101,8 @@ const runCommandAndGetCommandOutputAndFailIfNonZeroCode = (
     const [exitCode, stdout, stderr] = yield* all(
       [
         process.exitCode,
-        process.stdout.pipe(
-          Stream.decodeText(),
-          Stream.runFold('', (a, b) => a + b),
-        ),
-        process.stderr.pipe(
-          Stream.decodeText(),
-          Stream.runFold('', (a, b) => a + b),
-        ),
+        Uint8ArrayStreamToString(process.stdout),
+        Uint8ArrayStreamToString(process.stderr),
       ],
       { concurrency: 'unbounded' },
     );
