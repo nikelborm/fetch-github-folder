@@ -1,4 +1,4 @@
-import { Either, isRight, left, mapLeft, right } from 'effect/Either';
+import { Either, gen, isRight, left, mapLeft, right } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
   decodeUnknownEither,
@@ -19,48 +19,50 @@ export const parseGitLFSObjectEither = ({
 }: {
   contentAsBuffer: Buffer<ArrayBuffer>;
   expectedContentSize: number;
-}) => {
-  // gitLFS info usually is no longer than MAX_GIT_LFS_INFO_SIZE bytes
-  const contentAsString = contentAsBuffer
-    .subarray(0, MAX_GIT_LFS_INFO_SIZE)
-    .toString('utf8');
+}) =>
+  gen(function* () {
+    // gitLFS info usually is no longer than MAX_GIT_LFS_INFO_SIZE bytes
+    const contentAsString = contentAsBuffer
+      .subarray(0, MAX_GIT_LFS_INFO_SIZE)
+      .toString('utf8');
 
-  const parsingResult = mapLeft(
-    decodeGitLFSInfoSchema(contentAsString.match(gitLFSInfoRegexp)?.groups),
-    cause =>
-      new FailedToParseGitLFSInfo(cause, {
-        partOfContentThatCouldBeGitLFSInfo: contentAsString,
-      }),
-  );
-
-  const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
-  const doesSizeFromGitLFSInfoAlignWithExpectedContentSize =
-    isRight(parsingResult) && parsingResult.right.size === expectedContentSize;
-
-  const shouldFailIfItIsNotGitLFS =
-    contentAsBuffer.byteLength !== expectedContentSize;
-
-  const isThisAGitLFSObject =
-    matchedByRegexpAndParsedByEffectSchema &&
-    doesSizeFromGitLFSInfoAlignWithExpectedContentSize;
-
-  if (isThisAGitLFSObject)
-    return right({
-      gitLFSObjectIdSha256: parsingResult.right.oidSha256,
-      gitLFSVersion: parsingResult.right.version,
-    } as const);
-
-  if (shouldFailIfItIsNotGitLFS)
-    return left(
-      new InconsistentExpectedAndRealContentSize({
-        actual: contentAsBuffer.byteLength,
-        expected: expectedContentSize,
-        gitLFSInfo: parsingResult,
-      }),
+    const parsingResult = mapLeft(
+      decodeGitLFSInfoSchema(contentAsString.match(gitLFSInfoRegexp)?.groups),
+      cause =>
+        new FailedToParseGitLFSInfo(cause, {
+          partOfContentThatCouldBeGitLFSInfo: contentAsString,
+        }),
     );
 
-  return right('This is not a git LFS object' as const);
-};
+    const matchedByRegexpAndParsedByEffectSchema = isRight(parsingResult);
+    const doesSizeFromGitLFSInfoAlignWithExpectedContentSize =
+      isRight(parsingResult) &&
+      parsingResult.right.size === expectedContentSize;
+
+    const shouldFailIfItIsNotGitLFS =
+      contentAsBuffer.byteLength !== expectedContentSize;
+
+    const isThisAGitLFSObject =
+      matchedByRegexpAndParsedByEffectSchema &&
+      doesSizeFromGitLFSInfoAlignWithExpectedContentSize;
+
+    if (isThisAGitLFSObject)
+      return {
+        gitLFSObjectIdSha256: parsingResult.right.oidSha256,
+        gitLFSVersion: parsingResult.right.version,
+      } as const;
+
+    if (shouldFailIfItIsNotGitLFS)
+      return yield* left(
+        new InconsistentExpectedAndRealContentSize({
+          actual: contentAsBuffer.byteLength,
+          expected: expectedContentSize,
+          gitLFSInfo: parsingResult,
+        }),
+      );
+
+    return 'This is not a git LFS object' as const;
+  });
 
 // there are some responses that look like
 // `version https://git-lfs.github.com/spec/v1
@@ -101,7 +103,11 @@ type InconsistentSizesDynamicContext = {
   actual: number;
   expected: number;
   gitLFSInfo: Either<
-    (typeof GitLFSInfoSchema)['Type'],
+    {
+      version: string;
+      oidSha256: string;
+      size: string;
+    },
     FailedToParseGitLFSInfo
   >;
 };

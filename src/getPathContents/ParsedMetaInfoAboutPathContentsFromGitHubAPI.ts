@@ -10,7 +10,10 @@ import {
   Struct,
   Union,
 } from 'effect/Schema';
-import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
+import {
+  ReturnTypeNoStatic,
+  TaggedErrorVerifyingCause,
+} from '../TaggedErrorVerifyingCause.js';
 import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';
 
 export const UnparsedMetaInfoAboutPathContentsFromGitHubAPI =
@@ -59,10 +62,15 @@ const decodeResponse = decodeUnknownEither(ResponseSchema, {
   exact: true,
 });
 
-export class FailedToParseResponseFromRepoPathContentsMetaInfoAPI extends TaggedErrorVerifyingCause<{
-  response: unknown;
-}>()(
+// Extracted to a const to please JSR
+const _Err: ReturnTypeNoStatic<
+  'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
+  typeof ParseError,
+  { response: unknown }
+> = TaggedErrorVerifyingCause<{ response: unknown }>()(
   'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
   `Failed to parse response from repo path contents meta info API`,
   ParseError,
-) {}
+);
+
+export class FailedToParseResponseFromRepoPathContentsMetaInfoAPI extends _Err {}

@@ -27,7 +27,7 @@ import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { FailedToCastDataToReadableStream } from '../castToReadableStream.js';
 import { assert, typeGuard } from 'tsafe';
-import { InputConfigTag, provideInputConfig } from '../configContext.js';
+import { InputConfig, provideInputConfig } from '../configContext.js';
 import {
   GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
@@ -201,7 +201,7 @@ const expectNotFail = (
   testEffect: (
     ctx: TestCtx,
     pathContentsMetaInfo: typeof PathContentsMetaInfo,
-  ) => Effect<unknown, unknown, OctokitTag | InputConfigTag>,
+  ) => Effect<unknown, unknown, OctokitTag | InputConfig>,
   authToken: string = '',
 ) =>
   it.effect('Should return ' + descriptionOfWhatItShouldReturn, ctx =>

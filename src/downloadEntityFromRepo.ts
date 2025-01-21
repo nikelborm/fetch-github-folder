@@ -1,7 +1,7 @@
 import type { UnknownException } from 'effect/Cause';
 import { type Effect, fail, gen } from 'effect/Effect';
 import type { FailedToCastDataToReadableStream } from './castToReadableStream.js';
-import type { InputConfigTag, OutputConfigTag } from './configContext.js';
+import type { InputConfig, OutputConfig } from './configContext.js';
 import type {
   GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
@@ -47,7 +47,7 @@ export const downloadEntityFromRepo: Effect<
   | GitHubApiGeneralUserError
   | FailedToParseResponseFromRepoPathContentsMetaInfoAPI
   | FailedToCastDataToReadableStream,
-  OutputConfigTag | OctokitTag | InputConfigTag
+  OutputConfig | OctokitTag | InputConfig
 > = gen(function* () {
   const pathContentsMetaInfo = yield* PathContentsMetaInfo;
 

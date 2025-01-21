@@ -1,7 +1,10 @@
 import { Effect, gen } from 'effect/Effect';
 import { Readable } from 'node:stream';
 import { ReadableStream } from 'node:stream/web';
-import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import {
+  ReturnTypeNoCauseNoStatic,
+  TaggedErrorVerifyingCause,
+} from './TaggedErrorVerifyingCause.js';
 
 export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
   gen(function* () {
@@ -22,7 +25,10 @@ export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
     return yield* new FailedToCastDataToReadableStream();
   });
 
-export class FailedToCastDataToReadableStream extends TaggedErrorVerifyingCause()(
-  'FailedToCastDataToReadableStream',
-  'Error: Failed to cast data to Readable stream, type of argument is not familiar',
-) {}
+const _Err: ReturnTypeNoCauseNoStatic<'FailedToCastDataToReadableStream'> =
+  TaggedErrorVerifyingCause()(
+    'FailedToCastDataToReadableStream',
+    'Error: Failed to cast data to Readable stream, type of argument is not familiar',
+  );
+
+export class FailedToCastDataToReadableStream extends _Err {}

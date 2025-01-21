@@ -1,41 +1,45 @@
-import { Tag, add, empty } from 'effect/Context';
-import { Effect, provide, provideService } from 'effect/Effect';
+import { GenericTag } from 'effect/Context';
+import { Effect, provide } from 'effect/Effect';
+import { merge, succeed } from 'effect/Layer';
 
-export class InputConfigTag extends Tag('InputConfig')<
-  InputConfigTag,
-  Readonly<{
-    repo: Readonly<{
-      owner: string;
-      name: string;
-    }>;
-    pathToEntityInRepo: string;
-    gitRef: string;
-  }>
->() {}
+export type InputConfig = Readonly<{
+  repo: Readonly<{
+    owner: string;
+    name: string;
+  }>;
+  pathToEntityInRepo: string;
+  gitRef: string;
+}>;
 
-export class OutputConfigTag extends Tag('OutputConfig')<
-  OutputConfigTag,
-  Readonly<{
-    localPathAtWhichEntityFromRepoWillBeAvailable: string;
-  }>
->() {}
+export const InputConfigTag = GenericTag<InputConfig>('InputConfig');
 
-export const provideInputConfig = (inputConfig: InputConfigTag['Type']) =>
-  provideService(InputConfigTag, inputConfig);
+export type OutputConfig = Readonly<{
+  localPathAtWhichEntityFromRepoWillBeAvailable: string;
+}>;
 
-export type SingleTargetConfig = InputConfigTag['Type'] &
-  OutputConfigTag['Type'];
+export const OutputConfigTag = GenericTag<OutputConfig>('OutputConfig');
+
+const InputConfigLive = (inputConfig: InputConfig) =>
+  succeed(InputConfigTag, InputConfigTag.of(inputConfig));
+
+export const provideInputConfig = (inputConfig: InputConfig) =>
+  provide(InputConfigLive(inputConfig));
+
+const OutputConfigLive = (outputConfig: OutputConfig) =>
+  succeed(OutputConfigTag, OutputConfigTag.of(outputConfig));
+
+export type SingleTargetConfig = InputConfig & OutputConfig;
 
 export const provideSingleDownloadTargetConfig = ({
   localPathAtWhichEntityFromRepoWillBeAvailable,
   ...inputConfig
 }: SingleTargetConfig): (<A, E, R>(
   self: Effect<A, E, R>,
-) => Effect<A, E, Exclude<R, InputConfigTag | OutputConfigTag>>) =>
+) => Effect<A, E, Exclude<R, InputConfig | OutputConfig>>) =>
   provide(
-    empty().pipe(
-      add(InputConfigTag, inputConfig),
-      add(OutputConfigTag, {
+    merge(
+      InputConfigLive(inputConfig),
+      OutputConfigLive({
         localPathAtWhichEntityFromRepoWillBeAvailable,
       }),
     ),

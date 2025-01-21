@@ -63,6 +63,11 @@ export type ReturnTypeNoCause<
   DynamicContext extends Record<string, unknown> = {},
 > = ReturnTypeGen<ErrorName, undefined, StaticContext, DynamicContext>;
 
+export type ReturnTypeNoCauseNoStatic<
+  ErrorName extends string,
+  DynamicContext extends Record<string, unknown> = {},
+> = ReturnTypeGen<ErrorName, undefined, {}, DynamicContext>;
+
 export type ReturnTypeNoStatic<
   ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
