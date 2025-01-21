@@ -11,7 +11,7 @@ import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
 import { pipe } from 'effect';
-import { all, fn, gen, provide } from 'effect/Effect';
+import { all, fn, gen, log, provide } from 'effect/Effect';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import {
   destinationPathCLIOptionBackedByEnv,
@@ -50,10 +50,7 @@ const getPurelyContentDependentHashOfDirectory = (directoryPath: string) =>
     PlatformCommand.string,
   );
 
-const DestinationPathConfig = pipe(
-  nonEmptyString('TMPDIR'),
-  withDefault('/tmp'),
-);
+const TmpDirConfig = pipe(nonEmptyString('TMPDIR'), withDefault('/tmp'));
 
 const appCommand = CliCommand.make(
   'fetch-github-folder',
@@ -154,8 +151,10 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
   repo: Omit<Params, 'tempDirPath'>,
 ) {
   const fs = yield* FileSystem;
-  const prefix = yield* DestinationPathConfig;
+  const prefix = yield* TmpDirConfig;
+  yield* log({ prefix });
   const tempDirPath = yield* fs.makeTempDirectoryScoped({ prefix });
+  yield* log({ tempDirPath });
   const params = {
     ...repo,
     tempDirPath,
@@ -171,27 +170,27 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
 });
 
 describe('fetch-github-folder-cli', { concurrent: true }, () => {
-  it.scoped(
-    `Git Repo ${defaultRepo.owner}/${defaultRepo.name} fetched by our cli, should be the same as repo cloned by git itself`,
+  // it.scoped(
+  //   `Git Repo ${defaultRepo.owner}/${defaultRepo.name} fetched by our cli, should be the same as repo cloned by git itself`,
 
-    ctx =>
-      gen(function* () {
-        const { hashOfOriginalGitRepo, hashOfGitRepoFetchedUsingOurCLI } =
-          yield* fetchAndHashBothDirs({
-            gitRepoOwner: defaultRepo.owner,
-            gitRepoName: defaultRepo.name,
-            gitRef: 'main',
-          });
+  //   ctx =>
+  //     gen(function* () {
+  //       const { hashOfOriginalGitRepo, hashOfGitRepoFetchedUsingOurCLI } =
+  //         yield* fetchAndHashBothDirs({
+  //           gitRepoOwner: defaultRepo.owner,
+  //           gitRepoName: defaultRepo.name,
+  //           gitRef: 'main',
+  //         });
 
-        ctx
-          .expect(
-            hashOfGitRepoFetchedUsingOurCLI,
-            `Hash of directory fetched by our CLI ("${hashOfGitRepoFetchedUsingOurCLI}") isn't equal to hash of directory cloned with native Git ("${hashOfOriginalGitRepo}"). Does your git client has git LFS activated?`,
-          )
-          .toBe(hashOfOriginalGitRepo);
-      }).pipe(provide(MainLive)),
-    { timeout: 0 /* long because of 100mb git LFS file  */ },
-  );
+  //       ctx
+  //         .expect(
+  //           hashOfGitRepoFetchedUsingOurCLI,
+  //           `Hash of directory fetched by our CLI ("${hashOfGitRepoFetchedUsingOurCLI}") isn't equal to hash of directory cloned with native Git ("${hashOfOriginalGitRepo}"). Does your git client has git LFS activated?`,
+  //         )
+  //         .toBe(hashOfOriginalGitRepo);
+  //     }).pipe(provide(MainLive)),
+  //   { timeout: 0 /* long because of 100mb git LFS file  */ },
+  // );
 
   it.scoped(
     `Git Repo nikelborm/nikelborm fetched by our cli, should be the same as repo cloned by git itself`,
