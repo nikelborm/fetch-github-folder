@@ -11,7 +11,7 @@ import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
 import { pipe, Stream } from 'effect';
-import { all, fn, gen, provide } from 'effect/Effect';
+import { all, fn, gen, map, provide } from 'effect/Effect';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import {
   destinationPathCLIOptionBackedByEnv,
@@ -137,7 +137,7 @@ const getPurelyContentDependentHashOfDirectory = (directoryPath: string) =>
       PlatformCommand.pipeTo(PlatformCommand.make('sha256sum')),
       PlatformCommand.pipeTo(PlatformCommand.make('head', '-c', '64')),
     ),
-  );
+  ).pipe(map(v => v.stdout));
 
 const bareCloneAndHashRepoContents = fn('bareCloneAndHashRepoContents')(
   function* ({ gitRepoName, gitRepoOwner, tempDirPath, gitRef }: Params) {
