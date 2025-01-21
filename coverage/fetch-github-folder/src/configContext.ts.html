@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
@@ -105,86 +105,98 @@
 <a name='L40'></a><a href='#L40'>40</a>
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Tag, add, empty } from 'effect/Context';
-import { Effect, provide, provideService } from 'effect/Effect';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { GenericTag } from 'effect/Context';
+import { Effect, provide } from 'effect/Effect';
+import { merge, succeed } from 'effect/Layer';
 &nbsp;
-export class InputConfigTag extends Tag('InputConfig')&lt;
-  InputConfigTag,
-  Readonly&lt;{
-    repo: Readonly&lt;{
-      owner: string;
-      name: string;
-    }&gt;;
-    pathToEntityInRepo: string;
-    gitRef: string;
-  }&gt;
-&gt;() {}
+export type InputConfig = Readonly&lt;{
+  repo: Readonly&lt;{
+    owner: string;
+    name: string;
+  }&gt;;
+  pathToEntityInRepo: string;
+  gitRef: string;
+}&gt;;
 &nbsp;
-export class OutputConfigTag extends Tag('OutputConfig')&lt;
-  OutputConfigTag,
-  Readonly&lt;{
-    localPathAtWhichEntityFromRepoWillBeAvailable: string;
-  }&gt;
-&gt;() {}
+export const InputConfigTag = GenericTag&lt;InputConfig&gt;('InputConfig');
 &nbsp;
-export const provideInputConfig = (inputConfig: InputConfigTag['Type']) =&gt;
-  provideService(InputConfigTag, inputConfig);
+export type OutputConfig = Readonly&lt;{
+  localPathAtWhichEntityFromRepoWillBeAvailable: string;
+}&gt;;
 &nbsp;
-export type SingleTargetConfig = InputConfigTag['Type'] &amp;
-  OutputConfigTag['Type'];
+export const OutputConfigTag = GenericTag&lt;OutputConfig&gt;('OutputConfig');
+&nbsp;
+const InputConfigLive = (inputConfig: InputConfig) =&gt;
+  succeed(InputConfigTag, InputConfigTag.of(inputConfig));
+&nbsp;
+export const provideInputConfig = (inputConfig: InputConfig) =&gt;
+  provide(InputConfigLive(inputConfig));
+&nbsp;
+const OutputConfigLive = (outputConfig: OutputConfig) =&gt;
+  succeed(OutputConfigTag, OutputConfigTag.of(outputConfig));
+&nbsp;
+export type SingleTargetConfig = InputConfig &amp; OutputConfig;
 &nbsp;
 export const provideSingleDownloadTargetConfig = ({
   localPathAtWhichEntityFromRepoWillBeAvailable,
   ...inputConfig
 }: SingleTargetConfig): (&lt;A, E, R&gt;(
   self: Effect&lt;A, E, R&gt;,
-) =&gt; Effect&lt;A, E, Exclude&lt;R, InputConfigTag | OutputConfigTag&gt;&gt;) =&gt;
+) =&gt; Effect&lt;A, E, Exclude&lt;R, InputConfig | OutputConfig&gt;&gt;) =&gt;
   provide(
-    empty().pipe(
-      add(InputConfigTag, inputConfig),
-      add(OutputConfigTag, {
+    merge(
+      InputConfigLive(inputConfig),
+      OutputConfigLive({
         localPathAtWhichEntityFromRepoWillBeAvailable,
       }),
     ),
@@ -196,7 +208,7 @@ export const provideSingleDownloadTargetConfig = ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-21T08:22:42.383Z
+                at 2025-01-21T10:02:14.808Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
