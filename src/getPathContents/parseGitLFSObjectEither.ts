@@ -103,11 +103,11 @@ type InconsistentSizesDynamicContext = {
   actual: number;
   expected: number;
   gitLFSInfo: Either<
-    {
+    Readonly<{
       version: string;
       oidSha256: string;
-      size: string;
-    },
+      size: number;
+    }>,
     FailedToParseGitLFSInfo
   >;
 };
