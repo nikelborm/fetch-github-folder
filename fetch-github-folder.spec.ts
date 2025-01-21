@@ -152,9 +152,9 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
 ) {
   const fs = yield* FileSystem;
   const prefix = yield* TmpDirConfig;
-  yield* log({ prefix });
+  yield* log(`prefix=`, prefix);
   const tempDirPath = yield* fs.makeTempDirectoryScoped({ prefix });
-  yield* log({ tempDirPath });
+  yield* log(`tempDirPath=`, tempDirPath);
   const params = {
     ...repo,
     tempDirPath,
