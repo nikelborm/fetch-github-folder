@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.4% </span>
+                <span class="strong">93.47% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>85/91</span>
+                <span class='fraction'>86/92</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.4% </span>
+                <span class="strong">93.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>85/91</span>
+                <span class='fraction'>86/92</span>
             </div>
         
             
@@ -211,7 +211,14 @@
 <a name='L146'></a><a href='#L146'>146</a>
 <a name='L147'></a><a href='#L147'>147</a>
 <a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -229,6 +236,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -244,17 +254,21 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -360,6 +374,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+  Options,
   text,
   withFallbackConfig,
   withDescription as withOptionDescription,
@@ -379,7 +394,9 @@ import { NonEmptyString, filter, transformOrFail } from 'effect/Schema';
 import { outdent } from 'outdent';
 &nbsp;
 const validateGitHubSlug = (s: string) =&gt; !!s.match(/^[a-z0-9.\-_]+$/gi);
-const invalidGitHubSlugMessage = `GitHub handle should have only ASCII letters, digits, and the characters ".", "-", and "_"`;
+&nbsp;
+const invalidGitHubSlugMessage =
+  'GitHub handle should have only ASCII letters, digits, and the characters ".", "-", and "_"';
 &nbsp;
 // https://developer.mozilla.org/en-US/docs/Glossary/Slug
 const GitHubSlugStringSchema = NonEmptyString.pipe(
@@ -392,16 +409,19 @@ const withGitHubSlugConfigValidation = validateConfig({
 });
 &nbsp;
 const pathToEntityInRepoDescription = 'Path to file or directory in repo';
+&nbsp;
 const repoOwnerDescription = outdent`
   This is a username (login handle) of a person owning repo you
   are trying to download from. For example, if the repository's URL is
   \`https://github.com/apache/superset\`, the owner is \`apache\`
 `;
+&nbsp;
 const repoNameDescription = outdent`
   This is the name handle of the repository you are trying to download
   from. For example, if the repository's URL is
   \`https://github.com/apache/superset\`, the name is \`superset\`
 `;
+&nbsp;
 const destinationPathDescription = outdent`
   Local path of the downloaded file or directory. If
   "pathToEntityInRepo" points to a file, then last element of the
@@ -411,6 +431,7 @@ const destinationPathDescription = outdent`
   element of destination path. If the directory doesn't exist, it will
   be automatically created.
 `;
+&nbsp;
 const gitRefDescription = outdent`
   This is the commit's SHA hash, branch name, tag name, or any other ref
   you want to download from. If you don't specify it, the default branch
@@ -475,34 +496,34 @@ const CleanRepoEntityPathString = transformOrFail(
   },
 );
 &nbsp;
-export const pathToEntityInRepoCLIOptionBackedByEnv = pipe(
+export const pathToEntityInRepoCLIOptionBackedByEnv: Options&lt;string&gt; = pipe(
   text('pathToEntityInRepo'),
   withOptionDescription(pathToEntityInRepoDescription),
   withFallbackConfig(PathToEntityInRepoConfig),
   withSchema(CleanRepoEntityPathString),
 );
 &nbsp;
-export const repoOwnerCLIOptionBackedByEnv = pipe(
+export const repoOwnerCLIOptionBackedByEnv: Options&lt;string&gt; = pipe(
   text('repoOwner'),
   withOptionDescription(repoOwnerDescription),
   withFallbackConfig(RepoOwnerConfig),
   withSchema(GitHubSlugStringSchema),
 );
 &nbsp;
-export const repoNameCLIOptionBackedByEnv = pipe(
+export const repoNameCLIOptionBackedByEnv: Options&lt;string&gt; = pipe(
   text('repoName'),
   withOptionDescription(repoNameDescription),
   withFallbackConfig(RepoNameConfig),
   withSchema(GitHubSlugStringSchema),
 );
 &nbsp;
-export const destinationPathCLIOptionBackedByEnv = pipe(
+export const destinationPathCLIOptionBackedByEnv: Options&lt;string&gt; = pipe(
   text('destinationPath'),
   withOptionDescription(destinationPathDescription),
   withFallbackConfig(DestinationPathConfig),
 );
 &nbsp;
-export const gitRefCLIOptionBackedByEnv = pipe(
+export const gitRefCLIOptionBackedByEnv: Options&lt;string&gt; = pipe(
   text('gitRef'),
   withOptionDescription(gitRefDescription),
   withFallbackConfig(GitRefConfig),
@@ -514,7 +535,7 @@ export const gitRefCLIOptionBackedByEnv = pipe(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-21T05:35:14.249Z
+                at 2025-01-21T08:22:42.383Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
