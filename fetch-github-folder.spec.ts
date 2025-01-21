@@ -23,8 +23,8 @@ import {
   provideSingleDownloadTargetConfig,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
-  TaggedErrorVerifyingCause,
 } from './src/index.js';
+import { TaggedErrorVerifyingCause } from './src/TaggedErrorVerifyingCause.js';
 
 const defaultRepo = {
   owner: 'fetch-gh-folder-tests',

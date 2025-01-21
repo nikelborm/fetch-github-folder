@@ -1,13 +1,34 @@
-export * from './castToReadableStream.js';
-export * from './commandLineParams.js';
-export * from './configContext.js';
-export * from './downloadEntityFromRepo.js';
-export * from './errors.js';
-export * from './getPathContents/index.js';
-export * from './getReadableTarGzStreamOfRepoDirectory.js';
-export * from './logObjectPretty.js';
-export * from './octokit.js';
+export {
+  GitHubApiAuthRatelimited,
+  GitHubApiBadCredentials,
+  GitHubApiCommonErrors,
+  GitHubApiGeneralServerError,
+  GitHubApiGeneralUserError,
+  GitHubApiNoCommitFoundForGitRef,
+  GitHubApiRatelimited,
+  GitHubApiRepoIsEmpty,
+  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+} from './errors.js';
+export { downloadEntityFromRepo } from './downloadEntityFromRepo.js';
+export {
+  destinationPathCLIOptionBackedByEnv,
+  gitRefCLIOptionBackedByEnv,
+  pathToEntityInRepoCLIOptionBackedByEnv,
+  repoNameCLIOptionBackedByEnv,
+  repoOwnerCLIOptionBackedByEnv,
+} from './commandLineParams.js';
+
+export { FailedToCastDataToReadableStream } from './castToReadableStream.js';
+export { provideSingleDownloadTargetConfig } from './configContext.js';
+
+export {
+  FailedToParseGitLFSInfo,
+  InconsistentExpectedAndRealContentSize,
+} from './getPathContents/index.js';
+
+export { OctokitLayer } from './octokit.js';
 export * from './repo.interface.js';
-export * from './TaggedErrorVerifyingCause.js';
-export * from './unpackRepoFolderTarGzStreamToFs.js';
-export * from './writeFileStreamToDestinationPath.js';
+
+export { FailedToUnpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamToFs.js';
+
+export { FailedToWriteFileStreamToDestinationPath } from './writeFileStreamToDestinationPath.js';

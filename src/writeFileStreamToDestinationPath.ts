@@ -3,7 +3,10 @@ import { createWriteStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { OutputConfigTag } from './configContext.js';
-import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import {
+  ReturnTypeUnknownCauseNoStatic,
+  TaggedErrorVerifyingCause,
+} from './TaggedErrorVerifyingCause.js';
 
 export const writeFileStreamToDestinationPath = <E, R>(
   self: Effect<Readable, E, R>,
@@ -24,9 +27,13 @@ export const writeFileStreamToDestinationPath = <E, R>(
     });
   });
 
-export class FailedToWriteFileStreamToDestinationPath extends TaggedErrorVerifyingCause<{
-  cause: unknown;
-}>()(
-  'FailedToWriteFileStreamToDestinationPath',
-  'Error: Failed to write file stream to destination path',
-) {}
+// Extracted to a const to please JSR
+const _Err: ReturnTypeUnknownCauseNoStatic<'FailedToWriteFileStreamToDestinationPath'> =
+  TaggedErrorVerifyingCause<{
+    cause: unknown;
+  }>()(
+    'FailedToWriteFileStreamToDestinationPath',
+    'Error: Failed to write file stream to destination path',
+  );
+
+export class FailedToWriteFileStreamToDestinationPath extends _Err {}

@@ -1,13 +1,54 @@
-import { fail, gen } from 'effect/Effect';
+import type { UnknownException } from 'effect/Cause';
+import { type Effect, fail, gen } from 'effect/Effect';
+import type { FailedToCastDataToReadableStream } from './castToReadableStream.js';
+import type { InputConfigTag, OutputConfigTag } from './configContext.js';
+import type {
+  GitHubApiAuthRatelimited,
+  GitHubApiBadCredentials,
+  GitHubApiGeneralServerError,
+  GitHubApiGeneralUserError,
+  GitHubApiNoCommitFoundForGitRef,
+  GitHubApiRatelimited,
+  GitHubApiRepoIsEmpty,
+  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+} from './errors.js';
+import type { FailedToParseResponseFromRepoPathContentsMetaInfoAPI } from './getPathContents/index.js';
 import {
+  type InconsistentExpectedAndRealContentSize,
   PathContentsMetaInfo,
   RawStreamOfRepoPathContentsFromGitHubAPI,
 } from './getPathContents/index.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
-import { unpackRepoFolderTarGzStreamToFs } from './unpackRepoFolderTarGzStreamToFs.js';
-import { writeFileStreamToDestinationPath } from './writeFileStreamToDestinationPath.js';
+import type { OctokitTag } from './octokit.js';
+import {
+  type FailedToUnpackRepoFolderTarGzStreamToFs,
+  unpackRepoFolderTarGzStreamToFs,
+} from './unpackRepoFolderTarGzStreamToFs.js';
+import {
+  type FailedToWriteFileStreamToDestinationPath,
+  writeFileStreamToDestinationPath,
+} from './writeFileStreamToDestinationPath.js';
 
-export const downloadEntityFromRepo = gen(function* () {
+// explicit type to please JSR
+export const downloadEntityFromRepo: Effect<
+  void,
+  | Error
+  | InconsistentExpectedAndRealContentSize
+  | FailedToWriteFileStreamToDestinationPath
+  | FailedToUnpackRepoFolderTarGzStreamToFs
+  | UnknownException
+  | GitHubApiRepoIsEmpty
+  | GitHubApiNoCommitFoundForGitRef
+  | GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
+  | GitHubApiBadCredentials
+  | GitHubApiAuthRatelimited
+  | GitHubApiRatelimited
+  | GitHubApiGeneralServerError
+  | GitHubApiGeneralUserError
+  | FailedToParseResponseFromRepoPathContentsMetaInfoAPI
+  | FailedToCastDataToReadableStream,
+  OutputConfigTag | OctokitTag | InputConfigTag
+> = gen(function* () {
   const pathContentsMetaInfo = yield* PathContentsMetaInfo;
 
   if (pathContentsMetaInfo.type === 'dir')

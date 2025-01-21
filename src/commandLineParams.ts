@@ -1,4 +1,5 @@
 import {
+  Options,
   text,
   withFallbackConfig,
   withDescription as withOptionDescription,
@@ -18,7 +19,9 @@ import { NonEmptyString, filter, transformOrFail } from 'effect/Schema';
 import { outdent } from 'outdent';
 
 const validateGitHubSlug = (s: string) => !!s.match(/^[a-z0-9.\-_]+$/gi);
-const invalidGitHubSlugMessage = `GitHub handle should have only ASCII letters, digits, and the characters ".", "-", and "_"`;
+
+const invalidGitHubSlugMessage =
+  'GitHub handle should have only ASCII letters, digits, and the characters ".", "-", and "_"';
 
 // https://developer.mozilla.org/en-US/docs/Glossary/Slug
 const GitHubSlugStringSchema = NonEmptyString.pipe(
@@ -31,16 +34,19 @@ const withGitHubSlugConfigValidation = validateConfig({
 });
 
 const pathToEntityInRepoDescription = 'Path to file or directory in repo';
+
 const repoOwnerDescription = outdent`
   This is a username (login handle) of a person owning repo you
   are trying to download from. For example, if the repository's URL is
   \`https://github.com/apache/superset\`, the owner is \`apache\`
 `;
+
 const repoNameDescription = outdent`
   This is the name handle of the repository you are trying to download
   from. For example, if the repository's URL is
   \`https://github.com/apache/superset\`, the name is \`superset\`
 `;
+
 const destinationPathDescription = outdent`
   Local path of the downloaded file or directory. If
   "pathToEntityInRepo" points to a file, then last element of the
@@ -50,6 +56,7 @@ const destinationPathDescription = outdent`
   element of destination path. If the directory doesn't exist, it will
   be automatically created.
 `;
+
 const gitRefDescription = outdent`
   This is the commit's SHA hash, branch name, tag name, or any other ref
   you want to download from. If you don't specify it, the default branch
@@ -114,34 +121,34 @@ const CleanRepoEntityPathString = transformOrFail(
   },
 );
 
-export const pathToEntityInRepoCLIOptionBackedByEnv = pipe(
+export const pathToEntityInRepoCLIOptionBackedByEnv: Options<string> = pipe(
   text('pathToEntityInRepo'),
   withOptionDescription(pathToEntityInRepoDescription),
   withFallbackConfig(PathToEntityInRepoConfig),
   withSchema(CleanRepoEntityPathString),
 );
 
-export const repoOwnerCLIOptionBackedByEnv = pipe(
+export const repoOwnerCLIOptionBackedByEnv: Options<string> = pipe(
   text('repoOwner'),
   withOptionDescription(repoOwnerDescription),
   withFallbackConfig(RepoOwnerConfig),
   withSchema(GitHubSlugStringSchema),
 );
 
-export const repoNameCLIOptionBackedByEnv = pipe(
+export const repoNameCLIOptionBackedByEnv: Options<string> = pipe(
   text('repoName'),
   withOptionDescription(repoNameDescription),
   withFallbackConfig(RepoNameConfig),
   withSchema(GitHubSlugStringSchema),
 );
 
-export const destinationPathCLIOptionBackedByEnv = pipe(
+export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
   text('destinationPath'),
   withOptionDescription(destinationPathDescription),
   withFallbackConfig(DestinationPathConfig),
 );
 
-export const gitRefCLIOptionBackedByEnv = pipe(
+export const gitRefCLIOptionBackedByEnv: Options<string> = pipe(
   text('gitRef'),
   withOptionDescription(gitRefDescription),
   withFallbackConfig(GitRefConfig),

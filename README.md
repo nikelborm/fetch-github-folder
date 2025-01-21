@@ -115,31 +115,3 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 
 1. Set env variables in `.env` file
 2. Run `npm start`
-
-## TODO by priority
-
-1. support git LFS
-2. tests
-3. Better Readme
-4. support creating downloading plans, where user can specify more than one entity (folder/file) to download
-5. At least primitive support for passing auth tokens. Hide auth token behind Effect.Redacted (do not provide CLI option for token. only either env, or prompt)
-6. write docs for exported package-symbols [jsr.io/docs/symbols](https://jsr.io/docs/writing-docs#symbol-documentation)
-7. add possibility for quick request of token through browser (script opens a window and runs the request as authorized user)
-8. support git submodules
-9. support symbolic links?
-10. better error reporting
-11. options to check for specific type of entity before downloading: so that we could expect, that we download a file, or a directory and we can validate if we should continue before we actually downloaded the thing
-12. support for other git providers: bitbucket, gitlab, forgejo, gitea, codeberg
-13. reflect responses and determine that this is a public repo and we don't need an API key
-14. test with bun, deno [lishaduck/effect-utils/platform-deno](https://github.com/lishaduck/effect-utils/tree/main/packages/platform-deno), and other runtimes, add to github action, report to JSR
-15. Smart recognition and parsing of different github links and making downloading plan out of them
-16. if we download a directory we already know it's contents and if it has nested directories, we can load them as subtrees in parallel
-17. add retries for reliability and delay in case of rate-limits (Borrow [jpb06/effect-github-stats/.../handle-octokit-request-error.ts](https://github.com/jpb06/effect-github-stats/blob/main/src/layer/errors/handle-octokit-request-error.ts))
-18. PR to octokit to make tarball endpoint return ArrayBuffer instead of unknown
-19. PR to effect CLI, to properly render what env vars can be used as fallback and also what default values are.
-20. Desktop URL handler, so that the CLI can handle some GitHub URLs as vscode does
-21. progress bar with stages (use [parischap/effect-libs/ansi-styles](https://github.com/parischap/effect-libs/tree/master/packages/ansi-styles)?)
-22. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
-23. add codacy, coderabbit, CodeQL, scorecard.dev
-24. <https://github.com/nikelborm/fetch-github-folder/community>
-25. https://github.com/marketplace/actions/first-interaction

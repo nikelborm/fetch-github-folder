@@ -4,7 +4,7 @@ import { describe, it } from '@effect/vitest';
 import {
   FailedToParseGitLFSInfo,
   InconsistentExpectedAndRealContentSize,
-} from './getPathContents/parseGitLFSObjectEither.js';
+} from './getPathContents/index.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
 import { right } from 'effect/Either';
 

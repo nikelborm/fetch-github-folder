@@ -4,7 +4,10 @@ import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
 import { OutputConfigTag } from './configContext.js';
-import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import {
+  ReturnTypeUnknownCauseNoStatic,
+  TaggedErrorVerifyingCause,
+} from './TaggedErrorVerifyingCause.js';
 
 export const unpackRepoFolderTarGzStreamToFs = <E, R>(
   self: Effect<Readable, E, R>,
@@ -37,9 +40,13 @@ export const unpackRepoFolderTarGzStreamToFs = <E, R>(
     });
   });
 
-export class FailedToUnpackRepoFolderTarGzStreamToFs extends TaggedErrorVerifyingCause<{
-  cause: unknown;
-}>()(
-  'FailedToUnpackRepoFolderTarGzStreamToFs',
-  'Error: Failed to unpack to fs received from GitHub .tar.gz stream of repo folder contents',
-) {}
+// Extracted to a const to please JSR
+const _Err: ReturnTypeUnknownCauseNoStatic<'FailedToUnpackRepoFolderTarGzStreamToFs'> =
+  TaggedErrorVerifyingCause<{
+    cause: unknown;
+  }>()(
+    'FailedToUnpackRepoFolderTarGzStreamToFs',
+    'Error: Failed to unpack to fs received from GitHub .tar.gz stream of repo folder contents',
+  );
+
+export class FailedToUnpackRepoFolderTarGzStreamToFs extends _Err {}

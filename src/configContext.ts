@@ -1,5 +1,5 @@
 import { Tag, add, empty } from 'effect/Context';
-import { provide, provideService } from 'effect/Effect';
+import { Effect, provide, provideService } from 'effect/Effect';
 
 export class InputConfigTag extends Tag('InputConfig')<
   InputConfigTag,
@@ -29,7 +29,9 @@ export type SingleTargetConfig = InputConfigTag['Type'] &
 export const provideSingleDownloadTargetConfig = ({
   localPathAtWhichEntityFromRepoWillBeAvailable,
   ...inputConfig
-}: SingleTargetConfig) =>
+}: SingleTargetConfig): (<A, E, R>(
+  self: Effect<A, E, R>,
+) => Effect<A, E, Exclude<R, InputConfigTag | OutputConfigTag>>) =>
   provide(
     empty().pipe(
       add(InputConfigTag, inputConfig),

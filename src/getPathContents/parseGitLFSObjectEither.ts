@@ -7,7 +7,11 @@ import {
   Struct,
 } from 'effect/Schema';
 import { outdent } from 'outdent';
-import { TaggedErrorVerifyingCause } from '../TaggedErrorVerifyingCause.js';
+import {
+  ReturnTypeNoCause,
+  ReturnTypeNoStatic,
+  TaggedErrorVerifyingCause,
+} from '../TaggedErrorVerifyingCause.js';
 
 export const parseGitLFSObjectEither = ({
   contentAsBuffer,
@@ -80,22 +84,34 @@ const decodeGitLFSInfoSchema = decodeUnknownEither(GitLFSInfoSchema, {
   exact: true,
 });
 
-export class FailedToParseGitLFSInfo extends TaggedErrorVerifyingCause<{
-  partOfContentThatCouldBeGitLFSInfo: string;
-}>()(
+// Extracted to a const to please JSR
+const _Err1: ReturnTypeNoStatic<
+  'FailedToParseGitLFSInfo',
+  typeof ParseError,
+  { partOfContentThatCouldBeGitLFSInfo: string }
+> = TaggedErrorVerifyingCause<{ partOfContentThatCouldBeGitLFSInfo: string }>()(
   'FailedToParseGitLFSInfo',
   `Failed to parse git LFS announcement`,
   ParseError,
-) {}
+);
 
-export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifyingCause<{
+export class FailedToParseGitLFSInfo extends _Err1 {}
+
+type InconsistentSizesDynamicContext = {
   actual: number;
   expected: number;
   gitLFSInfo: Either<
     (typeof GitLFSInfoSchema)['Type'],
     FailedToParseGitLFSInfo
   >;
-}>()(
+};
+
+// Extracted to a const to please JSR
+const _Err2: ReturnTypeNoCause<
+  'InconsistentExpectedAndRealContentSize',
+  { comment: string },
+  InconsistentSizesDynamicContext
+> = TaggedErrorVerifyingCause<InconsistentSizesDynamicContext>()(
   'InconsistentExpectedAndRealContentSize',
   ctx =>
     `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
@@ -112,4 +128,6 @@ export class InconsistentExpectedAndRealContentSize extends TaggedErrorVerifying
       there's no reason to assume it's a Git LFS object.
     `,
   },
-) {}
+);
+
+export class InconsistentExpectedAndRealContentSize extends _Err2 {}
