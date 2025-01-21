@@ -141,3 +141,4 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 21. Migrate .tar.gz extractor to [leonitousconforti/feta](https://github.com/leonitousconforti/feta) when it's ready
 22. add codacy, coderabbit, CodeQL, scorecard.dev
 23. <https://github.com/nikelborm/fetch-github-folder/community>
+24. https://github.com/marketplace/actions/first-interaction

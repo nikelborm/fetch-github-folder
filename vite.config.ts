@@ -9,6 +9,7 @@ export default defineConfig({
       exclude: [
         ...coverageConfigDefaults.exclude,
         'destination/**',
+        'testMocks/**',
         '**/{scratchpad,index,logObjectPretty,repo.interface}[.][jt]s',
       ],
     },
