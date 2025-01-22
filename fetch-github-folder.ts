@@ -21,7 +21,7 @@ import { CliConfig } from '@effect/cli';
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh
-const PACKAGE_VERSION = '0.1.8';
+const PACKAGE_VERSION = '0.1.9';
 const PACKAGE_NAME = 'fetch-github-folder';
 
 const appCommand = make(
