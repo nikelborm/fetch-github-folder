@@ -11,7 +11,7 @@
     "format": "prettier . --write",
     "coverage": "vitest run --coverage",
     "test-once": "vitest --run",
-    "test-jsr": "jsr publish --dry-run",
+    "test-jsr": "tsc && jsr publish --dry-run",
     "build": "./scripts/build.sh"
   },
   "dependencies": {

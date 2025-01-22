@@ -29,10 +29,10 @@ export const writeFileStreamToDestinationPath = <E, R>(
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-type FailedToWriteFileStreamToDestinationPath =
+export type FailedToWriteFileStreamToDestinationPath =
   ReturnTypeUnknownCauseNoStatic<'FailedToWriteFileStreamToDestinationPath'>;
 
-const FailedToWriteFileStreamToDestinationPath: FailedToWriteFileStreamToDestinationPath =
+export const FailedToWriteFileStreamToDestinationPath: FailedToWriteFileStreamToDestinationPath =
   TaggedErrorVerifyingCause<{
     cause: unknown;
   }>()(
