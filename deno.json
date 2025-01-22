@@ -2,12 +2,20 @@
   "$schema": "https://jsr.io/schema/config-file.v1.json",
   "name": "@nikelborm/fetch-github-folder",
   "version": "0.1.10",
-  "exports": "./src/index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./index": "./index.ts",
+    "./errors": "./errors.ts",
+    "./cli": "./cli.ts"
+  },
   "publish": {
     "include": [
       ".github/FUNDING.yml",
       "template.env",
       "src/**/*.ts",
+      "index.ts",
+      "errors.ts",
+      "cli.ts",
       "README.md",
       "LICENSE"
     ],

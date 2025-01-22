@@ -1,10 +1,8 @@
 /**
  * Reusable in [Effect]{@link https://effect.website/} applications CLI Options backed by ENV variables
  *
- * @file src/commandLineParams.ts
- * @module
  * @license https://github.com/nikelborm/fetch-github-folder/blob/main/LICENSE
- * */
+ */
 
 import {
   Options,
@@ -227,6 +225,7 @@ export const repoNameCLIOptionBackedByEnv: Options<string> = pipe(
  * @since 0.1.7
  * @category CLI options
  * @constant
+ * @readonly
  */
 export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
   text(`destinationPath`),

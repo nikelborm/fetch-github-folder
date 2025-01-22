@@ -12,7 +12,8 @@
     "coverage": "vitest run --coverage",
     "test-once": "vitest --run",
     "test-jsr": "tsc && jsr publish --dry-run",
-    "build": "./scripts/build.sh"
+    "build": "./scripts/build.sh",
+    "docs": "./scripts/generate_docs.sh"
   },
   "dependencies": {
     "@effect/cli": "^0.51.2",
@@ -53,7 +54,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/nikelborm/fetch-github-folder.git"
   },
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
   "bin": {
     "fetch-github-folder": "dist/fetch-github-folder.js",
     "fgf": "dist/fetch-github-folder.js"
@@ -71,12 +72,16 @@
     ".github/FUNDING.yml",
     "template.env"
   ],
-  "types": "./dist/src/index.d.ts",
+  "types": "./dist/index.d.ts",
   "homepage": "https://github.com/nikelborm/fetch-github-folder#readme",
   "exports": {
-    ".": "./dist/src/index.js",
-    "./index": "./dist/src/index.js",
-    "./index.js": "./dist/src/index.js",
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js",
+    "./errors": "./dist/errors.js",
+    "./errors.js": "./dist/errors.js",
+    "./cli": "./dist/cli.js",
+    "./cli.js": "./dist/cli.js",
     "./package.json": "./package.json"
   },
   "keywords": [

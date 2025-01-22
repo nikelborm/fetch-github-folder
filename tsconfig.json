@@ -53,6 +53,9 @@
     "./fetch-github-folder.spec.ts",
     "./scratchpad.ts",
     "./reset.d.ts",
-    "./src/**/*"
+    "./src/**/*",
+    "cli.ts",
+    "errors.ts",
+    "index.ts"
   ]
 }

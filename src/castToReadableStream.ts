@@ -27,11 +27,11 @@ export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
+export type FailedToCastDataToReadableStream =
+  ReturnTypeNoCauseNoStatic<'FailedToCastDataToReadableStream'>;
+
 export const FailedToCastDataToReadableStream: FailedToCastDataToReadableStream =
   TaggedErrorVerifyingCause()(
     'FailedToCastDataToReadableStream',
     'Error: Failed to cast data to Readable stream, type of argument is not familiar',
   );
-
-export type FailedToCastDataToReadableStream =
-  ReturnTypeNoCauseNoStatic<'FailedToCastDataToReadableStream'>;
