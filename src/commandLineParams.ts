@@ -1,3 +1,11 @@
+/**
+ * Reusable in [Effect]{@link https://effect.website/} applications CLI Options backed by ENV variables
+ *
+ * @file src/commandLineParams.ts
+ * @module
+ * @license https://github.com/nikelborm/fetch-github-folder/blob/main/LICENSE
+ * */
+
 import {
   Options,
   text,
@@ -135,7 +143,8 @@ const CleanRepoEntityPathString = transformOrFail(
  * repository.
  *
  * @since 0.1.7
- * @category 'CLI options'
+ * @category CLI options
+ * @constant
  */
 export const pathToEntityInRepoCLIOptionBackedByEnv: Options<string> = pipe(
   text(`pathToEntityInRepo`),
@@ -161,7 +170,8 @@ export const pathToEntityInRepoCLIOptionBackedByEnv: Options<string> = pipe(
  * digits, and the characters `.`, `-`, and `_`.
  *
  * @since 0.1.7
- * @category 'CLI options'
+ * @category CLI options
+ * @constant
  */
 export const repoOwnerCLIOptionBackedByEnv: Options<string> = pipe(
   text(`repoOwner`),
@@ -187,7 +197,8 @@ export const repoOwnerCLIOptionBackedByEnv: Options<string> = pipe(
  * digits, and the characters `.`, `-`, and `_`.
  *
  * @since 0.1.7
- * @category 'CLI options'
+ * @category CLI options
+ * @constant
  */
 export const repoNameCLIOptionBackedByEnv: Options<string> = pipe(
   text(`repoName`),
@@ -214,7 +225,8 @@ export const repoNameCLIOptionBackedByEnv: Options<string> = pipe(
  * depending on the type of remote target.
  *
  * @since 0.1.7
- * @category 'CLI options'
+ * @category CLI options
+ * @constant
  */
 export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
   text(`destinationPath`),
@@ -241,7 +253,8 @@ export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
  * the repository will be used.
  *
  * @since 0.1.7
- * @category 'CLI options'
+ * @category CLI options
+ * @constant
  */
 export const gitRefCLIOptionBackedByEnv: Options<string> = pipe(
   text(`gitRef`),
