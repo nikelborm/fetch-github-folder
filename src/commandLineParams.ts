@@ -128,17 +128,17 @@ const CleanRepoEntityPathString = transformOrFail(
  * 1. As CLI option `fgf --pathToEntityInRepo nestedFolder/Readme.md`
  * 2. As env variable `PATH_TO_ENTITY_IN_REPO="nestedFolder/Readme.md" fgf`
  *
- * Has default: '.', which means that if not specified, script will download
+ * Has default: `.`, which means that if not specified, script will download
  * entire repository (download root directory of the repository)
  *
  * Parameter is automatically validated to not point higher than the root of the
  * repository.
  *
  * @since 0.1.7
- * @category CLI options
+ * @category 'CLI options'
  */
 export const pathToEntityInRepoCLIOptionBackedByEnv: Options<string> = pipe(
-  text('pathToEntityInRepo'),
+  text(`pathToEntityInRepo`),
   withOptionDescription(pathToEntityInRepoDescription),
   withFallbackConfig(PathToEntityInRepoConfig),
   withSchema(CleanRepoEntityPathString),
@@ -148,23 +148,23 @@ export const pathToEntityInRepoCLIOptionBackedByEnv: Options<string> = pipe(
  * Text parameter containing URL slug of the user which owns the repo.
  *
  * Examples:
- * 1. 'apache'
- * 2. 'nikelborm'
+ * 1. `apache`
+ * 2. `nikelborm`
  *
  * Can be passed in two ways:
  * 1. As CLI option `fgf --repoOwner apache`
  * 2. As env variable `REPO_OWNER="apache" fgf`
  *
- * Doesn't have defaults and will fail if not specified.
+ * Doesn`t have defaults and will fail if not specified.
  *
  * Parameter is automatically validated so it can consist of only ASCII letters,
- * digits, and the characters '.', '-', and '_'.
+ * digits, and the characters `.`, `-`, and `_`.
  *
  * @since 0.1.7
- * @category CLI options
+ * @category 'CLI options'
  */
 export const repoOwnerCLIOptionBackedByEnv: Options<string> = pipe(
-  text('repoOwner'),
+  text(`repoOwner`),
   withOptionDescription(repoOwnerDescription),
   withFallbackConfig(RepoOwnerConfig),
   withSchema(GitHubSlugStringSchema),
@@ -174,23 +174,23 @@ export const repoOwnerCLIOptionBackedByEnv: Options<string> = pipe(
  * Text parameter containing URL slug of the repo itself.
  *
  * Examples:
- * 1. 'superset'
- * 2. 'fetch-github-folder'
+ * 1. `superset`
+ * 2. `fetch-github-folder`
  *
  * Can be passed in two ways:
  * 1. As CLI option `fgf --repoName superset`
  * 2. As env variable `REPO_NAME="superset" fgf`
  *
- * Doesn't have defaults and will fail if not specified.
+ * Doesn`t have defaults and will fail if not specified.
  *
  * Parameter is automatically validated so it can consist of only ASCII letters,
- * digits, and the characters '.', '-', and '_'.
+ * digits, and the characters `.`, `-`, and `_`.
  *
  * @since 0.1.7
- * @category CLI options
+ * @category 'CLI options'
  */
 export const repoNameCLIOptionBackedByEnv: Options<string> = pipe(
-  text('repoName'),
+  text(`repoName`),
   withOptionDescription(repoNameDescription),
   withFallbackConfig(RepoNameConfig),
   withSchema(GitHubSlugStringSchema),
@@ -202,22 +202,22 @@ export const repoNameCLIOptionBackedByEnv: Options<string> = pipe(
  * of the new file/directory.
  *
  * Examples:
- * 1. '../docker'
- * 2. '/tmp/Readme.md'
+ * 1. `../docker`
+ * 2. `/tmp/Readme.md`
  *
  * Can be passed in two ways:
  * 1. As CLI option `fgf --destinationPath docker`
  * 2. As env variable `DESTINATION_PATH="docker" fgf`
  *
- * Has default: './destination', which means that if not specified, script will
- * either create `destination` file or directory inside your current PWD
+ * Has default: `./destination`, which means that if not specified, script will
+ * either create a file or a directory named `destination` inside your current PWD
  * depending on the type of remote target.
  *
  * @since 0.1.7
- * @category CLI options
+ * @category 'CLI options'
  */
 export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
-  text('destinationPath'),
+  text(`destinationPath`),
   withOptionDescription(destinationPathDescription),
   withFallbackConfig(DestinationPathConfig),
 );
@@ -227,24 +227,24 @@ export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
  * from.
  *
  * Examples:
- * 1. 'HEAD'
- * 2. 'main'
- * 3. '4.1.1'
- * 4. 'dca3efb3dd2a2a75aea32e3561c4104a53f02808'
- * 5. 'dca3efb'
+ * 1. `HEAD`
+ * 2. `main`
+ * 3. `4.1.1`
+ * 4. `dca3efb3dd2a2a75aea32e3561c4104a53f02808`
+ * 5. `dca3efb`
  *
  * Can be passed in two ways:
  * 1. As CLI option `fgf --gitRef 4.1.1`
  * 2. As env variable `GIT_REF="4.1.1" fgf`
  *
- * Has default: 'HEAD', which means that if not specified, the default branch in
+ * Has default: `HEAD`, which means that if not specified, the default branch in
  * the repository will be used.
  *
  * @since 0.1.7
- * @category CLI options
+ * @category 'CLI options'
  */
 export const gitRefCLIOptionBackedByEnv: Options<string> = pipe(
-  text('gitRef'),
+  text(`gitRef`),
   withOptionDescription(gitRefDescription),
   withFallbackConfig(GitRefConfig),
 );
