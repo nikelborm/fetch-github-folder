@@ -27,7 +27,7 @@ import {
 import { TaggedErrorVerifyingCause } from './src/TaggedErrorVerifyingCause.js';
 
 const defaultRepo = {
-  owner: 'fetch-gh-folder-tests',
+  owner: 'fetch-gh-stuff-tests',
   name: 'public-repo',
 };
 

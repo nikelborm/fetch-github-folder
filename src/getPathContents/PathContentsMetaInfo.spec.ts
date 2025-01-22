@@ -45,7 +45,7 @@ import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
 import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.js';
 
 const defaultRepo = {
-  owner: 'fetch-gh-folder-tests',
+  owner: 'fetch-gh-stuff-tests',
   name: 'public-repo',
 };
 
@@ -225,7 +225,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
     ExpectedErrorClass: GitHubApiRepoIsEmpty,
     pathToEntityInRepo: 'levelParent/levelChild/temp2.txt',
     repo: {
-      owner: 'fetch-gh-folder-tests',
+      owner: 'fetch-gh-stuff-tests',
       name: 'empty-repo',
     },
   });
@@ -247,7 +247,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
       GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
     pathToEntityInRepo: '',
     repo: {
-      owner: 'fetch-gh-folder-tests',
+      owner: 'fetch-gh-stuff-tests',
       name: 'real-private-repo',
     },
   });
@@ -258,7 +258,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
       GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
     pathToEntityInRepo: '',
     repo: {
-      owner: 'fetch-gh-folder-tests',
+      owner: 'fetch-gh-stuff-tests',
       name: 'llllllllllllllllllllllllllll',
     },
   });
@@ -295,15 +295,8 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
             {
               "name": ".gitattributes",
               "path": ".gitattributes",
-              "sha": "236917878e566c0f8ec5db75938d074b8df259c9",
-              "size": 51,
-              "type": "file",
-            },
-            {
-              "name": "100mb_file.txt",
-              "path": "100mb_file.txt",
-              "sha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
-              "size": 134,
+              "sha": "5e99d3f05d533acca63b519c079a9adea552cedd",
+              "size": 53,
               "type": "file",
             },
             {
@@ -321,31 +314,38 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
               "type": "file",
             },
             {
-              "name": "README.md",
-              "path": "README.md",
-              "sha": "e0581c6516af41608a222765cfb582f0bf89ed47",
-              "size": 13,
+              "name": "2mb_lfs_file.txt",
+              "path": "2mb_lfs_file.txt",
+              "sha": "949b64f08bed89afc8de31addc4836432e31d5a2",
+              "size": 132,
               "type": "file",
             },
             {
-              "name": "fake_git_lfs.txt",
-              "path": "fake_git_lfs.txt",
-              "sha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
-              "size": 134,
+              "name": "2mb_plain_file.txt",
+              "path": "2mb_plain_file.txt",
+              "sha": "64a7c1a36a6972183ec97e15c75a788d4079e24e",
+              "size": 2097152,
+              "type": "file",
+            },
+            {
+              "name": "Readme.md",
+              "path": "Readme.md",
+              "sha": "f247396548e37f8f6be1fb71ff2e45fd63abed94",
+              "size": 14,
               "type": "file",
             },
             {
               "name": "index.js",
               "path": "index.js",
-              "sha": "927d79ca931f4512ec3798abef6624e53f9d6ad3",
+              "sha": "3b68c5767b33aad77e0a94ed3c6cf11c38b00d77",
               "size": 193,
               "type": "file",
             },
             {
               "name": "package.json",
               "path": "package.json",
-              "sha": "96ae6e57eb3980436bae7749ddbdca84b4978cc2",
-              "size": 24,
+              "sha": "3dbc1ca591c0557e35b6004aeba250e6a70b56e3",
+              "size": 23,
               "type": "file",
             },
             {
@@ -357,7 +357,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
             },
           ],
           "meta": "This root directory of the repo can be downloaded as a git tree",
-          "treeSha": "eb10ce40a99007c3dd4f2e120c2de77850d1d5f4",
+          "treeSha": "5343ad8f694ee4ba37fa388a11e6b34f369806dd",
           "type": "dir",
         }
       `),
@@ -366,7 +366,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
 
   expectNotFail(
     `little inlined file directly in root directory`,
-    'README.md',
+    'Readme.md',
     (ctx, pathContentsMetaInfo) =>
       gen(function* () {
         const info = yield* pathContentsMetaInfo;
@@ -383,16 +383,17 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
           ...rest,
           content: yield* andThen(contentStream, text),
         }).toMatchInlineSnapshot(`
-        {
-          "blobSha": "e0581c6516af41608a222765cfb582f0bf89ed47",
-          "content": "# public-repo",
-          "meta": "This file is small enough that GitHub API decided to inline it",
-          "name": "README.md",
-          "path": "README.md",
-          "size": 13,
-          "type": "file",
-        }
-      `);
+          {
+            "blobSha": "f247396548e37f8f6be1fb71ff2e45fd63abed94",
+            "content": "# public-repo
+          ",
+            "meta": "This file is small enough that GitHub API decided to inline it",
+            "name": "Readme.md",
+            "path": "Readme.md",
+            "size": 14,
+            "type": "file",
+          }
+        `);
       }),
   );
 
@@ -446,21 +447,24 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
       ),
   );
 
-  expectNotFail(`Git-LFS info`, '100mb_file.txt', (ctx, pathContentsMetaInfo) =>
-    map(pathContentsMetaInfo, e =>
-      ctx.expect(e).toMatchInlineSnapshot(`
-        {
-          "blobSha": "7557bc11dbc04337d33e6cd7e6b9bfa2d2d00e2b",
-          "gitLFSObjectIdSha256": "cee41e98d0a6ad65cc0ec77a2ba50bf26d64dc9007f7f1c7d7df68b8b71291a6",
-          "gitLFSVersion": "https://git-lfs.github.com/spec/v1",
-          "meta": "This file can be downloaded as a git-LFS object",
-          "name": "100mb_file.txt",
-          "path": "100mb_file.txt",
-          "size": 104857600,
-          "type": "file",
-        }
-      `),
-    ),
+  expectNotFail(
+    `Git-LFS info`,
+    '2mb_lfs_file.txt',
+    (ctx, pathContentsMetaInfo) =>
+      map(pathContentsMetaInfo, e =>
+        ctx.expect(e).toMatchInlineSnapshot(`
+          {
+            "blobSha": "949b64f08bed89afc8de31addc4836432e31d5a2",
+            "gitLFSObjectIdSha256": "5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5",
+            "gitLFSVersion": "https://git-lfs.github.com/spec/v1",
+            "meta": "This file can be downloaded as a git-LFS object",
+            "name": "2mb_lfs_file.txt",
+            "path": "2mb_lfs_file.txt",
+            "size": 2097152,
+            "type": "file",
+          }
+        `),
+      ),
   );
 
   expectNotFail(
