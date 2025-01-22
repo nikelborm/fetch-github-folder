@@ -4,99 +4,120 @@ import {
   TaggedErrorVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
-// Extracted to a const to please JSR
-const _Err1: ReturnTypeNoStatic<
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiGeneralServerError = ReturnTypeNoStatic<
   'GitHubApiGeneralServerError',
   typeof RequestError
-> = TaggedErrorVerifyingCause()(
-  'GitHubApiGeneralServerError',
-  'GitHub API Error: Bad server',
-  RequestError,
-);
+>;
 
-export class GitHubApiGeneralServerError extends _Err1 {}
+export const GitHubApiGeneralServerError: GitHubApiGeneralServerError =
+  TaggedErrorVerifyingCause()(
+    'GitHubApiGeneralServerError',
+    'GitHub API Error: Bad server',
+    RequestError,
+  );
 
-// Extracted to a const to please JSR
-const _Err2: ReturnTypeNoStatic<
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiGeneralUserError = ReturnTypeNoStatic<
   'GitHubApiGeneralUserError',
   typeof RequestError,
   { readonly notes?: string }
-> = TaggedErrorVerifyingCause<{ readonly notes?: string }>()(
-  'GitHubApiGeneralUserError',
-  'GitHub API Error: Bad user, invalid request',
-  RequestError,
-);
+>;
 
-export class GitHubApiGeneralUserError extends _Err2 {}
+export const GitHubApiGeneralUserError: GitHubApiGeneralUserError =
+  TaggedErrorVerifyingCause<{ readonly notes?: string }>()(
+    'GitHubApiGeneralUserError',
+    'GitHub API Error: Bad user, invalid request',
+    RequestError,
+  );
 
-// Extracted to a const to please JSR
-const _Err3: ReturnTypeNoStatic<
-  'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient =
+  ReturnTypeNoStatic<
+    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
+    typeof RequestError
+  >;
+
+export const GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient =
+  TaggedErrorVerifyingCause()(
+    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
+    "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
+    RequestError,
+  );
+
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiRepoIsEmpty = ReturnTypeNoStatic<
+  'GitHubApiRepoIsEmpty',
   typeof RequestError
-> = TaggedErrorVerifyingCause()(
-  'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
-  "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
-  RequestError,
-);
+>;
 
-export class GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient extends _Err3 {}
-
-// Extracted to a const to please JSR
-const _Err4: ReturnTypeNoStatic<'GitHubApiRepoIsEmpty', typeof RequestError> =
+export const GitHubApiRepoIsEmpty: GitHubApiRepoIsEmpty =
   TaggedErrorVerifyingCause()(
     'GitHubApiRepoIsEmpty',
     'GitHub API Error: This Repo is empty',
     RequestError,
   );
 
-export class GitHubApiRepoIsEmpty extends _Err4 {}
-
-// Extracted to a const to please JSR
-const _Err5: ReturnTypeNoStatic<
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiNoCommitFoundForGitRef = ReturnTypeNoStatic<
   'GitHubApiNoCommitFoundForGitRef',
   typeof RequestError,
   { gitRef: string }
-> = TaggedErrorVerifyingCause<{ gitRef: string }>()(
-  'GitHubApiNoCommitFoundForGitRef',
-  'GitHub API Error: No commit found for this git ref',
-  RequestError,
-);
+>;
 
-export class GitHubApiNoCommitFoundForGitRef extends _Err5 {}
+export const GitHubApiNoCommitFoundForGitRef: GitHubApiNoCommitFoundForGitRef =
+  TaggedErrorVerifyingCause<{ gitRef: string }>()(
+    'GitHubApiNoCommitFoundForGitRef',
+    'GitHub API Error: No commit found for this git ref',
+    RequestError,
+  );
 
-// Extracted to a const to please JSR
-const _Err6: ReturnTypeNoStatic<
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiBadCredentials = ReturnTypeNoStatic<
   'GitHubApiBadCredentials',
   typeof RequestError
-> = TaggedErrorVerifyingCause()(
-  'GitHubApiBadCredentials',
-  "GitHub API Error: Token you're using is invalid.",
-  RequestError,
-);
+>;
 
-export class GitHubApiBadCredentials extends _Err6 {}
+export const GitHubApiBadCredentials: GitHubApiBadCredentials =
+  TaggedErrorVerifyingCause()(
+    'GitHubApiBadCredentials',
+    "GitHub API Error: Token you're using is invalid.",
+    RequestError,
+  );
 
-// Extracted to a const to please JSR
-const _Err7: ReturnTypeNoStatic<
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiAuthRatelimited = ReturnTypeNoStatic<
   'GitHubApiAuthRatelimited',
   typeof RequestError
-> = TaggedErrorVerifyingCause()(
-  'GitHubApiAuthRatelimited',
-  'GitHub API Error: Too many invalid auth attempts. Chillout pal',
-  RequestError,
-);
+>;
 
-export class GitHubApiAuthRatelimited extends _Err7 {}
+export const GitHubApiAuthRatelimited: GitHubApiAuthRatelimited =
+  TaggedErrorVerifyingCause()(
+    'GitHubApiAuthRatelimited',
+    'GitHub API Error: Too many invalid auth attempts. Chillout pal',
+    RequestError,
+  );
 
-// Extracted to a const to please JSR
-const _Err8: ReturnTypeNoStatic<'GitHubApiRatelimited', typeof RequestError> =
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type GitHubApiRatelimited = ReturnTypeNoStatic<
+  'GitHubApiRatelimited',
+  typeof RequestError
+>;
+
+export const GitHubApiRatelimited: GitHubApiRatelimited =
   TaggedErrorVerifyingCause()(
     'GitHubApiRatelimited',
     'GitHub API Error: Too many requests. Chillout pal',
     RequestError,
   );
-
-export class GitHubApiRatelimited extends _Err8 {}
 
 export const parseCommonGitHubApiErrors = (error: RequestError) => {
   if (error.status === 401) return new GitHubApiBadCredentials(error);

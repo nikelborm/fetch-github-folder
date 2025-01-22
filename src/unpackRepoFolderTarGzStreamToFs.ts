@@ -40,13 +40,15 @@ export const unpackRepoFolderTarGzStreamToFs = <E, R>(
     });
   });
 
-// Extracted to a const to please JSR
-const _Err: ReturnTypeUnknownCauseNoStatic<'FailedToUnpackRepoFolderTarGzStreamToFs'> =
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type FailedToUnpackRepoFolderTarGzStreamToFs =
+  ReturnTypeUnknownCauseNoStatic<'FailedToUnpackRepoFolderTarGzStreamToFs'>;
+
+const FailedToUnpackRepoFolderTarGzStreamToFs: FailedToUnpackRepoFolderTarGzStreamToFs =
   TaggedErrorVerifyingCause<{
     cause: unknown;
   }>()(
     'FailedToUnpackRepoFolderTarGzStreamToFs',
     'Error: Failed to unpack to fs received from GitHub .tar.gz stream of repo folder contents',
   );
-
-export class FailedToUnpackRepoFolderTarGzStreamToFs extends _Err {}

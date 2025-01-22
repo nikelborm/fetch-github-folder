@@ -105,8 +105,8 @@ sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 ## Environment Variables
 
 - `GITHUB_ACCESS_TOKEN`: This is your personal access token from GitHub. It is used to authenticate your requests to the GitHub API. You can generate one [here](https://github.com/settings/tokens/new?description=Read%20repo%20contents%20access%20to%20fetch-github-folder&scopes=public_repo&default_expires_at=none).
-- `GITHUB_REPO_OWNER`: This is the username of the owner of the repository you are trying to download from. For example, if the repository's URL is `https://github.com/apache/superset`, the owner is `apache`.
-- `GITHUB_REPO_NAME`: This is the name of the repository you are trying to download from. In the example above, the repository name is `superset`.
+- `REPO_OWNER`: This is the username of the owner of the repository you are trying to download from. For example, if the repository's URL is `https://github.com/apache/superset`, the owner is `apache`.
+- `REPO_NAME`: This is the name of the repository you are trying to download from. In the example above, the repository name is `superset`.
 - `PATH_TO_ENTITY_IN_REPO`: This is the path to the directory you want to download. It can be directory that lies inside root of repo like `docker` or it can be some nested directory like `docker/nginx`.
 - `GIT_REF`: This is the commit SHA hash, branch name, or tag name you want to download from. If you don't specify it, the default branch in the repository will be used.
 - `DESTINATION_PATH`: If entity at `PATH_TO_ENTITY_IN_REPO` is a file, then destination path is a path to downloaded file. If it's a directory, then all files and directories from target directory of remote repository at `PATH_TO_ENTITY_IN_REPO` will be put into a directory with path from `DESTINATION_PATH`. If the directory doesn't exist, it will be automatically created.

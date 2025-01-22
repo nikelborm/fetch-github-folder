@@ -27,13 +27,15 @@ export const writeFileStreamToDestinationPath = <E, R>(
     });
   });
 
-// Extracted to a const to please JSR
-const _Err: ReturnTypeUnknownCauseNoStatic<'FailedToWriteFileStreamToDestinationPath'> =
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+type FailedToWriteFileStreamToDestinationPath =
+  ReturnTypeUnknownCauseNoStatic<'FailedToWriteFileStreamToDestinationPath'>;
+
+const FailedToWriteFileStreamToDestinationPath: FailedToWriteFileStreamToDestinationPath =
   TaggedErrorVerifyingCause<{
     cause: unknown;
   }>()(
     'FailedToWriteFileStreamToDestinationPath',
     'Error: Failed to write file stream to destination path',
   );
-
-export class FailedToWriteFileStreamToDestinationPath extends _Err {}

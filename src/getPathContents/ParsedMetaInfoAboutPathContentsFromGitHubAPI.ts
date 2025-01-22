@@ -62,15 +62,18 @@ const decodeResponse = decodeUnknownEither(ResponseSchema, {
   exact: true,
 });
 
-// Extracted to a const to please JSR
-const _Err: ReturnTypeNoStatic<
-  'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
-  typeof ParseError,
-  { response: unknown }
-> = TaggedErrorVerifyingCause<{ response: unknown }>()(
-  'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
-  `Failed to parse response from repo path contents meta info API`,
-  ParseError,
-);
+export type FailedToParseResponseFromRepoPathContentsMetaInfoAPI =
+  ReturnTypeNoStatic<
+    'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
+    typeof ParseError,
+    { response: unknown }
+  >;
 
-export class FailedToParseResponseFromRepoPathContentsMetaInfoAPI extends _Err {}
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export const FailedToParseResponseFromRepoPathContentsMetaInfoAPI: FailedToParseResponseFromRepoPathContentsMetaInfoAPI =
+  TaggedErrorVerifyingCause<{ response: unknown }>()(
+    'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
+    `Failed to parse response from repo path contents meta info API`,
+    ParseError,
+  );

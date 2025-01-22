@@ -86,18 +86,22 @@ const decodeGitLFSInfoSchema = decodeUnknownEither(GitLFSInfoSchema, {
   exact: true,
 });
 
-// Extracted to a const to please JSR
-const _Err1: ReturnTypeNoStatic<
+export type FailedToParseGitLFSInfo = ReturnTypeNoStatic<
   'FailedToParseGitLFSInfo',
   typeof ParseError,
   { partOfContentThatCouldBeGitLFSInfo: string }
-> = TaggedErrorVerifyingCause<{ partOfContentThatCouldBeGitLFSInfo: string }>()(
-  'FailedToParseGitLFSInfo',
-  `Failed to parse git LFS announcement`,
-  ParseError,
-);
+>;
 
-export class FailedToParseGitLFSInfo extends _Err1 {}
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export const FailedToParseGitLFSInfo: FailedToParseGitLFSInfo =
+  TaggedErrorVerifyingCause<{
+    partOfContentThatCouldBeGitLFSInfo: string;
+  }>()(
+    'FailedToParseGitLFSInfo',
+    `Failed to parse git LFS announcement`,
+    ParseError,
+  );
 
 type InconsistentSizesDynamicContext = {
   actual: number;
@@ -112,18 +116,22 @@ type InconsistentSizesDynamicContext = {
   >;
 };
 
-// Extracted to a const to please JSR
-const _Err2: ReturnTypeNoCause<
+export type InconsistentExpectedAndRealContentSize = ReturnTypeNoCause<
   'InconsistentExpectedAndRealContentSize',
   { comment: string },
   InconsistentSizesDynamicContext
-> = TaggedErrorVerifyingCause<InconsistentSizesDynamicContext>()(
-  'InconsistentExpectedAndRealContentSize',
-  ctx =>
-    `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
-  void 0,
-  {
-    comment: outdent({ newline: ' ' })`
+>;
+
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export const InconsistentExpectedAndRealContentSize: InconsistentExpectedAndRealContentSize =
+  TaggedErrorVerifyingCause<InconsistentSizesDynamicContext>()(
+    'InconsistentExpectedAndRealContentSize',
+    ctx =>
+      `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
+    void 0,
+    {
+      comment: outdent({ newline: ' ' })`
       If we weren't successful in parsing it as git LFS object
       announcement using RegExp and Effect.Schema, we just do a basic size
       consistency check. The check implements the second marker of it
@@ -133,7 +141,5 @@ const _Err2: ReturnTypeNoCause<
       regexp fucked up, or GitHub API did. If it doesn't throw, it means
       there's no reason to assume it's a Git LFS object.
     `,
-  },
-);
-
-export class InconsistentExpectedAndRealContentSize extends _Err2 {}
+    },
+  );
