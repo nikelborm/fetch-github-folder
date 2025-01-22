@@ -39,15 +39,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
-      - name: 'Prepare jsr.json for publishing to JSR'
+      - name: 'Prepare deno.json for publishing to JSR'
         run: |
-          jq -s '.[1] + {version: .[0].version}' package.json jsr.json > _ && mv _ jsr.json
+          jq -s '.[1] + {version: .[0].version}' package.json deno.json > _ && mv _ deno.json
 
-      - name: 'Commit updated jsr.json and potentially updated package-lock.json after npm install'
+      - name: 'Commit updated deno.json and potentially updated package-lock.json after npm install'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
-          file_pattern: 'jsr.json package-lock.json fetch-github-folder.ts'
+          file_pattern: 'deno.json package-lock.json fetch-github-folder.ts'
           commit_message: Auto-updated NPM package files
 
       - name: 'Publish to JSR'
