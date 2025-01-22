@@ -1,5 +1,6 @@
 /**
- * Reusable in [Effect]{@link https://effect.website/} applications CLI Options backed by ENV variables
+ * Reusable in [Effect]{@link https://effect.website/} applications CLI Options
+ * backed by ENV variables
  *
  * @license https://github.com/nikelborm/fetch-github-folder/blob/main/LICENSE
  */

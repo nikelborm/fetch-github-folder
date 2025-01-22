@@ -4,16 +4,6 @@ import { CastToReadableStream } from '../castToReadableStream.js';
 import { parseGitLFSObjectEither } from './parseGitLFSObjectEither.js';
 import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 
-// : Effect<
-//   (typeof ResponseSchema)['Type'],
-//   | GitHubApiCommonErrors
-//   | GitHubApiRepoIsEmpty
-//   | GitHubApiRepoDoesNotExistsOrPermissionsInsufficient
-//   | UnknownException
-//   | ParseError,
-//   OctokitTag
-// >
-
 export const PathContentsMetaInfo = gen(function* () {
   const response = yield* ParsedMetaInfoAboutPathContentsFromGitHubAPI;
 

@@ -19,14 +19,13 @@ import {
   gen,
   map,
   provide,
-  provideService,
   succeed,
 } from 'effect/Effect';
 import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
-import { FailedToCastDataToReadableStream } from '../castToReadableStream.js';
 import { assert, typeGuard } from 'tsafe';
+import { FailedToCastDataToReadableStream } from '../castToReadableStream.js';
 import { InputConfig, provideInputConfig } from '../configContext.js';
 import {
   GitHubApiAuthRatelimited,
@@ -38,7 +37,7 @@ import {
   GitHubApiRepoIsEmpty,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from '../errors.js';
-import { OctokitLayer, OctokitTag } from '../octokit.js';
+import { OctokitLayer } from '../octokit.js';
 import type { IRepo } from '../repo.interface.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
@@ -201,7 +200,7 @@ const expectNotFail = (
   testEffect: (
     ctx: TestCtx,
     pathContentsMetaInfo: typeof PathContentsMetaInfo,
-  ) => Effect<unknown, unknown, OctokitTag | InputConfig>,
+  ) => Effect<unknown, unknown, Octokit | InputConfig>,
   authToken: string = '',
 ) =>
   it.effect('Should return ' + descriptionOfWhatItShouldReturn, ctx =>
@@ -212,10 +211,7 @@ const expectNotFail = (
         gitRef: '',
         repo: defaultRepo,
       }),
-      provideService(
-        OctokitTag,
-        new Octokit(authToken ? { auth: authToken } : void 0),
-      ),
+      provide(OctokitLayer(authToken ? { auth: authToken } : void 0)),
     ),
   );
 

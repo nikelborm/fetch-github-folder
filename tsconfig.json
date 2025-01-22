@@ -42,11 +42,7 @@
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
     "noStrictGenericChecks": false,
-    "plugins": [
-      {
-        "name": "typescript-strict-plugin"
-      }
-    ]
+    "plugins": [{ "name": "typescript-strict-plugin" }]
   },
   "include": [
     "./fetch-github-folder.ts",
@@ -54,8 +50,8 @@
     "./scratchpad.ts",
     "./reset.d.ts",
     "./src/**/*",
-    "cli.ts",
-    "errors.ts",
-    "index.ts"
+    "./cli.ts",
+    "./errors.ts",
+    "./index.ts"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "fetch-github-folder",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
@@ -13,6 +13,7 @@
     "test-once": "vitest --run",
     "test-jsr": "tsc && jsr publish --dry-run",
     "build": "./scripts/build.sh",
+    "doc": "./scripts/generate_docs.sh",
     "docs": "./scripts/generate_docs.sh"
   },
   "dependencies": {
@@ -75,13 +76,34 @@
   "types": "./dist/index.d.ts",
   "homepage": "https://github.com/nikelborm/fetch-github-folder#readme",
   "exports": {
-    ".": "./dist/index.js",
-    "./index": "./dist/index.js",
-    "./index.js": "./dist/index.js",
-    "./errors": "./dist/errors.js",
-    "./errors.js": "./dist/errors.js",
-    "./cli": "./dist/cli.js",
-    "./cli.js": "./dist/cli.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./index": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./index.js": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "default": "./dist/errors.js"
+    },
+    "./errors.js": {
+      "types": "./dist/errors.d.ts",
+      "default": "./dist/errors.js"
+    },
+    "./cli": {
+      "types": "./dist/cli.d.ts",
+      "default": "./dist/cli.js"
+    },
+    "./cli.js": {
+      "types": "./dist/cli.d.ts",
+      "default": "./dist/cli.js"
+    },
     "./package.json": "./package.json"
   },
   "keywords": [

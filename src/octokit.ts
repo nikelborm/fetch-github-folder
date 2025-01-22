@@ -1,15 +1,14 @@
-import { Octokit as OctokitClient, OctokitOptions } from '@octokit/core';
-import { Tag, type TagClass } from 'effect/Context';
+import { Octokit, OctokitOptions } from '@octokit/core';
+import { GenericTag, Tag } from 'effect/Context';
 import { Layer, succeed } from 'effect/Layer';
 
-// This bullshit is needed to please JSR
-const _Tag: TagClass<OctokitTag, 'OctokitTag', OctokitClient> = Tag(
-  'OctokitTag',
-)<OctokitTag, OctokitClient>();
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+type OctokitTag = Tag<Octokit, Octokit>;
 
-export class OctokitTag extends _Tag {}
+export const OctokitTag: OctokitTag = GenericTag<Octokit>('OctokitTag');
 
 export const OctokitLayer: (
   options?: OctokitOptions,
-) => Layer<OctokitTag, never, never> = (options?: OctokitOptions) =>
-  succeed(OctokitTag, new OctokitClient(options));
+) => Layer<Octokit, never, never> = (options?: OctokitOptions) =>
+  succeed(OctokitTag, OctokitTag.of(new Octokit(options)));

@@ -19,7 +19,6 @@ import {
   RawStreamOfRepoPathContentsFromGitHubAPI,
 } from './getPathContents/index.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
-import type { OctokitTag } from './octokit.js';
 import {
   type FailedToUnpackRepoFolderTarGzStreamToFs,
   unpackRepoFolderTarGzStreamToFs,
@@ -28,8 +27,10 @@ import {
   type FailedToWriteFileStreamToDestinationPath,
   writeFileStreamToDestinationPath,
 } from './writeFileStreamToDestinationPath.js';
+import { Octokit } from '@octokit/core';
 
-// explicit type to please JSR
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
 export const downloadEntityFromRepo: Effect<
   void,
   | Error
@@ -47,7 +48,7 @@ export const downloadEntityFromRepo: Effect<
   | GitHubApiGeneralUserError
   | FailedToParseResponseFromRepoPathContentsMetaInfoAPI
   | FailedToCastDataToReadableStream,
-  OutputConfig | OctokitTag | InputConfig
+  OutputConfig | Octokit | InputConfig
 > = gen(function* () {
   const pathContentsMetaInfo = yield* PathContentsMetaInfo;
 
