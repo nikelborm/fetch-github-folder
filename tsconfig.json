@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
-    // they'll be removed by ncc if needed
+    // they'll be removed by bundler if needed
     "removeComments": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
