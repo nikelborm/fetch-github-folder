@@ -36,19 +36,23 @@ export const unpackRepoFolderTarGzStreamToFs = <E, R>(
           }),
           { signal },
         ),
-      catch: cause => new FailedToUnpackRepoFolderTarGzStreamToFs({ cause }),
+      catch: cause =>
+        new FailedToUnpackRepoFolderTarGzStreamToFsError({ cause }),
     });
   });
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type FailedToUnpackRepoFolderTarGzStreamToFs =
-  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToUnpackRepoFolderTarGzStreamToFs'>;
+export type FailedToUnpackRepoFolderTarGzStreamToFsErrorClass =
+  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToUnpackRepoFolderTarGzStreamToFsError'>;
 
-const FailedToUnpackRepoFolderTarGzStreamToFs: FailedToUnpackRepoFolderTarGzStreamToFs =
+export type FailedToUnpackRepoFolderTarGzStreamToFsError =
+  InstanceType<FailedToUnpackRepoFolderTarGzStreamToFsErrorClass>;
+
+const FailedToUnpackRepoFolderTarGzStreamToFsError: FailedToUnpackRepoFolderTarGzStreamToFsErrorClass =
   TaggedErrorVerifyingCause<{
     cause: unknown;
   }>()(
-    'FailedToUnpackRepoFolderTarGzStreamToFs',
+    'FailedToUnpackRepoFolderTarGzStreamToFsError',
     'Error: Failed to unpack to fs received from GitHub .tar.gz stream of repo folder contents',
   );

@@ -8,7 +8,7 @@ import {
   GitHubApiRepoIsEmptyError,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
   parseCommonGitHubApiErrors,
-} from '../errors.js';
+} from '../commonErrors.js';
 import { OctokitTag } from '../octokit.js';
 
 export const RepoPathContentsFromGitHubAPI = fn(

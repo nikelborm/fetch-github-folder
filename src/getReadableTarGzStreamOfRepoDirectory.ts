@@ -7,7 +7,7 @@ import { InputConfigTag } from './configContext.js';
 import {
   GitHubApiGeneralUserError,
   parseCommonGitHubApiErrors,
-} from './errors.js';
+} from './commonErrors.js';
 import { OctokitTag } from './octokit.js';
 
 export const getReadableTarGzStreamOfRepoDirectory = (

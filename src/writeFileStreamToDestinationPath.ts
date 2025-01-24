@@ -23,19 +23,23 @@ export const writeFileStreamToDestinationPath = <E, R>(
         pipeline(fileStream, createWriteStream(localDownloadedFilePath), {
           signal,
         }),
-      catch: cause => new FailedToWriteFileStreamToDestinationPath({ cause }),
+      catch: cause =>
+        new FailedToWriteFileStreamToDestinationPathError({ cause }),
     });
   });
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type FailedToWriteFileStreamToDestinationPath =
-  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToWriteFileStreamToDestinationPath'>;
+export type FailedToWriteFileStreamToDestinationPathErrorClass =
+  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToWriteFileStreamToDestinationPathError'>;
 
-export const FailedToWriteFileStreamToDestinationPath: FailedToWriteFileStreamToDestinationPath =
+export type FailedToWriteFileStreamToDestinationPathError =
+  InstanceType<FailedToWriteFileStreamToDestinationPathErrorClass>;
+
+export const FailedToWriteFileStreamToDestinationPathError: FailedToWriteFileStreamToDestinationPathErrorClass =
   TaggedErrorVerifyingCause<{
     cause: unknown;
   }>()(
-    'FailedToWriteFileStreamToDestinationPath',
+    'FailedToWriteFileStreamToDestinationPathError',
     'Error: Failed to write file stream to destination path',
   );

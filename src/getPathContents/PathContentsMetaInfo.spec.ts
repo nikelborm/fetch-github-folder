@@ -36,7 +36,7 @@ import {
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
-} from '../errors.js';
+} from '../commonErrors.js';
 import { OctokitLayer } from '../octokit.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';

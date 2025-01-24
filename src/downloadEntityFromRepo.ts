@@ -15,7 +15,7 @@ import type {
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
-} from './errors.js';
+} from './commonErrors.js';
 import {
   type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
   type InconsistentExpectedAndRealContentSizeError,
@@ -24,11 +24,11 @@ import {
 } from './getPathContents/index.js';
 import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
 import {
-  type FailedToUnpackRepoFolderTarGzStreamToFs,
+  type FailedToUnpackRepoFolderTarGzStreamToFsError,
   unpackRepoFolderTarGzStreamToFs,
 } from './unpackRepoFolderTarGzStreamToFs.js';
 import {
-  type FailedToWriteFileStreamToDestinationPath,
+  type FailedToWriteFileStreamToDestinationPathError,
   writeFileStreamToDestinationPath,
 } from './writeFileStreamToDestinationPath.js';
 
@@ -64,8 +64,8 @@ export const downloadEntityFromRepo = (
   void,
   | Error
   | InconsistentExpectedAndRealContentSizeError
-  | FailedToWriteFileStreamToDestinationPath
-  | FailedToUnpackRepoFolderTarGzStreamToFs
+  | FailedToWriteFileStreamToDestinationPathError
+  | FailedToUnpackRepoFolderTarGzStreamToFsError
   | UnknownException
   | GitHubApiRepoIsEmptyError
   | GitHubApiNoCommitFoundForGitRefError
