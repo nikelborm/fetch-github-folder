@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.44% </span>
+                <span class="strong">96.61% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>57/61</span>
+                <span class='fraction'>57/59</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.44% </span>
+                <span class="strong">96.61% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/61</span>
+                <span class='fraction'>57/59</span>
             </div>
         
             
@@ -237,9 +237,7 @@
 <a name='L172'></a><a href='#L172'>172</a>
 <a name='L173'></a><a href='#L173'>173</a>
 <a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a>
-<a name='L177'></a><a href='#L177'>177</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L175'></a><a href='#L175'>175</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -398,8 +396,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -419,7 +415,7 @@
 import {
   TaggedErrorClassWithNoStaticContext,
   TaggedErrorClassWithNoContext,
-  TaggedErrorVerifyingCause,
+  buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
@@ -433,7 +429,7 @@ export type GitHubApiGeneralServerError =
   InstanceType&lt;GitHubApiGeneralServerErrorClass&gt;;
 &nbsp;
 export const GitHubApiGeneralServerError: GitHubApiGeneralServerErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiGeneralServerError',
     'GitHub API Error: Bad server',
     RequestError,
@@ -452,7 +448,7 @@ export type GitHubApiGeneralUserError =
   InstanceType&lt;GitHubApiGeneralUserErrorClass&gt;;
 &nbsp;
 export const GitHubApiGeneralUserError: GitHubApiGeneralUserErrorClass =
-  TaggedErrorVerifyingCause&lt;{ readonly notes?: string }&gt;()(
+  buildTaggedErrorClassVerifyingCause&lt;{ readonly notes?: string }&gt;()(
     'GitHubApiGeneralUserError',
     'GitHub API Error: Bad user, invalid request',
     RequestError,
@@ -460,18 +456,18 @@ export const GitHubApiGeneralUserError: GitHubApiGeneralUserErrorClass =
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass =
+export type GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass =
   TaggedErrorClassWithNoContext&lt;
-    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError',
+    'GitHubApiThingNotExistsOrYouDontHaveAccessError',
     typeof RequestError
   &gt;;
 &nbsp;
-export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError =
-  InstanceType&lt;GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass&gt;;
+export type GitHubApiThingNotExistsOrYouDontHaveAccessError =
+  InstanceType&lt;GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass&gt;;
 &nbsp;
-export const GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass =
-  TaggedErrorVerifyingCause()(
-    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError',
+export const GitHubApiThingNotExistsOrYouDontHaveAccessError: GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass =
+  buildTaggedErrorClassVerifyingCause()(
+    'GitHubApiThingNotExistsOrYouDontHaveAccessError',
     "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
     RequestError,
   );
@@ -487,7 +483,7 @@ export type GitHubApiRepoIsEmptyError =
   InstanceType&lt;GitHubApiRepoIsEmptyErrorClass&gt;;
 &nbsp;
 export const GitHubApiRepoIsEmptyError: GitHubApiRepoIsEmptyErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiRepoIsEmptyError',
     'GitHub API Error: This Repo is empty',
     RequestError,
@@ -506,7 +502,7 @@ export type GitHubApiNoCommitFoundForGitRefError =
   InstanceType&lt;GitHubApiNoCommitFoundForGitRefErrorClass&gt;;
 &nbsp;
 export const GitHubApiNoCommitFoundForGitRefError: GitHubApiNoCommitFoundForGitRefErrorClass =
-  TaggedErrorVerifyingCause&lt;{ gitRef: string }&gt;()(
+  buildTaggedErrorClassVerifyingCause&lt;{ gitRef: string }&gt;()(
     'GitHubApiNoCommitFoundForGitRefError',
     'GitHub API Error: No commit found for this git ref',
     RequestError,
@@ -523,7 +519,7 @@ export type GitHubApiBadCredentialsError =
   InstanceType&lt;GitHubApiBadCredentialsErrorClass&gt;;
 &nbsp;
 export const GitHubApiBadCredentialsError: GitHubApiBadCredentialsErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiBadCredentialsError',
     "GitHub API Error: Token you're using is invalid.",
     RequestError,
@@ -540,7 +536,7 @@ export type GitHubApiAuthRatelimitedError =
   InstanceType&lt;GitHubApiAuthRatelimitedErrorClass&gt;;
 &nbsp;
 export const GitHubApiAuthRatelimitedError: GitHubApiAuthRatelimitedErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiAuthRatelimitedError',
     'GitHub API Error: Too many invalid auth attempts. Chillout pal',
     RequestError,
@@ -557,7 +553,7 @@ export type GitHubApiRatelimitedError =
   InstanceType&lt;GitHubApiRatelimitedErrorClass&gt;;
 &nbsp;
 export const GitHubApiRatelimitedError: GitHubApiRatelimitedErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiRatelimitedError',
     'GitHub API Error: Too many requests. Chillout pal',
     RequestError,
@@ -573,9 +569,7 @@ export const parseCommonGitHubApiErrors = (error: RequestError) =&gt; {
   if (error.status === 429) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiRatelimitedError(error);</span>
 &nbsp;
   if (error.status === 404)
-<span class="branch-0 cbranch-no" title="branch not covered" >    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError(</span>
-<span class="cstat-no" title="statement not covered" >      error,</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >    return new GitHubApiThingNotExistsOrYouDontHaveAccessError(error);</span>
 &nbsp;
   if (error.status &gt;= 500) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiGeneralServerError(error);</span>
 &nbsp;
@@ -598,7 +592,7 @@ export type GitHubApiCommonErrors =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-24T06:12:13.833Z
+                at 2025-01-24T07:32:27.356Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

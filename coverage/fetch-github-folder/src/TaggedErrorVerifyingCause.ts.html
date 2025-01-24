@@ -304,7 +304,19 @@
 <a name='L239'></a><a href='#L239'>239</a>
 <a name='L240'></a><a href='#L240'>240</a>
 <a name='L241'></a><a href='#L241'>241</a>
-<a name='L242'></a><a href='#L242'>242</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -592,6 +604,22 @@ export type MessageRendererArgsGen&lt;
   fullContext: VoidifyEmptyObject&lt;DynamicContext &amp; StaticContext&gt;,
 ];
 &nbsp;
+// Classes
+&nbsp;
+export type TaggedErrorClass&lt;
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  StaticContext extends Record&lt;string, unknown&gt; = {},
+  DynamicContext extends Record&lt;string, unknown&gt; = {},
+&gt; = new (
+  ...args: ConstructorArgsGen&lt;ExpectedCauseClass, DynamicContext&gt;
+) =&gt; TaggedErrorInstance&lt;
+  ErrorName,
+  ExpectedCauseClass,
+  StaticContext,
+  DynamicContext
+&gt;;
+&nbsp;
 export type TaggedErrorClassWithUnknownCauseAndNoStaticContext&lt;
   ErrorName extends string,
   DynamicContext extends Record&lt;string, unknown&gt;,
@@ -632,6 +660,28 @@ export type TaggedErrorClassWithNoStaticContext&lt;
   ExpectedCauseClass extends WideErrorConstructor | undefined,
   DynamicContext extends Record&lt;string, unknown&gt;,
 &gt; = TaggedErrorClass&lt;ErrorName, ExpectedCauseClass, {}, DynamicContext&gt;;
+&nbsp;
+// Instances
+&nbsp;
+export type TaggedErrorInstance&lt;
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  StaticContext extends Record&lt;string, unknown&gt; = {},
+  DynamicContext extends Record&lt;string, unknown&gt; = {},
+&gt; = YieldableError &amp;
+  Readonly&lt;
+    {
+      message: string;
+      _tag: ErrorName;
+      name: ErrorName;
+    } &amp; GetSimpleFormError&lt;DynamicContext &amp; StaticContext&gt; &amp;
+      ([ExpectedCauseClass] extends [WideErrorConstructor]
+        ? // To improve TS performance I wrap it in GetSimpleFormError
+          {
+            cause: GetSimpleFormError&lt;InstanceType&lt;ExpectedCauseClass&gt;&gt;;
+          }
+        : {})
+  &gt;;
 &nbsp;
 export type TaggedErrorInstanceWithUnknownCauseAndNoStaticContext&lt;
   ErrorName extends string,
@@ -675,39 +725,7 @@ export type TaggedErrorInstanceWithNoStaticContext&lt;
   DynamicContext
 &gt;;
 &nbsp;
-export type TaggedErrorClass&lt;
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record&lt;string, unknown&gt; = {},
-  DynamicContext extends Record&lt;string, unknown&gt; = {},
-&gt; = new (
-  ...args: ConstructorArgsGen&lt;ExpectedCauseClass, DynamicContext&gt;
-) =&gt; TaggedErrorInstance&lt;
-  ErrorName,
-  ExpectedCauseClass,
-  StaticContext,
-  DynamicContext
-&gt;;
-&nbsp;
-export type TaggedErrorInstance&lt;
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record&lt;string, unknown&gt; = {},
-  DynamicContext extends Record&lt;string, unknown&gt; = {},
-&gt; = YieldableError &amp;
-  Readonly&lt;
-    {
-      message: string;
-      _tag: ErrorName;
-      name: ErrorName;
-    } &amp; GetSimpleFormError&lt;DynamicContext &amp; StaticContext&gt; &amp;
-      ([ExpectedCauseClass] extends [WideErrorConstructor]
-        ? // To improve TS performance I wrap it in GetSimpleFormError
-          {
-            cause: GetSimpleFormError&lt;InstanceType&lt;ExpectedCauseClass&gt;&gt;;
-          }
-        : {})
-  &gt;;
+// Other
 &nbsp;
 export type TaggedErrorVerifyingCauseTypes&lt;
   ErrorName extends string,
@@ -729,7 +747,7 @@ export type TaggedErrorVerifyingCauseTypes&lt;
   ConstructorArgs: ConstructorArgsGen&lt;ExpectedCauseClass, DynamicContext&gt;;
 };
 &nbsp;
-export const TaggedErrorVerifyingCause =
+export const buildTaggedErrorClassVerifyingCause =
   &lt;const DynamicContext extends Record&lt;string, unknown&gt; = {}&gt;() =&gt;
   &lt;
     const ErrorName extends string,
@@ -793,7 +811,7 @@ type WideErrorConstructor = new (...args: any[]) =&gt; Error;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-24T06:12:13.833Z
+                at 2025-01-24T07:32:27.356Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
