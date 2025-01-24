@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
+import { CliConfig } from '@effect/cli';
 import { make, run } from '@effect/cli/Command';
 import { layer as NodeFileSystemLayer } from '@effect/platform-node-shared/NodeFileSystem';
 import { layer as NodePathLayer } from '@effect/platform-node-shared/NodePath';
-import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';
 import { runMain } from '@effect/platform-node-shared/NodeRuntime';
+import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';
 import { provide } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import {
@@ -13,11 +14,9 @@ import {
   gitRefCLIOptionBackedByEnv,
   OctokitLayer,
   pathToEntityInRepoCLIOptionBackedByEnv,
-  provideSingleDownloadTargetConfig,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.js';
-import { CliConfig } from '@effect/cli';
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh
@@ -36,8 +35,7 @@ const appCommand = make(
       destinationPathCLIOptionBackedByEnv,
     gitRef: gitRefCLIOptionBackedByEnv,
   },
-  config =>
-    downloadEntityFromRepo.pipe(provideSingleDownloadTargetConfig(config)),
+  downloadEntityFromRepo,
 );
 
 const cli = run(appCommand, {

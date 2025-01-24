@@ -1,4 +1,4 @@
-import { flow } from 'effect';
+import { flow } from 'effect/Function';
 import { dir } from 'effect/Console';
 import { Effect, tap, tapError } from 'effect/Effect';
 

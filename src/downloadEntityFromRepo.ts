@@ -1,7 +1,11 @@
+import { Octokit } from '@octokit/core';
 import type { UnknownException } from 'effect/Cause';
 import { type Effect, fail, gen } from 'effect/Effect';
 import type { FailedToCastDataToReadableStream } from './castToReadableStream.js';
-import type { InputConfig, OutputConfig } from './configContext.js';
+import {
+  provideSingleDownloadTargetConfig,
+  SingleTargetConfig,
+} from './configContext.js';
 import type {
   GitHubApiAuthRatelimited,
   GitHubApiBadCredentials,
@@ -27,29 +31,8 @@ import {
   type FailedToWriteFileStreamToDestinationPath,
   writeFileStreamToDestinationPath,
 } from './writeFileStreamToDestinationPath.js';
-import { Octokit } from '@octokit/core';
 
-// Extracting to a separate type is required by JSR, so that consumers of the
-// library will have much faster type inference
-export const downloadEntityFromRepo: Effect<
-  void,
-  | Error
-  | InconsistentExpectedAndRealContentSize
-  | FailedToWriteFileStreamToDestinationPath
-  | FailedToUnpackRepoFolderTarGzStreamToFs
-  | UnknownException
-  | GitHubApiRepoIsEmpty
-  | GitHubApiNoCommitFoundForGitRef
-  | GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
-  | GitHubApiBadCredentials
-  | GitHubApiAuthRatelimited
-  | GitHubApiRatelimited
-  | GitHubApiGeneralServerError
-  | GitHubApiGeneralUserError
-  | FailedToParseResponseFromRepoPathContentsMetaInfoAPI
-  | FailedToCastDataToReadableStream,
-  OutputConfig | Octokit | InputConfig
-> = gen(function* () {
+const downloadEntityFromRepoWithoutContext = gen(function* () {
   const pathContentsMetaInfo = yield* PathContentsMetaInfo;
 
   if (pathContentsMetaInfo.type === 'dir')
@@ -72,3 +55,30 @@ export const downloadEntityFromRepo: Effect<
 
   yield* fail(new Error('LFS files are not yet supported'));
 });
+
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export const downloadEntityFromRepo = (
+  target: SingleTargetConfig,
+): Effect<
+  void,
+  | Error
+  | InconsistentExpectedAndRealContentSize
+  | FailedToWriteFileStreamToDestinationPath
+  | FailedToUnpackRepoFolderTarGzStreamToFs
+  | UnknownException
+  | GitHubApiRepoIsEmpty
+  | GitHubApiNoCommitFoundForGitRef
+  | GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
+  | GitHubApiBadCredentials
+  | GitHubApiAuthRatelimited
+  | GitHubApiRatelimited
+  | GitHubApiGeneralServerError
+  | GitHubApiGeneralUserError
+  | FailedToParseResponseFromRepoPathContentsMetaInfoAPI
+  | FailedToCastDataToReadableStream,
+  Octokit
+> =>
+  downloadEntityFromRepoWithoutContext.pipe(
+    provideSingleDownloadTargetConfig(target),
+  );

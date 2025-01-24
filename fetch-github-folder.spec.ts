@@ -10,17 +10,16 @@ import { CommandExecutor } from '@effect/platform/CommandExecutor';
 import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
-import { pipe } from 'effect/Function';
-import { decodeText, runFold, Stream } from 'effect/Stream';
 import { all, fn, gen, map, provide } from 'effect/Effect';
+import { pipe } from 'effect/Function';
 import { mergeAll, provideMerge } from 'effect/Layer';
+import { decodeText, runFold, Stream } from 'effect/Stream';
 import {
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,
   gitRefCLIOptionBackedByEnv,
   OctokitLayer,
   pathToEntityInRepoCLIOptionBackedByEnv,
-  provideSingleDownloadTargetConfig,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.js';
@@ -43,8 +42,7 @@ const appCommand = CliCommand.make(
       destinationPathCLIOptionBackedByEnv,
     gitRef: gitRefCLIOptionBackedByEnv,
   },
-  config =>
-    downloadEntityFromRepo.pipe(provideSingleDownloadTargetConfig(config)),
+  downloadEntityFromRepo,
 );
 
 const cli = (args: ReadonlyArray<string>) =>
