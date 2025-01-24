@@ -2,24 +2,9 @@ import type { YieldableError } from 'effect/Cause';
 import type { Equals } from 'tsafe';
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
-import type { ParseError } from 'effect/ParseResult';
-
-// This is a helper because typescript starts going crazy sometimes
-export type GetSimpleFormError<T> = T extends object
-  ? {
-      [K in keyof T as Exclude<
-        K,
-        | Exclude<
-            keyof YieldableError | keyof ParseError,
-            'name' | 'message' | 'stack' | 'cause'
-          >
-        | symbol
-      >]: GetSimpleFormError<T[K]>;
-    }
-  : T;
 
 type VoidifyEmptyObject<O extends object> = Prettify<
-  Equals<O, {}> extends true ? void : Readonly<GetSimpleFormError<O>>
+  Equals<O, {}> extends true ? void : Readonly<O>
 >;
 
 type CauseArgTupleGen<
@@ -60,11 +45,12 @@ export type TaggedErrorClass<
       message: string;
       _tag: ErrorName;
       name: ErrorName;
-    } & GetSimpleFormError<DynamicContext & StaticContext> &
+    } & DynamicContext &
+      StaticContext &
       ([ExpectedCauseClass] extends [WideErrorConstructor]
         ? // To improve TS performance I wrap it in GetSimpleFormError
           {
-            cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>;
+            cause: InstanceType<ExpectedCauseClass>;
           }
         : {})
   >;

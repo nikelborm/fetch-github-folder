@@ -9,5 +9,6 @@
   "github-actions.workflows.pinned.workflows": [
     ".github/workflows/release.yml",
     ".github/workflows/test.yml"
-  ]
+  ],
+  "cmake.ignoreCMakeListsMissing": true
 }
