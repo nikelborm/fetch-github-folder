@@ -5,5 +5,9 @@
       "url": "https://json.schemastore.org/tsconfig"
     }
   ],
-  "cSpell.words": ["Voidify"]
+  "cSpell.words": ["Voidify"],
+  "github-actions.workflows.pinned.workflows": [
+    ".github/workflows/release.yml",
+    ".github/workflows/test.yml"
+  ]
 }

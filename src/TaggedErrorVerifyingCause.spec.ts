@@ -80,7 +80,7 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
       ctx
         .expect((error as Error).message)
         .toBe(
-          'Provided cause of incorrect type to "FailedToParseGitLFSInfo" class. Expected cause class: "ParseError"',
+          'Provided cause of incorrect type to "FailedToParseGitLFSInfoError" class. Expected cause class: "ParseError"',
         );
     }
   });
