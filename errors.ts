@@ -3,21 +3,21 @@
  */
 
 export {
-  GitHubApiAuthRatelimited,
-  GitHubApiBadCredentials,
+  GitHubApiAuthRatelimitedError,
+  GitHubApiBadCredentialsError,
   GitHubApiCommonErrors,
   GitHubApiGeneralServerError,
   GitHubApiGeneralUserError,
-  GitHubApiNoCommitFoundForGitRef,
-  GitHubApiRatelimited,
-  GitHubApiRepoIsEmpty,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+  GitHubApiNoCommitFoundForGitRefError,
+  GitHubApiRatelimitedError,
+  GitHubApiRepoIsEmptyError,
+  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
 } from './src/errors.js';
-export { FailedToCastDataToReadableStream } from './src/castToReadableStream.js';
+export { FailedToCastDataToReadableStreamError } from './src/castToReadableStream.js';
 export {
-  FailedToParseGitLFSInfo,
-  InconsistentExpectedAndRealContentSize,
-  FailedToParseResponseFromRepoPathContentsMetaInfoAPI,
+  FailedToParseGitLFSInfoError,
+  InconsistentExpectedAndRealContentSizeError,
+  FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
 } from './src/getPathContents/index.js';
 export { FailedToUnpackRepoFolderTarGzStreamToFs } from './src/unpackRepoFolderTarGzStreamToFs.js';
 export { FailedToWriteFileStreamToDestinationPath } from './src/writeFileStreamToDestinationPath.js';

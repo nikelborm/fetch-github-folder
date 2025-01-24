@@ -1,12 +1,10 @@
+import { describe, it } from '@effect/vitest';
+import { right } from 'effect/Either';
 import { ParseError, Unexpected } from 'effect/ParseResult';
 import { outdent } from 'outdent';
-import { describe, it } from '@effect/vitest';
-import {
-  FailedToParseGitLFSInfo,
-  InconsistentExpectedAndRealContentSize,
-} from './getPathContents/index.js';
+import { FailedToParseGitLFSInfoError } from './getPathContents/index.js';
+import { InconsistentExpectedAndRealContentSizeError } from './getPathContents/parseGitLFSObjectEither.js';
 import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
-import { right } from 'effect/Either';
 
 describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
   it('Should have expected fields from both contexts: dynamic and static ', ctx => {
@@ -20,9 +18,13 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
       }),
     } as const;
 
-    const error = new InconsistentExpectedAndRealContentSize(dynamicContext);
+    const error = new InconsistentExpectedAndRealContentSizeError(
+      dynamicContext,
+    );
 
-    ctx.expect(error).toBeInstanceOf(InconsistentExpectedAndRealContentSize);
+    ctx
+      .expect(error)
+      .toBeInstanceOf(InconsistentExpectedAndRealContentSizeError);
 
     const extractedNeedFields = (({
       actual,
@@ -43,8 +45,8 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
     }))(error);
 
     ctx.expect(extractedNeedFields).toEqual({
-      _tag: 'InconsistentExpectedAndRealContentSize',
-      name: 'InconsistentExpectedAndRealContentSize',
+      _tag: 'InconsistentExpectedAndRealContentSizeError',
+      name: 'InconsistentExpectedAndRealContentSizeError',
       message: 'Got file with size 12 bytes while expecting 13 bytes',
       comment: outdent({ newline: ' ' })`
         If we weren't successful in parsing it as git LFS object
@@ -62,7 +64,7 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
 
   it('Should throw when incorrect cause provided during constructor call', ctx => {
     try {
-      const error = new FailedToParseGitLFSInfo(
+      const error = new FailedToParseGitLFSInfoError(
         new Error('bad error') as ParseError,
         {
           partOfContentThatCouldBeGitLFSInfo:
@@ -70,7 +72,7 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
         },
       );
       throw new Error(
-        "new FailedToParseGitLFSInfo(...) should throw, but didn't",
+        "new FailedToParseGitLFSInfoError(...) should throw, but didn't",
         { cause: error },
       );
     } catch (error) {
@@ -88,7 +90,7 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
       issue: new Unexpected('asdf'),
     });
 
-    const error = new FailedToParseGitLFSInfo(causeOriginal, {
+    const error = new FailedToParseGitLFSInfoError(causeOriginal, {
       partOfContentThatCouldBeGitLFSInfo:
         'Part of content that could be git lfs info',
     });
@@ -108,8 +110,8 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
     }))(error);
 
     ctx.expect(extractedNeedFields).toEqual({
-      _tag: 'FailedToParseGitLFSInfo',
-      name: 'FailedToParseGitLFSInfo',
+      _tag: 'FailedToParseGitLFSInfoError',
+      name: 'FailedToParseGitLFSInfoError',
       message: 'Failed to parse git LFS announcement',
       cause: causeOriginal,
       partOfContentThatCouldBeGitLFSInfo:

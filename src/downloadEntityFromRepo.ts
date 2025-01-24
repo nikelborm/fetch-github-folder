@@ -1,24 +1,24 @@
 import { Octokit } from '@octokit/core';
 import type { UnknownException } from 'effect/Cause';
 import { type Effect, fail, gen } from 'effect/Effect';
-import type { FailedToCastDataToReadableStream } from './castToReadableStream.js';
+import type { FailedToCastDataToReadableStreamError } from './castToReadableStream.js';
 import {
   provideSingleDownloadTargetConfig,
   SingleTargetConfig,
 } from './configContext.js';
 import type {
-  GitHubApiAuthRatelimited,
-  GitHubApiBadCredentials,
+  GitHubApiAuthRatelimitedError,
+  GitHubApiBadCredentialsError,
   GitHubApiGeneralServerError,
   GitHubApiGeneralUserError,
-  GitHubApiNoCommitFoundForGitRef,
-  GitHubApiRatelimited,
-  GitHubApiRepoIsEmpty,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+  GitHubApiNoCommitFoundForGitRefError,
+  GitHubApiRatelimitedError,
+  GitHubApiRepoIsEmptyError,
+  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
 } from './errors.js';
 import {
-  type FailedToParseResponseFromRepoPathContentsMetaInfoAPI,
-  type InconsistentExpectedAndRealContentSize,
+  type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
+  type InconsistentExpectedAndRealContentSizeError,
   PathContentsMetaInfo,
   RawStreamOfRepoPathContentsFromGitHubAPI,
 } from './getPathContents/index.js';
@@ -63,20 +63,20 @@ export const downloadEntityFromRepo = (
 ): Effect<
   void,
   | Error
-  | InconsistentExpectedAndRealContentSize
+  | InconsistentExpectedAndRealContentSizeError
   | FailedToWriteFileStreamToDestinationPath
   | FailedToUnpackRepoFolderTarGzStreamToFs
   | UnknownException
-  | GitHubApiRepoIsEmpty
-  | GitHubApiNoCommitFoundForGitRef
-  | GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient
-  | GitHubApiBadCredentials
-  | GitHubApiAuthRatelimited
-  | GitHubApiRatelimited
+  | GitHubApiRepoIsEmptyError
+  | GitHubApiNoCommitFoundForGitRefError
+  | GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError
+  | GitHubApiBadCredentialsError
+  | GitHubApiAuthRatelimitedError
+  | GitHubApiRatelimitedError
   | GitHubApiGeneralServerError
   | GitHubApiGeneralUserError
-  | FailedToParseResponseFromRepoPathContentsMetaInfoAPI
-  | FailedToCastDataToReadableStream,
+  | FailedToParseResponseFromRepoPathContentsMetaInfoAPIError
+  | FailedToCastDataToReadableStreamError,
   Octokit
 > =>
   downloadEntityFromRepoWithoutContext.pipe(

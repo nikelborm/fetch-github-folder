@@ -25,9 +25,12 @@ export const ParsedMetaInfoAboutPathContentsFromGitHubAPI = gen(function* () {
   return yield* mapLeft(
     decodeResponse(response.data),
     parseError =>
-      new FailedToParseResponseFromRepoPathContentsMetaInfoAPI(parseError, {
-        response,
-      }),
+      new FailedToParseResponseFromRepoPathContentsMetaInfoAPIError(
+        parseError,
+        {
+          response,
+        },
+      ),
   );
 });
 
@@ -62,16 +65,19 @@ const decodeResponse = decodeUnknownEither(ResponseSchema, {
   exact: true,
 });
 
-export type FailedToParseResponseFromRepoPathContentsMetaInfoAPI =
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass =
   TaggedErrorClassWithNoStaticContext<
     'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
     typeof ParseError,
     { response: unknown }
   >;
 
-// Extracting to a separate type is required by JSR, so that consumers of the
-// library will have much faster type inference
-export const FailedToParseResponseFromRepoPathContentsMetaInfoAPI: FailedToParseResponseFromRepoPathContentsMetaInfoAPI =
+export type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError =
+  InstanceType<FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass>;
+
+export const FailedToParseResponseFromRepoPathContentsMetaInfoAPIError: FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass =
   TaggedErrorVerifyingCause<{ response: unknown }>()(
     'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
     `Failed to parse response from repo path contents meta info API`,

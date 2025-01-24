@@ -22,15 +22,18 @@ export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
 
     if (data instanceof Readable) return data;
 
-    return yield* new FailedToCastDataToReadableStream();
+    return yield* new FailedToCastDataToReadableStreamError();
   });
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type FailedToCastDataToReadableStream =
+export type FailedToCastDataToReadableStreamErrorClass =
   TaggedErrorClassWithNoContextAndNoCause<'FailedToCastDataToReadableStream'>;
 
-export const FailedToCastDataToReadableStream: FailedToCastDataToReadableStream =
+export type FailedToCastDataToReadableStreamError =
+  InstanceType<FailedToCastDataToReadableStreamErrorClass>;
+
+export const FailedToCastDataToReadableStreamError: FailedToCastDataToReadableStreamErrorClass =
   TaggedErrorVerifyingCause()(
     'FailedToCastDataToReadableStream',
     'Error: Failed to cast data to Readable stream, type of argument is not familiar',

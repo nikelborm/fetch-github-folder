@@ -29,7 +29,7 @@ export const parseGitLFSObjectEither = ({
     const parsingResult = mapLeft(
       decodeGitLFSInfoSchema(contentAsString.match(gitLFSInfoRegexp)?.groups),
       cause =>
-        new FailedToParseGitLFSInfo(cause, {
+        new FailedToParseGitLFSInfoError(cause, {
           partOfContentThatCouldBeGitLFSInfo: contentAsString,
         }),
     );
@@ -54,7 +54,7 @@ export const parseGitLFSObjectEither = ({
 
     if (shouldFailIfItIsNotGitLFS)
       return yield* left(
-        new InconsistentExpectedAndRealContentSize({
+        new InconsistentExpectedAndRealContentSizeError({
           actual: contentAsBuffer.byteLength,
           expected: expectedContentSize,
           gitLFSInfo: parsingResult,
@@ -86,19 +86,23 @@ const decodeGitLFSInfoSchema = decodeUnknownEither(GitLFSInfoSchema, {
   exact: true,
 });
 
-export type FailedToParseGitLFSInfo = TaggedErrorClassWithNoStaticContext<
-  'FailedToParseGitLFSInfo',
-  typeof ParseError,
-  { partOfContentThatCouldBeGitLFSInfo: string }
->;
-
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const FailedToParseGitLFSInfo: FailedToParseGitLFSInfo =
+export type FailedToParseGitLFSInfoErrorClass =
+  TaggedErrorClassWithNoStaticContext<
+    'FailedToParseGitLFSInfoError',
+    typeof ParseError,
+    { partOfContentThatCouldBeGitLFSInfo: string }
+  >;
+
+export type FailedToParseGitLFSInfoError =
+  InstanceType<FailedToParseGitLFSInfoErrorClass>;
+
+export const FailedToParseGitLFSInfoError: FailedToParseGitLFSInfoErrorClass =
   TaggedErrorVerifyingCause<{
     partOfContentThatCouldBeGitLFSInfo: string;
   }>()(
-    'FailedToParseGitLFSInfo',
+    'FailedToParseGitLFSInfoError',
     `Failed to parse git LFS announcement`,
     ParseError,
   );
@@ -112,22 +116,25 @@ type InconsistentSizesDynamicContext = {
       oidSha256: string;
       size: number;
     }>,
-    FailedToParseGitLFSInfo
+    FailedToParseGitLFSInfoErrorClass
   >;
 };
 
-export type InconsistentExpectedAndRealContentSize =
+// Extracting to a separate type is required by JSR, so that consumers of the
+// library will have much faster type inference
+export type InconsistentExpectedAndRealContentSizeErrorClass =
   TaggedErrorClassWithNoCause<
-    'InconsistentExpectedAndRealContentSize',
+    'InconsistentExpectedAndRealContentSizeError',
     { comment: string },
     InconsistentSizesDynamicContext
   >;
 
-// Extracting to a separate type is required by JSR, so that consumers of the
-// library will have much faster type inference
-export const InconsistentExpectedAndRealContentSize: InconsistentExpectedAndRealContentSize =
+export type InconsistentExpectedAndRealContentSizeError =
+  InstanceType<InconsistentExpectedAndRealContentSizeErrorClass>;
+
+export const InconsistentExpectedAndRealContentSizeError: InconsistentExpectedAndRealContentSizeErrorClass =
   TaggedErrorVerifyingCause<InconsistentSizesDynamicContext>()(
-    'InconsistentExpectedAndRealContentSize',
+    'InconsistentExpectedAndRealContentSizeError',
     ctx =>
       `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
     void 0,

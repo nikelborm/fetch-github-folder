@@ -25,17 +25,17 @@ import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { assert, typeGuard } from 'tsafe';
-import { FailedToCastDataToReadableStream } from '../castToReadableStream.js';
+import { FailedToCastDataToReadableStreamError } from '../castToReadableStream.js';
 import { InputConfig, provideInputConfig } from '../configContext.js';
 import {
-  GitHubApiAuthRatelimited,
-  GitHubApiBadCredentials,
+  GitHubApiAuthRatelimitedError,
+  GitHubApiBadCredentialsError,
   GitHubApiGeneralServerError,
   GitHubApiGeneralUserError,
-  GitHubApiNoCommitFoundForGitRef,
-  GitHubApiRatelimited,
-  GitHubApiRepoIsEmpty,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+  GitHubApiNoCommitFoundForGitRefError,
+  GitHubApiRatelimitedError,
+  GitHubApiRepoIsEmptyError,
+  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
 } from '../errors.js';
 import { OctokitLayer } from '../octokit.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
@@ -50,10 +50,10 @@ const defaultRepo = {
 const UnexpectedErrors = [
   RequestError,
   UnknownException,
-  GitHubApiAuthRatelimited,
-  GitHubApiRatelimited,
+  GitHubApiAuthRatelimitedError,
+  GitHubApiRatelimitedError,
   GitHubApiGeneralServerError,
-  FailedToCastDataToReadableStream,
+  FailedToCastDataToReadableStreamError,
 ];
 
 type ErrorExpectedToBeThrown = (typeof UnexpectedErrors)[number] extends new (
@@ -217,7 +217,7 @@ const expectNotFail = (
 describe('PathContentsMetaInfo', { concurrent: true }, () => {
   expectError({
     when: 'asked for empty repo',
-    ExpectedErrorClass: GitHubApiRepoIsEmpty,
+    ExpectedErrorClass: GitHubApiRepoIsEmptyError,
     pathToEntityInRepo: 'levelParent/levelChild/temp2.txt',
     repo: {
       owner: 'fetch-gh-stuff-tests',
@@ -227,7 +227,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
 
   expectError({
     when: 'provided bad auth token',
-    ExpectedErrorClass: GitHubApiBadCredentials,
+    ExpectedErrorClass: GitHubApiBadCredentialsError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'asd',
@@ -239,7 +239,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
   expectError({
     when: 'asked for a private repo',
     ExpectedErrorClass:
-      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'fetch-gh-stuff-tests',
@@ -250,7 +250,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
   expectError({
     when: 'asked for nonexistent repo',
     ExpectedErrorClass:
-      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'fetch-gh-stuff-tests',
@@ -261,7 +261,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
   expectError({
     when: 'asked for nonexistent owner',
     ExpectedErrorClass:
-      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
+      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'llllllllllllllllllllllllllll',
@@ -277,7 +277,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
 
   expectError({
     when: 'given broken git ref',
-    ExpectedErrorClass: GitHubApiNoCommitFoundForGitRef,
+    ExpectedErrorClass: GitHubApiNoCommitFoundForGitRefError,
     pathToEntityInRepo: '',
     gitRef: '807070987097809870987',
   });
