@@ -38,7 +38,6 @@ import {
   GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient,
 } from '../errors.js';
 import { OctokitLayer } from '../octokit.js';
-import type { IRepo } from '../repo.interface.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
 import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.js';
@@ -146,7 +145,7 @@ const expectError = <const ExpectedErrorClass extends ErrorExpectedToBeThrown>({
   when: string;
   ExpectedErrorClass: new (...args: any) => ExpectedErrorClass;
   authToken?: string | undefined;
-  repo?: IRepo;
+  repo?: InputConfig['repo'];
   gitRef?: string | undefined;
   pathToEntityInRepo: string;
 }) =>
