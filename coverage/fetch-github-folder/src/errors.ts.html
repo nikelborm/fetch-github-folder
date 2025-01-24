@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.61% </span>
+                <span class="strong">93.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>57/59</span>
+                <span class='fraction'>57/61</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.61% </span>
+                <span class="strong">93.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/59</span>
+                <span class='fraction'>57/61</span>
             </div>
         
             
@@ -235,7 +235,11 @@
 <a name='L170'></a><a href='#L170'>170</a>
 <a name='L171'></a><a href='#L171'>171</a>
 <a name='L172'></a><a href='#L172'>172</a>
-<a name='L173'></a><a href='#L173'>173</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -305,24 +309,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -341,6 +327,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -364,6 +352,24 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -392,6 +398,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -452,118 +460,122 @@ export const GitHubApiGeneralUserError: GitHubApiGeneralUserErrorClass =
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientClass =
+export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass =
   TaggedErrorClassWithNoContext&lt;
-    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
+    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError',
     typeof RequestError
   &gt;;
 &nbsp;
-export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient =
-  InstanceType&lt;GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientClass&gt;;
+export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError =
+  InstanceType&lt;GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass&gt;;
 &nbsp;
-export const GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientClass =
+export const GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass =
   TaggedErrorVerifyingCause()(
-    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient',
+    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError',
     "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
     RequestError,
   );
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiRepoIsEmptyClass = TaggedErrorClassWithNoContext&lt;
-  'GitHubApiRepoIsEmpty',
+export type GitHubApiRepoIsEmptyErrorClass = TaggedErrorClassWithNoContext&lt;
+  'GitHubApiRepoIsEmptyError',
   typeof RequestError
 &gt;;
 &nbsp;
-export type GitHubApiRepoIsEmpty = InstanceType&lt;GitHubApiRepoIsEmptyClass&gt;;
+export type GitHubApiRepoIsEmptyError =
+  InstanceType&lt;GitHubApiRepoIsEmptyErrorClass&gt;;
 &nbsp;
-export const GitHubApiRepoIsEmpty: GitHubApiRepoIsEmptyClass =
+export const GitHubApiRepoIsEmptyError: GitHubApiRepoIsEmptyErrorClass =
   TaggedErrorVerifyingCause()(
-    'GitHubApiRepoIsEmpty',
+    'GitHubApiRepoIsEmptyError',
     'GitHub API Error: This Repo is empty',
     RequestError,
   );
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiNoCommitFoundForGitRefClass =
+export type GitHubApiNoCommitFoundForGitRefErrorClass =
   TaggedErrorClassWithNoStaticContext&lt;
-    'GitHubApiNoCommitFoundForGitRef',
+    'GitHubApiNoCommitFoundForGitRefError',
     typeof RequestError,
     { gitRef: string }
   &gt;;
 &nbsp;
-export type GitHubApiNoCommitFoundForGitRef =
-  InstanceType&lt;GitHubApiNoCommitFoundForGitRefClass&gt;;
+export type GitHubApiNoCommitFoundForGitRefError =
+  InstanceType&lt;GitHubApiNoCommitFoundForGitRefErrorClass&gt;;
 &nbsp;
-export const GitHubApiNoCommitFoundForGitRef: GitHubApiNoCommitFoundForGitRefClass =
+export const GitHubApiNoCommitFoundForGitRefError: GitHubApiNoCommitFoundForGitRefErrorClass =
   TaggedErrorVerifyingCause&lt;{ gitRef: string }&gt;()(
-    'GitHubApiNoCommitFoundForGitRef',
+    'GitHubApiNoCommitFoundForGitRefError',
     'GitHub API Error: No commit found for this git ref',
     RequestError,
   );
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiBadCredentialsClass = TaggedErrorClassWithNoContext&lt;
-  'GitHubApiBadCredentials',
+export type GitHubApiBadCredentialsErrorClass = TaggedErrorClassWithNoContext&lt;
+  'GitHubApiBadCredentialsError',
   typeof RequestError
 &gt;;
 &nbsp;
-export type GitHubApiBadCredentials =
-  InstanceType&lt;GitHubApiBadCredentialsClass&gt;;
+export type GitHubApiBadCredentialsError =
+  InstanceType&lt;GitHubApiBadCredentialsErrorClass&gt;;
 &nbsp;
-export const GitHubApiBadCredentials: GitHubApiBadCredentialsClass =
+export const GitHubApiBadCredentialsError: GitHubApiBadCredentialsErrorClass =
   TaggedErrorVerifyingCause()(
-    'GitHubApiBadCredentials',
+    'GitHubApiBadCredentialsError',
     "GitHub API Error: Token you're using is invalid.",
     RequestError,
   );
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiAuthRatelimitedClass = TaggedErrorClassWithNoContext&lt;
-  'GitHubApiAuthRatelimited',
+export type GitHubApiAuthRatelimitedErrorClass = TaggedErrorClassWithNoContext&lt;
+  'GitHubApiAuthRatelimitedError',
   typeof RequestError
 &gt;;
 &nbsp;
-export type GitHubApiAuthRatelimited =
-  InstanceType&lt;GitHubApiAuthRatelimitedClass&gt;;
+export type GitHubApiAuthRatelimitedError =
+  InstanceType&lt;GitHubApiAuthRatelimitedErrorClass&gt;;
 &nbsp;
-export const GitHubApiAuthRatelimited: GitHubApiAuthRatelimitedClass =
+export const GitHubApiAuthRatelimitedError: GitHubApiAuthRatelimitedErrorClass =
   TaggedErrorVerifyingCause()(
-    'GitHubApiAuthRatelimited',
+    'GitHubApiAuthRatelimitedError',
     'GitHub API Error: Too many invalid auth attempts. Chillout pal',
     RequestError,
   );
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiRatelimitedClass = TaggedErrorClassWithNoContext&lt;
-  'GitHubApiRatelimited',
+export type GitHubApiRatelimitedErrorClass = TaggedErrorClassWithNoContext&lt;
+  'GitHubApiRatelimitedError',
   typeof RequestError
 &gt;;
 &nbsp;
-export type GitHubApiRatelimited = InstanceType&lt;GitHubApiRatelimitedClass&gt;;
+export type GitHubApiRatelimitedError =
+  InstanceType&lt;GitHubApiRatelimitedErrorClass&gt;;
 &nbsp;
-export const GitHubApiRatelimited: GitHubApiRatelimitedClass =
+export const GitHubApiRatelimitedError: GitHubApiRatelimitedErrorClass =
   TaggedErrorVerifyingCause()(
-    'GitHubApiRatelimited',
+    'GitHubApiRatelimitedError',
     'GitHub API Error: Too many requests. Chillout pal',
     RequestError,
   );
 &nbsp;
 export const parseCommonGitHubApiErrors = (error: RequestError) =&gt; {
-  if (error.status === 401) return new GitHubApiBadCredentials(error);
+  if (error.status === 401) return new GitHubApiBadCredentialsError(error);
 &nbsp;
   // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#failed-login-limit
-  if (error.status === 403) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiAuthRatelimited(error);</span>
+  if (error.status === 403) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiAuthRatelimitedError(error);</span>
 &nbsp;
   // docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28
-  if (error.status === 429) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiRatelimited(error);</span>
+  if (error.status === 429) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiRatelimitedError(error);</span>
 &nbsp;
   if (error.status === 404)
-<span class="branch-0 cbranch-no" title="branch not covered" >    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficient(error);</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError(</span>
+<span class="cstat-no" title="statement not covered" >      error,</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
 &nbsp;
   if (error.status &gt;= 500) <span class="branch-0 cbranch-no" title="branch not covered" >return new GitHubApiGeneralServerError(error);</span>
 &nbsp;
@@ -576,9 +588,9 @@ export type GitHubApiCommonErrors =
   | RequestError
   | GitHubApiGeneralServerError
   | GitHubApiGeneralUserError
-  | GitHubApiBadCredentials
-  | GitHubApiAuthRatelimited
-  | GitHubApiRatelimited;
+  | GitHubApiBadCredentialsError
+  | GitHubApiAuthRatelimitedError
+  | GitHubApiRatelimitedError;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -586,7 +598,7 @@ export type GitHubApiCommonErrors =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-24T05:33:46.177Z
+                at 2025-01-24T06:00:32.476Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
