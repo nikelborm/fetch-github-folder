@@ -1,10 +1,3 @@
-/**
- * Reusable in [Effect]{@link https://effect.website/} applications CLI Options
- * backed by ENV variables
- *
- * @license https://github.com/nikelborm/fetch-github-folder/blob/main/LICENSE
- */
-
 import {
   Options,
   text,
@@ -235,8 +228,8 @@ export const destinationPathCLIOptionBackedByEnv: Options<string> = pipe(
 );
 
 /**
- * This is the commit SHA hash, branch name, or tag name you want to download
- * from.
+ * Text parameter containing commit SHA hash, branch name, or tag name you want
+ * to download from.
  *
  * Examples:
  * 1. `HEAD`

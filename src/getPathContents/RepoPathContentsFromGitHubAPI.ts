@@ -6,7 +6,7 @@ import { InputConfigTag } from '../configContext.js';
 import {
   GitHubApiNoCommitFoundForGitRefError,
   GitHubApiRepoIsEmptyError,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
+  GitHubApiThingNotExistsOrYouDontHaveAccessError,
   parseCommonGitHubApiErrors,
 } from '../commonErrors.js';
 import { OctokitTag } from '../octokit.js';
@@ -63,9 +63,7 @@ const parseNotFoundErrors = (
   if (gitRef && potentialErrorMessage.startsWith('No commit found for the ref'))
     return new GitHubApiNoCommitFoundForGitRefError(error, { gitRef });
 
-  return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError(
-    error,
-  );
+  return new GitHubApiThingNotExistsOrYouDontHaveAccessError(error);
 };
 
 type ResponseWithError = OctokitResponse<

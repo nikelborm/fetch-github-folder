@@ -23,7 +23,7 @@ import {
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.js';
-import { TaggedErrorVerifyingCause } from './src/TaggedErrorVerifyingCause.js';
+import { buildTaggedErrorClassVerifyingCause } from './src/TaggedErrorVerifyingCause.js';
 
 const defaultRepo = {
   owner: 'fetch-gh-stuff-tests',
@@ -71,7 +71,7 @@ type Params = {
   tempDirPath: string;
 };
 
-class CommandFinishedWithNonZeroCode extends TaggedErrorVerifyingCause<{
+class CommandFinishedWithNonZeroCode extends buildTaggedErrorClassVerifyingCause<{
   exitCode: number;
   stdout: string;
   stderr: string;

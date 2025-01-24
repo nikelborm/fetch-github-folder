@@ -1,7 +1,3 @@
-/**
- * @module
- */
-
 export { downloadEntityFromRepo } from './downloadEntityFromRepo.js';
 export { OctokitLayer } from './octokit.js';
 export {

@@ -18,9 +18,10 @@ export {
   GitHubApiRatelimitedErrorClass,
   GitHubApiRepoIsEmptyError,
   GitHubApiRepoIsEmptyErrorClass,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass,
+  GitHubApiThingNotExistsOrYouDontHaveAccessError,
+  GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass,
 } from './src/commonErrors.js';
+export * from './src/TaggedErrorVerifyingCause.js';
 export {
   FailedToCastDataToReadableStreamError,
   FailedToCastDataToReadableStreamErrorClass,

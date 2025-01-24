@@ -6,7 +6,7 @@ import { extract } from 'tar-fs';
 import { OutputConfigTag } from './configContext.js';
 import {
   TaggedErrorClassWithUnknownCauseAndNoContext,
-  TaggedErrorVerifyingCause,
+  buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
 export const unpackRepoFolderTarGzStreamToFs = <E, R>(
@@ -50,7 +50,7 @@ export type FailedToUnpackRepoFolderTarGzStreamToFsError =
   InstanceType<FailedToUnpackRepoFolderTarGzStreamToFsErrorClass>;
 
 const FailedToUnpackRepoFolderTarGzStreamToFsError: FailedToUnpackRepoFolderTarGzStreamToFsErrorClass =
-  TaggedErrorVerifyingCause<{
+  buildTaggedErrorClassVerifyingCause<{
     cause: unknown;
   }>()(
     'FailedToUnpackRepoFolderTarGzStreamToFsError',

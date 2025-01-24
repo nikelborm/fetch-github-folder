@@ -2,7 +2,7 @@ import { RequestError } from '@octokit/request-error';
 import {
   TaggedErrorClassWithNoStaticContext,
   TaggedErrorClassWithNoContext,
-  TaggedErrorVerifyingCause,
+  buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
 // Extracting to a separate type is required by JSR, so that consumers of the
@@ -16,7 +16,7 @@ export type GitHubApiGeneralServerError =
   InstanceType<GitHubApiGeneralServerErrorClass>;
 
 export const GitHubApiGeneralServerError: GitHubApiGeneralServerErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiGeneralServerError',
     'GitHub API Error: Bad server',
     RequestError,
@@ -35,7 +35,7 @@ export type GitHubApiGeneralUserError =
   InstanceType<GitHubApiGeneralUserErrorClass>;
 
 export const GitHubApiGeneralUserError: GitHubApiGeneralUserErrorClass =
-  TaggedErrorVerifyingCause<{ readonly notes?: string }>()(
+  buildTaggedErrorClassVerifyingCause<{ readonly notes?: string }>()(
     'GitHubApiGeneralUserError',
     'GitHub API Error: Bad user, invalid request',
     RequestError,
@@ -43,18 +43,18 @@ export const GitHubApiGeneralUserError: GitHubApiGeneralUserErrorClass =
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass =
+export type GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass =
   TaggedErrorClassWithNoContext<
-    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError',
+    'GitHubApiThingNotExistsOrYouDontHaveAccessError',
     typeof RequestError
   >;
 
-export type GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError =
-  InstanceType<GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass>;
+export type GitHubApiThingNotExistsOrYouDontHaveAccessError =
+  InstanceType<GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass>;
 
-export const GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError: GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientErrorClass =
-  TaggedErrorVerifyingCause()(
-    'GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError',
+export const GitHubApiThingNotExistsOrYouDontHaveAccessError: GitHubApiThingNotExistsOrYouDontHaveAccessErrorClass =
+  buildTaggedErrorClassVerifyingCause()(
+    'GitHubApiThingNotExistsOrYouDontHaveAccessError',
     "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
     RequestError,
   );
@@ -70,7 +70,7 @@ export type GitHubApiRepoIsEmptyError =
   InstanceType<GitHubApiRepoIsEmptyErrorClass>;
 
 export const GitHubApiRepoIsEmptyError: GitHubApiRepoIsEmptyErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiRepoIsEmptyError',
     'GitHub API Error: This Repo is empty',
     RequestError,
@@ -89,7 +89,7 @@ export type GitHubApiNoCommitFoundForGitRefError =
   InstanceType<GitHubApiNoCommitFoundForGitRefErrorClass>;
 
 export const GitHubApiNoCommitFoundForGitRefError: GitHubApiNoCommitFoundForGitRefErrorClass =
-  TaggedErrorVerifyingCause<{ gitRef: string }>()(
+  buildTaggedErrorClassVerifyingCause<{ gitRef: string }>()(
     'GitHubApiNoCommitFoundForGitRefError',
     'GitHub API Error: No commit found for this git ref',
     RequestError,
@@ -106,7 +106,7 @@ export type GitHubApiBadCredentialsError =
   InstanceType<GitHubApiBadCredentialsErrorClass>;
 
 export const GitHubApiBadCredentialsError: GitHubApiBadCredentialsErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiBadCredentialsError',
     "GitHub API Error: Token you're using is invalid.",
     RequestError,
@@ -123,7 +123,7 @@ export type GitHubApiAuthRatelimitedError =
   InstanceType<GitHubApiAuthRatelimitedErrorClass>;
 
 export const GitHubApiAuthRatelimitedError: GitHubApiAuthRatelimitedErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiAuthRatelimitedError',
     'GitHub API Error: Too many invalid auth attempts. Chillout pal',
     RequestError,
@@ -140,7 +140,7 @@ export type GitHubApiRatelimitedError =
   InstanceType<GitHubApiRatelimitedErrorClass>;
 
 export const GitHubApiRatelimitedError: GitHubApiRatelimitedErrorClass =
-  TaggedErrorVerifyingCause()(
+  buildTaggedErrorClassVerifyingCause()(
     'GitHubApiRatelimitedError',
     'GitHub API Error: Too many requests. Chillout pal',
     RequestError,
@@ -156,9 +156,7 @@ export const parseCommonGitHubApiErrors = (error: RequestError) => {
   if (error.status === 429) return new GitHubApiRatelimitedError(error);
 
   if (error.status === 404)
-    return new GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError(
-      error,
-    );
+    return new GitHubApiThingNotExistsOrYouDontHaveAccessError(error);
 
   if (error.status >= 500) return new GitHubApiGeneralServerError(error);
 

@@ -14,7 +14,7 @@ import type {
   GitHubApiNoCommitFoundForGitRefError,
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
+  GitHubApiThingNotExistsOrYouDontHaveAccessError,
 } from './commonErrors.js';
 import {
   type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
@@ -69,7 +69,7 @@ export const downloadEntityFromRepo = (
   | UnknownException
   | GitHubApiRepoIsEmptyError
   | GitHubApiNoCommitFoundForGitRefError
-  | GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError
+  | GitHubApiThingNotExistsOrYouDontHaveAccessError
   | GitHubApiBadCredentialsError
   | GitHubApiAuthRatelimitedError
   | GitHubApiRatelimitedError

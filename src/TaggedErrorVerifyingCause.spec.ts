@@ -4,7 +4,7 @@ import { ParseError, Unexpected } from 'effect/ParseResult';
 import { outdent } from 'outdent';
 import { FailedToParseGitLFSInfoError } from './getPathContents/index.js';
 import { InconsistentExpectedAndRealContentSizeError } from './getPathContents/parseGitLFSObjectEither.js';
-import { TaggedErrorVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import { buildTaggedErrorClassVerifyingCause } from './TaggedErrorVerifyingCause.js';
 
 describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
   it('Should have expected fields from both contexts: dynamic and static ', ctx => {
@@ -127,7 +127,7 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
       }
     }
 
-    class CustomTaggedError extends TaggedErrorVerifyingCause<{
+    class CustomTaggedError extends buildTaggedErrorClassVerifyingCause<{
       dynamicContextField1: string;
     }>()(
       'CustomTaggedError',

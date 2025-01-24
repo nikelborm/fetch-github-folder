@@ -35,7 +35,7 @@ import {
   GitHubApiNoCommitFoundForGitRefError,
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
-  GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
+  GitHubApiThingNotExistsOrYouDontHaveAccessError,
 } from '../commonErrors.js';
 import { OctokitLayer } from '../octokit.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
@@ -238,8 +238,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
 
   expectError({
     when: 'asked for a private repo',
-    ExpectedErrorClass:
-      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
+    ExpectedErrorClass: GitHubApiThingNotExistsOrYouDontHaveAccessError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'fetch-gh-stuff-tests',
@@ -249,8 +248,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
 
   expectError({
     when: 'asked for nonexistent repo',
-    ExpectedErrorClass:
-      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
+    ExpectedErrorClass: GitHubApiThingNotExistsOrYouDontHaveAccessError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'fetch-gh-stuff-tests',
@@ -260,8 +258,7 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
 
   expectError({
     when: 'asked for nonexistent owner',
-    ExpectedErrorClass:
-      GitHubApiSomethingDoesNotExistsOrPermissionsInsufficientError,
+    ExpectedErrorClass: GitHubApiThingNotExistsOrYouDontHaveAccessError,
     pathToEntityInRepo: '',
     repo: {
       owner: 'llllllllllllllllllllllllllll',

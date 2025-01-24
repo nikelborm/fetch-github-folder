@@ -45,6 +45,22 @@ export type MessageRendererArgsGen<
   fullContext: VoidifyEmptyObject<DynamicContext & StaticContext>,
 ];
 
+// Classes
+
+export type TaggedErrorClass<
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  StaticContext extends Record<string, unknown> = {},
+  DynamicContext extends Record<string, unknown> = {},
+> = new (
+  ...args: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>
+) => TaggedErrorInstance<
+  ErrorName,
+  ExpectedCauseClass,
+  StaticContext,
+  DynamicContext
+>;
+
 export type TaggedErrorClassWithUnknownCauseAndNoStaticContext<
   ErrorName extends string,
   DynamicContext extends Record<string, unknown>,
@@ -85,6 +101,28 @@ export type TaggedErrorClassWithNoStaticContext<
   ExpectedCauseClass extends WideErrorConstructor | undefined,
   DynamicContext extends Record<string, unknown>,
 > = TaggedErrorClass<ErrorName, ExpectedCauseClass, {}, DynamicContext>;
+
+// Instances
+
+export type TaggedErrorInstance<
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  StaticContext extends Record<string, unknown> = {},
+  DynamicContext extends Record<string, unknown> = {},
+> = YieldableError &
+  Readonly<
+    {
+      message: string;
+      _tag: ErrorName;
+      name: ErrorName;
+    } & GetSimpleFormError<DynamicContext & StaticContext> &
+      ([ExpectedCauseClass] extends [WideErrorConstructor]
+        ? // To improve TS performance I wrap it in GetSimpleFormError
+          {
+            cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>;
+          }
+        : {})
+  >;
 
 export type TaggedErrorInstanceWithUnknownCauseAndNoStaticContext<
   ErrorName extends string,
@@ -128,39 +166,7 @@ export type TaggedErrorInstanceWithNoStaticContext<
   DynamicContext
 >;
 
-export type TaggedErrorClass<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record<string, unknown> = {},
-  DynamicContext extends Record<string, unknown> = {},
-> = new (
-  ...args: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>
-) => TaggedErrorInstance<
-  ErrorName,
-  ExpectedCauseClass,
-  StaticContext,
-  DynamicContext
->;
-
-export type TaggedErrorInstance<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record<string, unknown> = {},
-  DynamicContext extends Record<string, unknown> = {},
-> = YieldableError &
-  Readonly<
-    {
-      message: string;
-      _tag: ErrorName;
-      name: ErrorName;
-    } & GetSimpleFormError<DynamicContext & StaticContext> &
-      ([ExpectedCauseClass] extends [WideErrorConstructor]
-        ? // To improve TS performance I wrap it in GetSimpleFormError
-          {
-            cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>;
-          }
-        : {})
-  >;
+// Other
 
 export type TaggedErrorVerifyingCauseTypes<
   ErrorName extends string,
@@ -182,7 +188,7 @@ export type TaggedErrorVerifyingCauseTypes<
   ConstructorArgs: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>;
 };
 
-export const TaggedErrorVerifyingCause =
+export const buildTaggedErrorClassVerifyingCause =
   <const DynamicContext extends Record<string, unknown> = {}>() =>
   <
     const ErrorName extends string,

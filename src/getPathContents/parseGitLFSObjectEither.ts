@@ -10,7 +10,7 @@ import { outdent } from 'outdent';
 import {
   TaggedErrorClassWithNoCause,
   TaggedErrorClassWithNoStaticContext,
-  TaggedErrorVerifyingCause,
+  buildTaggedErrorClassVerifyingCause,
 } from '../TaggedErrorVerifyingCause.js';
 
 export const parseGitLFSObjectEither = ({
@@ -99,7 +99,7 @@ export type FailedToParseGitLFSInfoError =
   InstanceType<FailedToParseGitLFSInfoErrorClass>;
 
 export const FailedToParseGitLFSInfoError: FailedToParseGitLFSInfoErrorClass =
-  TaggedErrorVerifyingCause<{
+  buildTaggedErrorClassVerifyingCause<{
     partOfContentThatCouldBeGitLFSInfo: string;
   }>()(
     'FailedToParseGitLFSInfoError',
@@ -133,7 +133,7 @@ export type InconsistentExpectedAndRealContentSizeError =
   InstanceType<InconsistentExpectedAndRealContentSizeErrorClass>;
 
 export const InconsistentExpectedAndRealContentSizeError: InconsistentExpectedAndRealContentSizeErrorClass =
-  TaggedErrorVerifyingCause<InconsistentSizesDynamicContext>()(
+  buildTaggedErrorClassVerifyingCause<InconsistentSizesDynamicContext>()(
     'InconsistentExpectedAndRealContentSizeError',
     ctx =>
       `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,

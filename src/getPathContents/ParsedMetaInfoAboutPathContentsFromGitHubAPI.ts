@@ -12,7 +12,7 @@ import {
 } from 'effect/Schema';
 import {
   TaggedErrorClassWithNoStaticContext,
-  TaggedErrorVerifyingCause,
+  buildTaggedErrorClassVerifyingCause,
 } from '../TaggedErrorVerifyingCause.js';
 import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';
 
@@ -78,7 +78,7 @@ export type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError =
   InstanceType<FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass>;
 
 export const FailedToParseResponseFromRepoPathContentsMetaInfoAPIError: FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass =
-  TaggedErrorVerifyingCause<{ response: unknown }>()(
+  buildTaggedErrorClassVerifyingCause<{ response: unknown }>()(
     'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
     `Failed to parse response from repo path contents meta info API`,
     ParseError,

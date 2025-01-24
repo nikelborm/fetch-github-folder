@@ -5,7 +5,7 @@ import { pipeline } from 'node:stream/promises';
 import { OutputConfigTag } from './configContext.js';
 import {
   TaggedErrorClassWithUnknownCauseAndNoContext,
-  TaggedErrorVerifyingCause,
+  buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
 export const writeFileStreamToDestinationPath = <E, R>(
@@ -37,7 +37,7 @@ export type FailedToWriteFileStreamToDestinationPathError =
   InstanceType<FailedToWriteFileStreamToDestinationPathErrorClass>;
 
 export const FailedToWriteFileStreamToDestinationPathError: FailedToWriteFileStreamToDestinationPathErrorClass =
-  TaggedErrorVerifyingCause<{
+  buildTaggedErrorClassVerifyingCause<{
     cause: unknown;
   }>()(
     'FailedToWriteFileStreamToDestinationPathError',
