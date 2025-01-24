@@ -1,6 +1,6 @@
 {
   "name": "fetch-github-folder",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "test-jsr": "tsc && jsr publish --dry-run",
     "build": "./scripts/build.sh",
     "doc": "./scripts/generate_docs.sh",
-    "docs": "./scripts/generate_docs.sh"
+    "docs": "./scripts/generate_docs.sh",
+    "watch-docs": "find src/ cli.ts index.ts errors.ts | entr -cp npm run docs"
   },
   "dependencies": {
     "@effect/cli": "^0.51.2",

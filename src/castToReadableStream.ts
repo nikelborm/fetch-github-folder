@@ -27,22 +27,10 @@ export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-
-export type FailedToCastDataToReadableStreamErrorClass =
-  TaggedErrorClassWithNoContextAndNoCause<'FailedToCastDataToReadableStreamError'>;
-
-export type FailedToCastDataToReadableStreamError =
-  InstanceType<FailedToCastDataToReadableStreamErrorClass>;
-
-/**
- * Error that happens when some of the3
- *
- * @class FailedToCastDataToReadableStreamError FailedToCastDataToReadableStreamError
- * @classdesc This is a description of the sss class.
- * @constructs FailedToCastDataToReadableStreamError
- */
-export const FailedToCastDataToReadableStreamError: FailedToCastDataToReadableStreamErrorClass =
+const _1: TaggedErrorClassWithNoContextAndNoCause<'FailedToCastDataToReadableStreamError'> =
   buildTaggedErrorClassVerifyingCause()(
     'FailedToCastDataToReadableStreamError',
     'Error: Failed to cast data to Readable stream, type of argument is not familiar',
   );
+
+export class FailedToCastDataToReadableStreamError extends _1 {}

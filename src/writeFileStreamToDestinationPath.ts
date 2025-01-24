@@ -30,16 +30,12 @@ export const writeFileStreamToDestinationPath = <E, R>(
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type FailedToWriteFileStreamToDestinationPathErrorClass =
-  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToWriteFileStreamToDestinationPathError'>;
-
-export type FailedToWriteFileStreamToDestinationPathError =
-  InstanceType<FailedToWriteFileStreamToDestinationPathErrorClass>;
-
-export const FailedToWriteFileStreamToDestinationPathError: FailedToWriteFileStreamToDestinationPathErrorClass =
+const _1: TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToWriteFileStreamToDestinationPathError'> =
   buildTaggedErrorClassVerifyingCause<{
     cause: unknown;
   }>()(
     'FailedToWriteFileStreamToDestinationPathError',
     'Error: Failed to write file stream to destination path',
   );
+
+export class FailedToWriteFileStreamToDestinationPathError extends _1 {}

@@ -67,19 +67,15 @@ const decodeResponse = decodeUnknownEither(ResponseSchema, {
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass =
-  TaggedErrorClassWithNoStaticContext<
-    'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
-    typeof ParseError,
-    { response: unknown }
-  >;
 
-export type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError =
-  InstanceType<FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass>;
+const _1: TaggedErrorClassWithNoStaticContext<
+  'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
+  typeof ParseError,
+  { response: unknown }
+> = buildTaggedErrorClassVerifyingCause<{ response: unknown }>()(
+  'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
+  `Failed to parse response from repo path contents meta info API`,
+  ParseError,
+);
 
-export const FailedToParseResponseFromRepoPathContentsMetaInfoAPIError: FailedToParseResponseFromRepoPathContentsMetaInfoAPIErrorClass =
-  buildTaggedErrorClassVerifyingCause<{ response: unknown }>()(
-    'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
-    `Failed to parse response from repo path contents meta info API`,
-    ParseError,
-  );
+export class FailedToParseResponseFromRepoPathContentsMetaInfoAPIError extends _1 {}
