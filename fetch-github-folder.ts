@@ -24,7 +24,7 @@ const PACKAGE_VERSION = '0.1.20';
 const PACKAGE_NAME = 'fetch-github-folder';
 
 const appCommand = make(
-  'fetch-github-folder',
+  PACKAGE_NAME,
   {
     repo: {
       owner: repoOwnerCLIOptionBackedByEnv,
