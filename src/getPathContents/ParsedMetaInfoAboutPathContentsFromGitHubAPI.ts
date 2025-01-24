@@ -11,7 +11,7 @@ import {
   Union,
 } from 'effect/Schema';
 import {
-  ReturnTypeNoStatic,
+  TaggedErrorClassWithNoStaticContext,
   TaggedErrorVerifyingCause,
 } from '../TaggedErrorVerifyingCause.js';
 import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';
@@ -63,7 +63,7 @@ const decodeResponse = decodeUnknownEither(ResponseSchema, {
 });
 
 export type FailedToParseResponseFromRepoPathContentsMetaInfoAPI =
-  ReturnTypeNoStatic<
+  TaggedErrorClassWithNoStaticContext<
     'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
     typeof ParseError,
     { response: unknown }

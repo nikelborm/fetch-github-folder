@@ -4,7 +4,7 @@ import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { OutputConfigTag } from './configContext.js';
 import {
-  ReturnTypeUnknownCauseNoStatic,
+  TaggedErrorClassWithUnknownCauseAndNoContext,
   TaggedErrorVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
@@ -30,7 +30,7 @@ export const writeFileStreamToDestinationPath = <E, R>(
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
 export type FailedToWriteFileStreamToDestinationPath =
-  ReturnTypeUnknownCauseNoStatic<'FailedToWriteFileStreamToDestinationPath'>;
+  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToWriteFileStreamToDestinationPath'>;
 
 export const FailedToWriteFileStreamToDestinationPath: FailedToWriteFileStreamToDestinationPath =
   TaggedErrorVerifyingCause<{

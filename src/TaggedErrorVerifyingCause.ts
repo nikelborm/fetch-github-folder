@@ -45,10 +45,10 @@ export type MessageRendererArgsGen<
   fullContext: VoidifyEmptyObject<DynamicContext & StaticContext>,
 ];
 
-export type ReturnTypeUnknownCauseNoStatic<
+export type TaggedErrorClassWithUnknownCauseAndNoStaticContext<
   ErrorName extends string,
-  DynamicContext extends Record<string, unknown> = {},
-> = ReturnTypeGen<
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClass<
   ErrorName,
   undefined,
   {},
@@ -57,31 +57,97 @@ export type ReturnTypeUnknownCauseNoStatic<
   } & DynamicContext
 >;
 
-export type ReturnTypeNoCause<
+export type TaggedErrorClassWithUnknownCauseAndNoContext<
   ErrorName extends string,
-  StaticContext extends Record<string, unknown> = {},
-  DynamicContext extends Record<string, unknown> = {},
-> = ReturnTypeGen<ErrorName, undefined, StaticContext, DynamicContext>;
+> = TaggedErrorClass<ErrorName, undefined, {}, { cause: unknown }>;
 
-export type ReturnTypeNoCauseNoStatic<
+export type TaggedErrorClassWithNoCause<
   ErrorName extends string,
-  DynamicContext extends Record<string, unknown> = {},
-> = ReturnTypeGen<ErrorName, undefined, {}, DynamicContext>;
+  StaticContext extends Record<string, unknown>,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClass<ErrorName, undefined, StaticContext, DynamicContext>;
 
-export type ReturnTypeNoStatic<
+export type TaggedErrorClassWithNoStaticContextAndNoCause<
+  ErrorName extends string,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClass<ErrorName, undefined, {}, DynamicContext>;
+
+export type TaggedErrorClassWithNoContextAndNoCause<ErrorName extends string> =
+  TaggedErrorClass<ErrorName, undefined, {}, {}>;
+
+export type TaggedErrorClassWithNoContext<
   ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
-  DynamicContext extends Record<string, unknown> = {},
-> = ReturnTypeGen<ErrorName, ExpectedCauseClass, {}, DynamicContext>;
+> = TaggedErrorClass<ErrorName, ExpectedCauseClass, {}, {}>;
 
-export type ReturnTypeGen<
+export type TaggedErrorClassWithNoStaticContext<
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClass<ErrorName, ExpectedCauseClass, {}, DynamicContext>;
+
+export type TaggedErrorInstanceWithUnknownCauseAndNoStaticContext<
+  ErrorName extends string,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClassWithUnknownCauseAndNoStaticContext<
+  ErrorName,
+  DynamicContext
+>;
+
+export type TaggedErrorInstanceWithUnknownCauseAndNoContext<
+  ErrorName extends string,
+> = TaggedErrorClassWithUnknownCauseAndNoContext<ErrorName>;
+
+export type TaggedErrorInstanceWithNoCause<
+  ErrorName extends string,
+  StaticContext extends Record<string, unknown>,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClassWithNoCause<ErrorName, StaticContext, DynamicContext>;
+
+export type TaggedErrorInstanceWithNoStaticContextAndNoCause<
+  ErrorName extends string,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClassWithNoStaticContextAndNoCause<ErrorName, DynamicContext>;
+
+export type TaggedErrorInstanceWithNoContextAndNoCause<
+  ErrorName extends string,
+> = TaggedErrorClassWithNoContextAndNoCause<ErrorName>;
+
+export type TaggedErrorInstanceWithNoContext<
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+> = TaggedErrorClassWithNoContext<ErrorName, ExpectedCauseClass>;
+
+export type TaggedErrorInstanceWithNoStaticContext<
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  DynamicContext extends Record<string, unknown>,
+> = TaggedErrorClassWithNoStaticContext<
+  ErrorName,
+  ExpectedCauseClass,
+  DynamicContext
+>;
+
+export type TaggedErrorClass<
   ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
   StaticContext extends Record<string, unknown> = {},
   DynamicContext extends Record<string, unknown> = {},
 > = new (
   ...args: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>
-) => YieldableError &
+) => TaggedErrorInstance<
+  ErrorName,
+  ExpectedCauseClass,
+  StaticContext,
+  DynamicContext
+>;
+
+export type TaggedErrorInstance<
+  ErrorName extends string,
+  ExpectedCauseClass extends WideErrorConstructor | undefined,
+  StaticContext extends Record<string, unknown> = {},
+  DynamicContext extends Record<string, unknown> = {},
+> = YieldableError &
   Readonly<
     {
       message: string;
@@ -107,7 +173,7 @@ export type TaggedErrorVerifyingCauseTypes<
     DynamicContext,
     StaticContext
   >;
-  ReturnType: ReturnTypeGen<
+  TaggedErrorClass: TaggedErrorClass<
     ErrorName,
     ExpectedCauseClass,
     StaticContext,
@@ -133,7 +199,7 @@ export const TaggedErrorVerifyingCause =
     customMessage: string | ((...args: Types['MessageRendererArgs']) => string),
     expectedCauseClass?: ExpectedCauseClass,
     staticContext?: StaticContext,
-  ): Types['ReturnType'] => {
+  ): Types['TaggedErrorClass'] => {
     const CustomTaggedErrorClass = TaggedError(errorName)<
       Record<'message' | '_tag' | 'name', unknown>
     >;
@@ -165,7 +231,7 @@ export const TaggedErrorVerifyingCause =
       }
     }
 
-    return Base as Types['ReturnType'];
+    return Base as Types['TaggedErrorClass'];
   };
 
 export type Prettify<T> = T extends object

@@ -2,7 +2,7 @@ import { Effect, gen } from 'effect/Effect';
 import { Readable } from 'node:stream';
 import { ReadableStream } from 'node:stream/web';
 import {
-  ReturnTypeNoCauseNoStatic,
+  TaggedErrorClassWithNoContextAndNoCause,
   TaggedErrorVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
@@ -28,7 +28,7 @@ export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
 export type FailedToCastDataToReadableStream =
-  ReturnTypeNoCauseNoStatic<'FailedToCastDataToReadableStream'>;
+  TaggedErrorClassWithNoContextAndNoCause<'FailedToCastDataToReadableStream'>;
 
 export const FailedToCastDataToReadableStream: FailedToCastDataToReadableStream =
   TaggedErrorVerifyingCause()(

@@ -8,8 +8,8 @@ import {
 } from 'effect/Schema';
 import { outdent } from 'outdent';
 import {
-  ReturnTypeNoCause,
-  ReturnTypeNoStatic,
+  TaggedErrorClassWithNoCause,
+  TaggedErrorClassWithNoStaticContext,
   TaggedErrorVerifyingCause,
 } from '../TaggedErrorVerifyingCause.js';
 
@@ -86,7 +86,7 @@ const decodeGitLFSInfoSchema = decodeUnknownEither(GitLFSInfoSchema, {
   exact: true,
 });
 
-export type FailedToParseGitLFSInfo = ReturnTypeNoStatic<
+export type FailedToParseGitLFSInfo = TaggedErrorClassWithNoStaticContext<
   'FailedToParseGitLFSInfo',
   typeof ParseError,
   { partOfContentThatCouldBeGitLFSInfo: string }
@@ -116,11 +116,12 @@ type InconsistentSizesDynamicContext = {
   >;
 };
 
-export type InconsistentExpectedAndRealContentSize = ReturnTypeNoCause<
-  'InconsistentExpectedAndRealContentSize',
-  { comment: string },
-  InconsistentSizesDynamicContext
->;
+export type InconsistentExpectedAndRealContentSize =
+  TaggedErrorClassWithNoCause<
+    'InconsistentExpectedAndRealContentSize',
+    { comment: string },
+    InconsistentSizesDynamicContext
+  >;
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference

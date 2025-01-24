@@ -13,3 +13,5 @@ find src index.ts cli.ts errors.ts -type f -exec sed -i "s/.js';/.ts';/g" {} +
 
 ln -s ../node_modules node_modules
 deno doc --html --output=docs index.ts errors.ts cli.ts
+cd docs
+npx http-server -o=index.html

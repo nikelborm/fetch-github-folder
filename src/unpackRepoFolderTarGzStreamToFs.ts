@@ -5,7 +5,7 @@ import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
 import { OutputConfigTag } from './configContext.js';
 import {
-  ReturnTypeUnknownCauseNoStatic,
+  TaggedErrorClassWithUnknownCauseAndNoContext,
   TaggedErrorVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 
@@ -43,7 +43,7 @@ export const unpackRepoFolderTarGzStreamToFs = <E, R>(
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
 export type FailedToUnpackRepoFolderTarGzStreamToFs =
-  ReturnTypeUnknownCauseNoStatic<'FailedToUnpackRepoFolderTarGzStreamToFs'>;
+  TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToUnpackRepoFolderTarGzStreamToFs'>;
 
 const FailedToUnpackRepoFolderTarGzStreamToFs: FailedToUnpackRepoFolderTarGzStreamToFs =
   TaggedErrorVerifyingCause<{
