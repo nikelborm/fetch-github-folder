@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.17% </span>
+                <span class="strong">91.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>62/68</span>
+                <span class='fraction'>64/70</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.17% </span>
+                <span class="strong">91.42% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>62/68</span>
+                <span class='fraction'>64/70</span>
             </div>
         
             
@@ -211,12 +211,7 @@
 <a name='L146'></a><a href='#L146'>146</a>
 <a name='L147'></a><a href='#L147'>147</a>
 <a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L149'></a><a href='#L149'>149</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -313,9 +308,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -325,14 +317,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -351,13 +336,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -368,6 +356,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Either, gen, isRight, left, mapLeft } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
@@ -466,10 +456,7 @@ export type FailedToParseGitLFSInfoErrorClass =
     { partOfContentThatCouldBeGitLFSInfo: string }
   &gt;;
 &nbsp;
-export type FailedToParseGitLFSInfoError =
-  InstanceType&lt;FailedToParseGitLFSInfoErrorClass&gt;;
-&nbsp;
-export const FailedToParseGitLFSInfoError: FailedToParseGitLFSInfoErrorClass =
+const _1: FailedToParseGitLFSInfoErrorClass =
   buildTaggedErrorClassVerifyingCause&lt;{
     partOfContentThatCouldBeGitLFSInfo: string;
   }&gt;()(
@@ -477,6 +464,8 @@ export const FailedToParseGitLFSInfoError: FailedToParseGitLFSInfoErrorClass =
     `Failed to parse git LFS announcement`,
     ParseError,
   );
+&nbsp;
+export class FailedToParseGitLFSInfoError extends _1 {}
 &nbsp;
 type InconsistentSizesDynamicContext = {
   actual: number;
@@ -493,24 +482,18 @@ type InconsistentSizesDynamicContext = {
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type InconsistentExpectedAndRealContentSizeErrorClass =
-  TaggedErrorClassWithNoCause&lt;
-    'InconsistentExpectedAndRealContentSizeError',
-    { comment: string },
-    InconsistentSizesDynamicContext
-  &gt;;
 &nbsp;
-export type InconsistentExpectedAndRealContentSizeError =
-  InstanceType&lt;InconsistentExpectedAndRealContentSizeErrorClass&gt;;
-&nbsp;
-export const InconsistentExpectedAndRealContentSizeError: InconsistentExpectedAndRealContentSizeErrorClass =
-  buildTaggedErrorClassVerifyingCause&lt;InconsistentSizesDynamicContext&gt;()(
-    'InconsistentExpectedAndRealContentSizeError',
-    ctx =&gt;
-      `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
-    void 0,
-    {
-      comment: outdent({ newline: ' ' })`
+export const _2: TaggedErrorClassWithNoCause&lt;
+  'InconsistentExpectedAndRealContentSizeError',
+  { comment: string },
+  InconsistentSizesDynamicContext
+&gt; = buildTaggedErrorClassVerifyingCause&lt;InconsistentSizesDynamicContext&gt;()(
+  'InconsistentExpectedAndRealContentSizeError',
+  ctx =&gt;
+    `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
+  void 0,
+  {
+    comment: outdent({ newline: ' ' })`
       If we weren't successful in parsing it as git LFS object
       announcement using RegExp and Effect.Schema, we just do a basic size
       consistency check. The check implements the second marker of it
@@ -520,8 +503,10 @@ export const InconsistentExpectedAndRealContentSizeError: InconsistentExpectedAn
       regexp fucked up, or GitHub API did. If it doesn't throw, it means
       there's no reason to assume it's a Git LFS object.
     `,
-    },
-  );
+  },
+);
+&nbsp;
+export class InconsistentExpectedAndRealContentSizeError extends _2 {}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -529,7 +514,7 @@ export const InconsistentExpectedAndRealContentSizeError: InconsistentExpectedAn
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-01-24T08:43:27.845Z
+                at 2025-01-24T09:13:29.665Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
