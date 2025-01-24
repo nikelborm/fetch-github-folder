@@ -54,12 +54,20 @@ export type TaggedErrorClass<
   DynamicContext extends Record<string, unknown> = {},
 > = new (
   ...args: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>
-) => TaggedErrorInstance<
-  ErrorName,
-  ExpectedCauseClass,
-  StaticContext,
-  DynamicContext
->;
+) => YieldableError &
+  Readonly<
+    {
+      message: string;
+      _tag: ErrorName;
+      name: ErrorName;
+    } & GetSimpleFormError<DynamicContext & StaticContext> &
+      ([ExpectedCauseClass] extends [WideErrorConstructor]
+        ? // To improve TS performance I wrap it in GetSimpleFormError
+          {
+            cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>;
+          }
+        : {})
+  >;
 
 export type TaggedErrorClassWithUnknownCauseAndNoStaticContext<
   ErrorName extends string,
@@ -89,12 +97,12 @@ export type TaggedErrorClassWithNoStaticContextAndNoCause<
 > = TaggedErrorClass<ErrorName, undefined, {}, DynamicContext>;
 
 export type TaggedErrorClassWithNoContextAndNoCause<ErrorName extends string> =
-  TaggedErrorClass<ErrorName, undefined, {}, {}>;
+  TaggedErrorClass<ErrorName, undefined>;
 
 export type TaggedErrorClassWithNoContext<
   ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
-> = TaggedErrorClass<ErrorName, ExpectedCauseClass, {}, {}>;
+> = TaggedErrorClass<ErrorName, ExpectedCauseClass>;
 
 export type TaggedErrorClassWithNoStaticContext<
   ErrorName extends string,
@@ -109,20 +117,12 @@ export type TaggedErrorInstance<
   ExpectedCauseClass extends WideErrorConstructor | undefined,
   StaticContext extends Record<string, unknown> = {},
   DynamicContext extends Record<string, unknown> = {},
-> = YieldableError &
-  Readonly<
-    {
-      message: string;
-      _tag: ErrorName;
-      name: ErrorName;
-    } & GetSimpleFormError<DynamicContext & StaticContext> &
-      ([ExpectedCauseClass] extends [WideErrorConstructor]
-        ? // To improve TS performance I wrap it in GetSimpleFormError
-          {
-            cause: GetSimpleFormError<InstanceType<ExpectedCauseClass>>;
-          }
-        : {})
-  >;
+> = TaggedErrorClass<
+  ErrorName,
+  ExpectedCauseClass,
+  StaticContext,
+  DynamicContext
+>;
 
 export type TaggedErrorInstanceWithUnknownCauseAndNoStaticContext<
   ErrorName extends string,
