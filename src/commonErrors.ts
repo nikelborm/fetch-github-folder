@@ -1,8 +1,8 @@
 import { RequestError } from '@octokit/request-error';
 import {
-  TaggedErrorClassWithNoStaticContext,
-  TaggedErrorClassWithNoContext,
   buildTaggedErrorClassVerifyingCause,
+  TaggedErrorClassWithNoContext,
+  TaggedErrorClassWithNoStaticContext,
 } from './TaggedErrorVerifyingCause.js';
 
 // Extracting to a separate type is required by JSR, so that consumers of the
@@ -34,7 +34,7 @@ export class GitHubApiGeneralUserError extends _2 {}
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _3: TaggedErrorClassWithNoContext<
+const _3: TaggedErrorClassWithNoContext<
   'GitHubApiThingNotExistsOrYouDontHaveAccessError',
   typeof RequestError
 > = buildTaggedErrorClassVerifyingCause()(

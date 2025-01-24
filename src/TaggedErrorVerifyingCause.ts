@@ -103,53 +103,55 @@ export type TaggedErrorInstance<
   ExpectedCauseClass extends WideErrorConstructor | undefined,
   StaticContext extends Record<string, unknown> = {},
   DynamicContext extends Record<string, unknown> = {},
-> = TaggedErrorClass<
-  ErrorName,
-  ExpectedCauseClass,
-  StaticContext,
-  DynamicContext
+> = InstanceType<
+  TaggedErrorClass<ErrorName, ExpectedCauseClass, StaticContext, DynamicContext>
 >;
 
 export type TaggedErrorInstanceWithUnknownCauseAndNoStaticContext<
   ErrorName extends string,
   DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClassWithUnknownCauseAndNoStaticContext<
-  ErrorName,
-  DynamicContext
+> = InstanceType<
+  TaggedErrorClassWithUnknownCauseAndNoStaticContext<ErrorName, DynamicContext>
 >;
 
 export type TaggedErrorInstanceWithUnknownCauseAndNoContext<
   ErrorName extends string,
-> = TaggedErrorClassWithUnknownCauseAndNoContext<ErrorName>;
+> = InstanceType<TaggedErrorClassWithUnknownCauseAndNoContext<ErrorName>>;
 
 export type TaggedErrorInstanceWithNoCause<
   ErrorName extends string,
   StaticContext extends Record<string, unknown>,
   DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClassWithNoCause<ErrorName, StaticContext, DynamicContext>;
+> = InstanceType<
+  TaggedErrorClassWithNoCause<ErrorName, StaticContext, DynamicContext>
+>;
 
 export type TaggedErrorInstanceWithNoStaticContextAndNoCause<
   ErrorName extends string,
   DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClassWithNoStaticContextAndNoCause<ErrorName, DynamicContext>;
+> = InstanceType<
+  TaggedErrorClassWithNoStaticContextAndNoCause<ErrorName, DynamicContext>
+>;
 
 export type TaggedErrorInstanceWithNoContextAndNoCause<
   ErrorName extends string,
-> = TaggedErrorClassWithNoContextAndNoCause<ErrorName>;
+> = InstanceType<TaggedErrorClassWithNoContextAndNoCause<ErrorName>>;
 
 export type TaggedErrorInstanceWithNoContext<
   ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
-> = TaggedErrorClassWithNoContext<ErrorName, ExpectedCauseClass>;
+> = InstanceType<TaggedErrorClassWithNoContext<ErrorName, ExpectedCauseClass>>;
 
 export type TaggedErrorInstanceWithNoStaticContext<
   ErrorName extends string,
   ExpectedCauseClass extends WideErrorConstructor | undefined,
   DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClassWithNoStaticContext<
-  ErrorName,
-  ExpectedCauseClass,
-  DynamicContext
+> = InstanceType<
+  TaggedErrorClassWithNoStaticContext<
+    ErrorName,
+    ExpectedCauseClass,
+    DynamicContext
+  >
 >;
 
 // Other
