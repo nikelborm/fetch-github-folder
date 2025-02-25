@@ -10,5 +10,6 @@
     ".github/workflows/release.yml",
     ".github/workflows/test.yml"
   ],
-  "cmake.ignoreCMakeListsMissing": true
+  "cmake.ignoreCMakeListsMissing": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
