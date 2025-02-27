@@ -42,7 +42,7 @@
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
     "noStrictGenericChecks": false,
-    "plugins": [{ "name": "typescript-strict-plugin" }]
+    "plugins": [{ "name": "@effect/language-service" }]
   },
   "include": [
     "./fetch-github-folder.ts",
