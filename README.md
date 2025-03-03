@@ -104,6 +104,12 @@ read -sp 'Enter github access token: ' gh_token; echo;
 sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 ```
 
+Also it's recommended to add this string to your .bashrc, if you want faster CLIs written in JS
+
+```bash
+export NODE_COMPILE_CACHE=~/.cache/nodejs-compile-cache
+```
+
 ## Environment Variables
 
 - `GITHUB_ACCESS_TOKEN`: This is your personal access token from GitHub. It is used to authenticate your requests to the GitHub API. You can generate one [here](https://github.com/settings/tokens/new?description=Read%20repo%20contents%20access%20to%20fetch-github-folder&scopes=public_repo&default_expires_at=none).
