@@ -2,10 +2,6 @@ import { Octokit } from '@octokit/core';
 import type { UnknownException } from 'effect/Cause';
 import { type Effect, fail, gen } from 'effect/Effect';
 import type { FailedToCastDataToReadableStreamError } from './castToReadableStream.js';
-import {
-  provideSingleDownloadTargetConfig,
-  SingleTargetConfig,
-} from './configContext.js';
 import type {
   GitHubApiAuthRatelimitedError,
   GitHubApiBadCredentialsError,
@@ -16,6 +12,10 @@ import type {
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
 } from './commonErrors.js';
+import {
+  provideSingleDownloadTargetConfig,
+  SingleTargetConfig,
+} from './configContext.js';
 import {
   type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
   type InconsistentExpectedAndRealContentSizeError,
