@@ -18,19 +18,19 @@ import { Type, fail, succeed } from 'effect/ParseResult';
 import { NonEmptyString, filter, transformOrFail } from 'effect/Schema';
 import { outdent } from 'outdent';
 
-const validateGitHubSlug = (s: string) => !!s.match(/^[a-z0-9.\-_]+$/gi);
+const isGitHubSlug = (s: string) => !!s.match(/^[a-z0-9.\-_]+$/gi);
 
 const invalidGitHubSlugMessage =
   'GitHub handle should have only ASCII letters, digits, and the characters ".", "-", and "_"';
 
 // https://developer.mozilla.org/en-US/docs/Glossary/Slug
 const GitHubSlugStringSchema = NonEmptyString.pipe(
-  filter(s => validateGitHubSlug(s) || invalidGitHubSlugMessage),
+  filter(s => isGitHubSlug(s) || invalidGitHubSlugMessage),
 );
 
 const withGitHubSlugConfigValidation = validateConfig({
   message: invalidGitHubSlugMessage,
-  validation: validateGitHubSlug,
+  validation: isGitHubSlug,
 });
 
 const pathToEntityInRepoDescription = 'Path to file or directory in repo';
