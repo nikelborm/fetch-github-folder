@@ -1,10 +1,4 @@
-import {
-  describe,
-  it,
-  RunnerTestCase,
-  TaskContext,
-  TestContext,
-} from '@effect/vitest';
+import { describe, it, TestContext } from '@effect/vitest';
 import { Octokit } from '@octokit/core';
 import { RequestError } from '@octokit/request-error';
 import { UnknownException } from 'effect/Cause';
@@ -26,7 +20,6 @@ import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { assert, typeGuard } from 'tsafe';
 import { FailedToCastDataToReadableStreamError } from '../castToReadableStream.js';
-import { InputConfig, provideInputConfig } from '../configContext.js';
 import {
   GitHubApiAuthRatelimitedError,
   GitHubApiBadCredentialsError,
@@ -37,6 +30,7 @@ import {
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
 } from '../commonErrors.js';
+import { InputConfig, provideInputConfig } from '../configContext.js';
 import { OctokitLayer } from '../octokit.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
@@ -71,8 +65,6 @@ type ErrorExpectedToBeThrown = (typeof UnexpectedErrors)[number] extends new (
     >
   : never;
 
-type TestCtx = TaskContext<RunnerTestCase<{}>> & TestContext;
-
 const effectsToTestForErrors = {
   RawStreamOfRepoPathContentsFromGitHubAPI,
   UnparsedMetaInfoAboutPathContentsFromGitHubAPI,
@@ -80,7 +72,7 @@ const effectsToTestForErrors = {
 
 const testValidityOfErrorThrownByEffect =
   <const ExpectedErrorClass extends ErrorExpectedToBeThrown>(
-    ctx: TestCtx,
+    ctx: TestContext,
     ExpectedErrorClass: new (...args: any) => ExpectedErrorClass,
     effectDescription: string,
   ) =>
@@ -197,7 +189,7 @@ const expectNotFail = (
   descriptionOfWhatItShouldReturn: string,
   pathToEntityInRepo: string,
   testEffect: (
-    ctx: TestCtx,
+    ctx: TestContext,
     pathContentsMetaInfo: typeof PathContentsMetaInfo,
   ) => Effect<unknown, unknown, Octokit | InputConfig>,
   authToken: string = '',
