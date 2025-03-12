@@ -1,7 +1,12 @@
-import { defineConfig, coverageConfigDefaults } from 'vitest/config';
+import {
+  defineConfig,
+  coverageConfigDefaults,
+  defaultExclude,
+} from 'vitest/config';
 
 export default defineConfig({
   test: {
+    exclude: [...defaultExclude, 'tmp/**'],
     coverage: {
       enabled: true,
       provider: 'v8',
@@ -10,6 +15,7 @@ export default defineConfig({
         ...coverageConfigDefaults.exclude,
         'destination/**',
         'testMocks/**',
+        'tmp/**',
         '**/{scratchpad,index,logObjectPretty}[.][jt]s',
       ],
     },

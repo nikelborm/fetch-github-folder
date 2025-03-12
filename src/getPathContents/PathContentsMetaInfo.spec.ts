@@ -218,12 +218,12 @@ describe('PathContentsMetaInfo', { concurrent: true }, () => {
   });
 
   expectError({
-    when: 'provided bad auth token',
+    when: 'provided bad auth token and actually existing repo',
     ExpectedErrorClass: GitHubApiBadCredentialsError,
     pathToEntityInRepo: '',
     repo: {
-      owner: 'asd',
-      name: 'ssd',
+      owner: 'fetch-gh-stuff-tests',
+      name: 'real-private-repo',
     },
     authToken: 'bad auth token',
   });
