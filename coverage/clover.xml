@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1737712478830" clover="3.2.0">
-  <project timestamp="1737712478830" name="All files">
-    <metrics statements="628" coveredstatements="518" conditionals="92" coveredconditionals="78" methods="30" coveredmethods="24" elements="750" coveredelements="620" complexity="0" loc="628" ncloc="628" packages="3" files="18" classes="18"/>
+<coverage generated="1745707074187" clover="3.2.0">
+  <project timestamp="1745707074188" name="All files">
+    <metrics statements="687" coveredstatements="573" conditionals="92" coveredconditionals="81" methods="30" coveredmethods="27" elements="809" coveredelements="681" complexity="0" loc="687" ncloc="687" packages="3" files="18" classes="18"/>
     <package name="fetch-github-folder">
-      <metrics statements="45" coveredstatements="0" conditionals="3" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <metrics statements="49" coveredstatements="0" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
       <file name="cli.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/cli.ts">
-        <metrics statements="1" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <metrics statements="1" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="8" count="0" type="stmt"/>
       </file>
       <file name="errors.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/errors.ts">
-        <metrics statements="1" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <metrics statements="6" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
       </file>
       <file name="fetch-github-folder.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/fetch-github-folder.ts">
-        <metrics statements="43" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
+        <metrics statements="42" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="3" count="0" type="stmt"/>
         <line num="4" count="0" type="stmt"/>
         <line num="5" count="0" type="stmt"/>
@@ -23,7 +27,7 @@
         <line num="8" count="0" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="24" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
@@ -60,10 +64,11 @@
       </file>
     </package>
     <package name="fetch-github-folder.src">
-      <metrics statements="366" coveredstatements="316" conditionals="52" coveredconditionals="43" methods="22" coveredmethods="19"/>
+      <metrics statements="403" coveredstatements="353" conditionals="52" coveredconditionals="43" methods="22" coveredmethods="19"/>
       <file name="TaggedErrorVerifyingCause.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/TaggedErrorVerifyingCause.ts">
-        <metrics statements="36" coveredstatements="36" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
-        <line num="1" count="1" type="stmt"/>
+        <metrics statements="37" coveredstatements="37" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
         <line num="179" count="1" type="stmt"/>
         <line num="180" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="181" count="40" type="cond" truecount="1" falsecount="0"/>
@@ -101,8 +106,11 @@
         <line num="229" count="40" type="stmt"/>
       </file>
       <file name="castToReadableStream.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/castToReadableStream.ts">
-        <metrics statements="21" coveredstatements="18" conditionals="7" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <metrics statements="24" coveredstatements="21" conditionals="7" coveredconditionals="6" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
         <line num="9" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="10" count="7" type="cond" truecount="1" falsecount="0"/>
         <line num="11" count="11" type="cond" truecount="1" falsecount="0"/>
@@ -125,8 +133,15 @@
         <line num="36" count="1" type="stmt"/>
       </file>
       <file name="commandLineParams.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/commandLineParams.ts">
-        <metrics statements="92" coveredstatements="86" conditionals="6" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <metrics statements="99" coveredstatements="93" conditionals="6" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
         <line num="21" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="23" count="1" type="stmt"/>
         <line num="24" count="1" type="stmt"/>
@@ -220,8 +235,9 @@
         <line num="256" count="1" type="stmt"/>
       </file>
       <file name="commonErrors.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/commonErrors.ts">
-        <metrics statements="67" coveredstatements="65" conditionals="11" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <metrics statements="68" coveredstatements="66" conditionals="11" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
@@ -290,8 +306,10 @@
         <line num="131" count="0" type="stmt"/>
       </file>
       <file name="configContext.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/configContext.ts">
-        <metrics statements="21" coveredstatements="21" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
+        <metrics statements="23" coveredstatements="23" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
         <line num="22" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -314,8 +332,13 @@
         <line num="46" count="1" type="stmt"/>
       </file>
       <file name="downloadEntityFromRepo.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadEntityFromRepo.ts">
-        <metrics statements="24" coveredstatements="12" conditionals="3" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="1" count="1" type="stmt"/>
+        <metrics statements="29" coveredstatements="17" conditionals="3" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
         <line num="35" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="36" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
@@ -341,8 +364,15 @@
         <line num="84" count="1" type="stmt"/>
       </file>
       <file name="getReadableTarGzStreamOfRepoDirectory.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getReadableTarGzStreamOfRepoDirectory.ts">
-        <metrics statements="43" coveredstatements="32" conditionals="5" coveredconditionals="5" methods="4" coveredmethods="3"/>
+        <metrics statements="50" coveredstatements="39" conditionals="5" coveredconditionals="5" methods="4" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
         <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="14" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
@@ -387,16 +417,23 @@
         <line num="61" count="1" type="stmt"/>
       </file>
       <file name="octokit.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/octokit.ts">
-        <metrics statements="5" coveredstatements="5" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <metrics statements="7" coveredstatements="7" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="14" count="22" type="stmt"/>
       </file>
       <file name="unpackRepoFolderTarGzStreamToFs.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/unpackRepoFolderTarGzStreamToFs.ts">
-        <metrics statements="33" coveredstatements="32" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="3"/>
+        <metrics statements="38" coveredstatements="37" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
         <line num="12" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="13" count="1" type="stmt"/>
         <line num="15" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -412,9 +449,9 @@
         <line num="27" count="1" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
         <line num="29" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="33" count="133" type="stmt"/>
-        <line num="34" count="133" type="stmt"/>
-        <line num="35" count="133" type="stmt"/>
+        <line num="33" count="134" type="stmt"/>
+        <line num="34" count="134" type="stmt"/>
+        <line num="35" count="134" type="stmt"/>
         <line num="36" count="1" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
@@ -431,8 +468,12 @@
         <line num="54" count="1" type="stmt"/>
       </file>
       <file name="writeFileStreamToDestinationPath.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/writeFileStreamToDestinationPath.ts">
-        <metrics statements="24" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="28" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
@@ -459,10 +500,15 @@
       </file>
     </package>
     <package name="fetch-github-folder.src.getPathContents">
-      <metrics statements="217" coveredstatements="202" conditionals="37" coveredconditionals="35" methods="5" coveredmethods="5"/>
+      <metrics statements="235" coveredstatements="220" conditionals="37" coveredconditionals="35" methods="5" coveredmethods="5"/>
       <file name="ParsedMetaInfoAboutPathContentsFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/ParsedMetaInfoAboutPathContentsFromGitHubAPI.ts">
-        <metrics statements="50" coveredstatements="44" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
+        <metrics statements="55" coveredstatements="49" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
         <line num="22" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -514,8 +560,11 @@
         <line num="81" count="1" type="stmt"/>
       </file>
       <file name="PathContentsMetaInfo.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/PathContentsMetaInfo.ts">
-        <metrics statements="46" coveredstatements="46" conditionals="11" coveredconditionals="11" methods="0" coveredmethods="0"/>
+        <metrics statements="49" coveredstatements="49" conditionals="11" coveredconditionals="11" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
         <line num="7" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="8" count="8" type="stmt"/>
         <line num="10" count="8" type="stmt"/>
@@ -563,15 +612,21 @@
         <line num="88" count="3" type="stmt"/>
       </file>
       <file name="RawStreamOfRepoPathContentsFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/RawStreamOfRepoPathContentsFromGitHubAPI.ts">
-        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
       </file>
       <file name="RepoPathContentsFromGitHubAPI.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/RepoPathContentsFromGitHubAPI.ts">
-        <metrics statements="47" coveredstatements="44" conditionals="14" coveredconditionals="13" methods="3" coveredmethods="3"/>
+        <metrics statements="52" coveredstatements="49" conditionals="14" coveredconditionals="13" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -620,8 +675,12 @@
         <line num="67" count="6" type="stmt"/>
       </file>
       <file name="parseGitLFSObjectEither.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/getPathContents/parseGitLFSObjectEither.ts">
-        <metrics statements="70" coveredstatements="64" conditionals="11" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <metrics statements="74" coveredstatements="68" conditionals="11" coveredconditionals="10" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
         <line num="16" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="17" count="4" type="stmt"/>
         <line num="18" count="4" type="stmt"/>
