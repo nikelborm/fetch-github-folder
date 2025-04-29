@@ -211,7 +211,7 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
   });
 });
 
-describe('fetch-github-folder-cli', { concurrent: true, timeout: 0 }, () => {
+describe('fetch-github-folder-cli', { concurrent: true }, () => {
   // Commented because since the repo has big git lfs file, I quickly hit bandwidth limits
 
   // it.scoped(
