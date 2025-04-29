@@ -1,6 +1,6 @@
 {
   "name": "fetch-github-folder",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "type": "module",
   "description": "Download any directory at any depth from any repo on GitHub on any git ref",
   "license": "MIT",
@@ -18,19 +18,20 @@
     "watch-docs": "find src/ cli.ts index.ts errors.ts | entr -can ./scripts/generate_docs.sh"
   },
   "dependencies": {
-    "@effect/cli": "^0.59.14",
-    "@effect/platform": "^0.80.14",
-    "@effect/platform-node": "^0.77.2",
+    "@effect/cli": "^0.59.15",
+    "@effect/platform": "^0.80.15",
+    "@effect/platform-node": "^0.77.3",
     "@octokit/core": "^6.1.5",
     "@octokit/request-error": "^6.1.8",
-    "effect": "^3.14.14",
+    "effect": "^3.14.15",
     "outdent": "^0.8.0",
     "tar-fs": "^3.0.8",
-    "tsafe": "^1.8.5"
+    "tsafe": "^1.8.5",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@effect/language-service": "^0.8.1",
-    "@effect/vitest": "^0.20.15",
+    "@effect/vitest": "^0.20.16",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
@@ -55,7 +56,8 @@
     "url": "git+ssh://git@github.com/nikelborm/fetch-github-folder.git"
   },
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/dts/index.d.ts",
   "bin": {
     "fetch-github-folder": "dist/fetch-github-folder.js",
     "fgf": "dist/fetch-github-folder.js"
@@ -66,41 +68,45 @@
   },
   "files": [
     "dist",
+    "src",
     "!dist/minified",
     "!**/*.tsbuildinfo",
     "!**/*.spec.*",
     "!**/scratchpad.*",
     ".github/FUNDING.yml",
-    "template.env"
+    "template.env",
+    "cli.ts",
+    "errors.ts",
+    "index.ts"
   ],
   "homepage": "https://github.com/nikelborm/fetch-github-folder#readme",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/dts/index.d.ts",
       "default": "./dist/index.js"
     },
     "./index": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/dts/index.d.ts",
       "default": "./dist/index.js"
     },
     "./index.js": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/dts/index.d.ts",
       "default": "./dist/index.js"
     },
     "./errors": {
-      "types": "./dist/errors.d.ts",
+      "types": "./dist/dts/errors.d.ts",
       "default": "./dist/errors.js"
     },
     "./errors.js": {
-      "types": "./dist/errors.d.ts",
+      "types": "./dist/dts/errors.d.ts",
       "default": "./dist/errors.js"
     },
     "./cli": {
-      "types": "./dist/cli.d.ts",
+      "types": "./dist/dts/cli.d.ts",
       "default": "./dist/cli.js"
     },
     "./cli.js": {
-      "types": "./dist/cli.d.ts",
+      "types": "./dist/dts/cli.d.ts",
       "default": "./dist/cli.js"
     },
     "./package.json": "./package.json"

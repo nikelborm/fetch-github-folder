@@ -1,6 +1,6 @@
-import { Octokit, OctokitOptions } from '@octokit/core';
+import { Octokit, type OctokitOptions } from '@octokit/core';
 import { GenericTag, Tag } from 'effect/Context';
-import { Layer, succeed } from 'effect/Layer';
+import { type Layer, succeed } from 'effect/Layer';
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference

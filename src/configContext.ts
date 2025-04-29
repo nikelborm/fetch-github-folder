@@ -1,5 +1,5 @@
 import { GenericTag } from 'effect/Context';
-import { Effect, provide } from 'effect/Effect';
+import { type Effect, provide } from 'effect/Effect';
 import { merge, succeed } from 'effect/Layer';
 
 export type InputConfig = Readonly<{

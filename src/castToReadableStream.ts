@@ -1,8 +1,8 @@
-import { Effect, gen } from 'effect/Effect';
+import { type Effect, gen } from 'effect/Effect';
 import { Readable } from 'node:stream';
 import { ReadableStream } from 'node:stream/web';
 import {
-  TaggedErrorClassWithNoContextAndNoCause,
+  type TaggedErrorClassWithNoContextAndNoCause,
   buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 

@@ -1,7 +1,8 @@
 {
-  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json",
   "name": "@nikelborm/fetch-github-folder",
-  "version": "0.1.21",
+  "version": "0.1.22",
+  "license": "MIT",
   "exports": {
     ".": "./index.ts",
     "./index": "./index.ts",

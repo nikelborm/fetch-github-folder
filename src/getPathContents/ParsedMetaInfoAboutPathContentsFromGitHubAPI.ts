@@ -11,7 +11,7 @@ import {
   Union,
 } from 'effect/Schema';
 import {
-  TaggedErrorClassWithNoStaticContext,
+  type TaggedErrorClassWithNoStaticContext,
   buildTaggedErrorClassVerifyingCause,
 } from '../TaggedErrorVerifyingCause.js';
 import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';

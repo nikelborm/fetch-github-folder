@@ -5,7 +5,7 @@
 export {
   GitHubApiAuthRatelimitedError,
   GitHubApiBadCredentialsError,
-  GitHubApiCommonErrors,
+  type GitHubApiCommonErrors,
   GitHubApiGeneralServerError,
   GitHubApiGeneralUserError,
   GitHubApiNoCommitFoundForGitRefError,

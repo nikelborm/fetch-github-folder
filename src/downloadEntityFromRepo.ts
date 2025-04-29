@@ -14,7 +14,7 @@ import type {
 } from './commonErrors.js';
 import {
   provideSingleDownloadTargetConfig,
-  SingleTargetConfig,
+  type SingleTargetConfig,
 } from './configContext.js';
 import {
   type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,

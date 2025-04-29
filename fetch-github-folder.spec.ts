@@ -13,7 +13,7 @@ import { describe, it } from '@effect/vitest';
 import { all, fn, gen, map, provide } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { mergeAll, provideMerge } from 'effect/Layer';
-import { decodeText, runFold, Stream } from 'effect/Stream';
+import { decodeText, runFold, type Stream } from 'effect/Stream';
 import {
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,
@@ -96,14 +96,11 @@ const runCommandAndGetCommandOutputAndFailIfNonZeroCode = (
 
     const process = yield* executor.start(command);
 
-    const [exitCode, stdout, stderr] = yield* all(
-      [
-        process.exitCode,
-        Uint8ArrayStreamToString(process.stdout),
-        Uint8ArrayStreamToString(process.stderr),
-      ],
-      { concurrency: 'unbounded' },
-    );
+    const [exitCode, stdout, stderr] = yield* all([
+      process.exitCode,
+      Uint8ArrayStreamToString(process.stdout),
+      Uint8ArrayStreamToString(process.stderr),
+    ]);
 
     if (exitCode !== 0)
       yield* new CommandFinishedWithNonZeroCode({
@@ -206,13 +203,10 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
     tempDirPath,
   };
 
-  return yield* all(
-    {
-      hashOfOriginalGitRepo: bareCloneAndHashRepoContents(params),
-      hashOfGitRepoFetchedUsingOurCLI: cliFetchAndHashRepoContents(params),
-    },
-    { concurrency: 'unbounded' },
-  );
+  return yield* all({
+    hashOfOriginalGitRepo: bareCloneAndHashRepoContents(params),
+    hashOfGitRepoFetchedUsingOurCLI: cliFetchAndHashRepoContents(params),
+  });
 });
 
 describe('fetch-github-folder-cli', { concurrent: true }, () => {

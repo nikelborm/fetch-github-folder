@@ -1,11 +1,11 @@
-import { Effect, gen, tryPromise } from 'effect/Effect';
+import { type Effect, gen, tryPromise } from 'effect/Effect';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
 import { OutputConfigTag } from './configContext.js';
 import {
-  TaggedErrorClassWithUnknownCauseAndNoContext,
+  type TaggedErrorClassWithUnknownCauseAndNoContext,
   buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.js';
 

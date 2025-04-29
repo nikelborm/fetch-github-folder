@@ -1,6 +1,6 @@
 import { flow } from 'effect/Function';
 import { dir } from 'effect/Console';
-import { Effect, tap, tapError } from 'effect/Effect';
+import { type Effect, tap, tapError } from 'effect/Effect';
 
 export const LogObjectPretty = (item: unknown) =>
   dir(item, {

@@ -1,8 +1,8 @@
 import { RequestError } from '@octokit/request-error';
 import {
   buildTaggedErrorClassVerifyingCause,
-  TaggedErrorClassWithNoContext,
-  TaggedErrorClassWithNoStaticContext,
+  type TaggedErrorClassWithNoContext,
+  type TaggedErrorClassWithNoStaticContext,
 } from './TaggedErrorVerifyingCause.js';
 
 // Extracting to a separate type is required by JSR, so that consumers of the

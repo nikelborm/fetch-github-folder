@@ -1,4 +1,4 @@
-import { Either, gen, isRight, left, mapLeft } from 'effect/Either';
+import { type Either, gen, isRight, left, mapLeft } from 'effect/Either';
 import { ParseError } from 'effect/ParseResult';
 import {
   decodeUnknownEither,
@@ -8,8 +8,8 @@ import {
 } from 'effect/Schema';
 import { outdent } from 'outdent';
 import {
-  TaggedErrorClassWithNoCause,
-  TaggedErrorClassWithNoStaticContext,
+  type TaggedErrorClassWithNoCause,
+  type TaggedErrorClassWithNoStaticContext,
   buildTaggedErrorClassVerifyingCause,
 } from '../TaggedErrorVerifyingCause.js';
 

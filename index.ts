@@ -4,7 +4,7 @@
 
 export { downloadEntityFromRepo } from './src/downloadEntityFromRepo.js';
 export { OctokitLayer } from './src/octokit.js';
-export {
+export type {
   SingleTargetConfig,
   InputConfig,
   OutputConfig,

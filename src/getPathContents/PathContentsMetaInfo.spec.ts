@@ -1,4 +1,4 @@
-import { describe, it, TestContext } from '@effect/vitest';
+import { describe, it, type TestContext } from '@effect/vitest';
 import { Octokit } from '@octokit/core';
 import { RequestError } from '@octokit/request-error';
 import { UnknownException } from 'effect/Cause';
@@ -7,7 +7,7 @@ import {
   andThen,
   asVoid,
   die,
-  Effect,
+  type Effect,
   either,
   flatMap,
   gen,
@@ -30,7 +30,7 @@ import {
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
 } from '../commonErrors.js';
-import { InputConfig, provideInputConfig } from '../configContext.js';
+import { type InputConfig, provideInputConfig } from '../configContext.js';
 import { OctokitLayer } from '../octokit.js';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
 import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
@@ -169,13 +169,10 @@ const expectError = <const ExpectedErrorClass extends ErrorExpectedToBeThrown>({
       const {
         ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
         ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
-      } = yield* all(
-        {
-          ...validateErrorOf('RawStreamOfRepoPathContentsFromGitHubAPI'),
-          ...validateErrorOf('UnparsedMetaInfoAboutPathContentsFromGitHubAPI'),
-        },
-        { concurrency: 'unbounded' },
-      );
+      } = yield* all({
+        ...validateErrorOf('RawStreamOfRepoPathContentsFromGitHubAPI'),
+        ...validateErrorOf('UnparsedMetaInfoAboutPathContentsFromGitHubAPI'),
+      });
 
       ctx
         .expect(ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI)

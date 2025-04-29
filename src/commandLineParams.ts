@@ -1,5 +1,5 @@
 import {
-  Options,
+  type Options,
   text,
   withFallbackConfig,
   withDescription as withOptionDescription,
