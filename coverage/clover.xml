@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745949642927" clover="3.2.0">
-  <project timestamp="1745949642927" name="All files">
-    <metrics statements="698" coveredstatements="584" conditionals="93" coveredconditionals="82" methods="31" coveredmethods="28" elements="822" coveredelements="694" complexity="0" loc="698" ncloc="698" packages="3" files="19" classes="19"/>
+<coverage generated="1745950659969" clover="3.2.0">
+  <project timestamp="1745950659969" name="All files">
+    <metrics statements="691" coveredstatements="584" conditionals="91" coveredconditionals="80" methods="29" coveredmethods="26" elements="811" coveredelements="690" complexity="0" loc="691" ncloc="691" packages="3" files="17" classes="17"/>
     <package name="fetch-github-folder">
-      <metrics statements="49" coveredstatements="0" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
-      <file name="cli.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/cli.ts">
-        <metrics statements="1" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="8" count="0" type="stmt"/>
-      </file>
-      <file name="errors.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/errors.ts">
-        <metrics statements="6" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-      </file>
+      <metrics statements="42" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
       <file name="fetch-github-folder.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/fetch-github-folder.ts">
         <metrics statements="42" coveredstatements="0" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="3" count="0" type="stmt"/>
