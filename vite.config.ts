@@ -16,6 +16,8 @@ export default defineConfig({
         'destination/**',
         'testMocks/**',
         'tmp/**',
+        'errors.[jt]s',
+        'cli.[jt]s',
         '**/{scratchpad,index,logObjectPretty}[.][jt]s',
       ],
     },
