@@ -11,4 +11,4 @@ export {
   pathToEntityInRepoCLIOptionBackedByEnv,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
-} from './src/commandLineParams.js';
+} from './src/commandLineParams.ts';

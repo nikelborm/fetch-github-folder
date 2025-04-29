@@ -12,13 +12,13 @@ export {
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
-} from './src/commonErrors.js';
-export * from './src/TaggedErrorVerifyingCause.js';
-export { FailedToCastDataToReadableStreamError } from './src/castToReadableStream.js';
+} from './src/commonErrors.ts';
+export * from './src/TaggedErrorVerifyingCause.ts';
+export { FailedToCastDataToReadableStreamError } from './src/castToReadableStream.ts';
 export {
   FailedToParseGitLFSInfoError,
   FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
   InconsistentExpectedAndRealContentSizeError,
-} from './src/getPathContents/index.js';
-export { FailedToUnpackRepoFolderTarGzStreamToFsError } from './src/unpackRepoFolderTarGzStreamToFs.js';
-export { FailedToWriteFileStreamToDestinationPathError } from './src/writeFileStreamToDestinationPath.js';
+} from './src/getPathContents/index.ts';
+export { FailedToUnpackRepoFolderTarGzStreamToFsError } from './src/unpackRepoFolderTarGzStreamToFs.ts';
+export { FailedToWriteFileStreamToDestinationPathError } from './src/writeFileStreamToDestinationPath.ts';

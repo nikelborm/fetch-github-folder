@@ -19,7 +19,7 @@ import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { assert, typeGuard } from 'tsafe';
-import { FailedToCastDataToReadableStreamError } from '../castToReadableStream.js';
+import { FailedToCastDataToReadableStreamError } from '../castToReadableStream.ts';
 import {
   GitHubApiAuthRatelimitedError,
   GitHubApiBadCredentialsError,
@@ -29,12 +29,13 @@ import {
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
-} from '../commonErrors.js';
-import { type InputConfig, provideInputConfig } from '../configContext.js';
-import { OctokitLayer } from '../octokit.js';
-import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
-import { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
-import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.js';
+} from '../commonErrors.ts';
+import { type InputConfig, provideInputConfig } from '../configContext.ts';
+import { OctokitLayer } from '../octokit.ts';
+import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.ts';
+import { PathContentsMetaInfo } from './PathContentsMetaInfo.ts';
+import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.ts';
+import { allWithInheritedConcurrencyByDefault } from '../allWithInheritedConcurrency.ts';
 
 const defaultRepo = {
   owner: 'fetch-gh-stuff-tests',
@@ -169,7 +170,7 @@ const expectError = <const ExpectedErrorClass extends ErrorExpectedToBeThrown>({
       const {
         ExpectedFailureOfRawStreamOfRepoPathContentsFromGitHubAPI,
         ExpectedFailureOfUnparsedMetaInfoAboutPathContentsFromGitHubAPI,
-      } = yield* all({
+      } = yield* allWithInheritedConcurrencyByDefault({
         ...validateErrorOf('RawStreamOfRepoPathContentsFromGitHubAPI'),
         ...validateErrorOf('UnparsedMetaInfoAboutPathContentsFromGitHubAPI'),
       });

@@ -2,14 +2,14 @@ import { RequestError } from '@octokit/request-error';
 import type { OctokitResponse } from '@octokit/types';
 import { UnknownException } from 'effect/Cause';
 import { fn, tryPromise } from 'effect/Effect';
-import { InputConfigTag } from '../configContext.js';
+import { InputConfigTag } from '../configContext.ts';
 import {
   GitHubApiNoCommitFoundForGitRefError,
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
   parseCommonGitHubApiErrors,
-} from '../commonErrors.js';
-import { OctokitTag } from '../octokit.js';
+} from '../commonErrors.ts';
+import { OctokitTag } from '../octokit.ts';
 
 export const RepoPathContentsFromGitHubAPI = fn(
   'getRepoPathContentsFromGitHubAPI',

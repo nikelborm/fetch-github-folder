@@ -2,9 +2,9 @@ import { describe, it } from '@effect/vitest';
 import { right } from 'effect/Either';
 import { ParseError, Unexpected } from 'effect/ParseResult';
 import { outdent } from 'outdent';
-import { FailedToParseGitLFSInfoError } from './getPathContents/index.js';
-import { InconsistentExpectedAndRealContentSizeError } from './getPathContents/parseGitLFSObjectEither.js';
-import { buildTaggedErrorClassVerifyingCause } from './TaggedErrorVerifyingCause.js';
+import { FailedToParseGitLFSInfoError } from './getPathContents/index.ts';
+import { InconsistentExpectedAndRealContentSizeError } from './getPathContents/parseGitLFSObjectEither.ts';
+import { buildTaggedErrorClassVerifyingCause } from './TaggedErrorVerifyingCause.ts';
 
 describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
   it('Should have expected fields from both contexts: dynamic and static ', ctx => {

@@ -13,8 +13,8 @@ import {
 import {
   type TaggedErrorClassWithNoStaticContext,
   buildTaggedErrorClassVerifyingCause,
-} from '../TaggedErrorVerifyingCause.js';
-import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';
+} from '../TaggedErrorVerifyingCause.ts';
+import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.ts';
 
 export const UnparsedMetaInfoAboutPathContentsFromGitHubAPI =
   RepoPathContentsFromGitHubAPI('object');

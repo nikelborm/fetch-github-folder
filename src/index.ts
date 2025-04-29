@@ -1,9 +1,9 @@
-export { downloadEntityFromRepo } from './downloadEntityFromRepo.js';
-export { OctokitLayer } from './octokit.js';
+export { downloadEntityFromRepo } from './downloadEntityFromRepo.ts';
+export { OctokitLayer } from './octokit.ts';
 export {
   destinationPathCLIOptionBackedByEnv,
   gitRefCLIOptionBackedByEnv,
   pathToEntityInRepoCLIOptionBackedByEnv,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
-} from './commandLineParams.js';
+} from './commandLineParams.ts';

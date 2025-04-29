@@ -2,11 +2,11 @@ import { type Effect, gen, tryPromise } from 'effect/Effect';
 import { createWriteStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { OutputConfigTag } from './configContext.js';
+import { OutputConfigTag } from './configContext.ts';
 import {
   type TaggedErrorClassWithUnknownCauseAndNoContext,
   buildTaggedErrorClassVerifyingCause,
-} from './TaggedErrorVerifyingCause.js';
+} from './TaggedErrorVerifyingCause.ts';
 
 export const writeFileStreamToDestinationPath = <E, R>(
   self: Effect<Readable, E, R>,

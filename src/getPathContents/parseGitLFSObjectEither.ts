@@ -11,7 +11,7 @@ import {
   type TaggedErrorClassWithNoCause,
   type TaggedErrorClassWithNoStaticContext,
   buildTaggedErrorClassVerifyingCause,
-} from '../TaggedErrorVerifyingCause.js';
+} from '../TaggedErrorVerifyingCause.ts';
 
 export const parseGitLFSObjectEither = ({
   contentAsBuffer,

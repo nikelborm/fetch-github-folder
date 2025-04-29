@@ -10,7 +10,7 @@ import { CommandExecutor } from '@effect/platform/CommandExecutor';
 import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
-import { all, fn, gen, map, provide } from 'effect/Effect';
+import { all, fn, gen, map, provide, withConcurrency } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import { decodeText, runFold, type Stream } from 'effect/Stream';
@@ -22,8 +22,9 @@ import {
   pathToEntityInRepoCLIOptionBackedByEnv,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
-} from './src/index.js';
-import { buildTaggedErrorClassVerifyingCause } from './src/TaggedErrorVerifyingCause.js';
+} from './src/index.ts';
+import { buildTaggedErrorClassVerifyingCause } from './src/TaggedErrorVerifyingCause.ts';
+import { allWithInheritedConcurrencyByDefault } from './src/allWithInheritedConcurrency.ts';
 
 const defaultRepo = {
   owner: 'fetch-gh-stuff-tests',
@@ -96,11 +97,12 @@ const runCommandAndGetCommandOutputAndFailIfNonZeroCode = (
 
     const process = yield* executor.start(command);
 
-    const [exitCode, stdout, stderr] = yield* all([
-      process.exitCode,
-      Uint8ArrayStreamToString(process.stdout),
-      Uint8ArrayStreamToString(process.stderr),
-    ]);
+    const [exitCode, stdout, stderr] =
+      yield* allWithInheritedConcurrencyByDefault([
+        process.exitCode,
+        Uint8ArrayStreamToString(process.stdout),
+        Uint8ArrayStreamToString(process.stderr),
+      ]);
 
     if (exitCode !== 0)
       yield* new CommandFinishedWithNonZeroCode({
@@ -203,13 +205,13 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
     tempDirPath,
   };
 
-  return yield* all({
+  return yield* allWithInheritedConcurrencyByDefault({
     hashOfOriginalGitRepo: bareCloneAndHashRepoContents(params),
     hashOfGitRepoFetchedUsingOurCLI: cliFetchAndHashRepoContents(params),
   });
 });
 
-describe('fetch-github-folder-cli', { concurrent: true }, () => {
+describe('fetch-github-folder-cli', { concurrent: true, timeout: 0 }, () => {
   // Commented because since the repo has big git lfs file, I quickly hit bandwidth limits
 
   // it.scoped(

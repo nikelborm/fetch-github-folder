@@ -3,11 +3,11 @@ import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
-import { OutputConfigTag } from './configContext.js';
+import { OutputConfigTag } from './configContext.ts';
 import {
   type TaggedErrorClassWithUnknownCauseAndNoContext,
   buildTaggedErrorClassVerifyingCause,
-} from './TaggedErrorVerifyingCause.js';
+} from './TaggedErrorVerifyingCause.ts';
 
 export const unpackRepoFolderTarGzStreamToFs = <E, R>(
   self: Effect<Readable, E, R>,

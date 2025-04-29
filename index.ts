@@ -2,13 +2,13 @@
  * @module
  */
 
-export { downloadEntityFromRepo } from './src/downloadEntityFromRepo.js';
-export { OctokitLayer } from './src/octokit.js';
+export { downloadEntityFromRepo } from './src/downloadEntityFromRepo.ts';
+export { OctokitLayer } from './src/octokit.ts';
 export type {
   SingleTargetConfig,
   InputConfig,
   OutputConfig,
-} from './src/configContext.js';
+} from './src/configContext.ts';
 
-export * from './errors.js';
-export * from './cli.js';
+export * from './errors.ts';
+export * from './cli.ts';

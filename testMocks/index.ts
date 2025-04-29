@@ -1,2 +1,2 @@
-export * as MockConsole from './MockConsole.js';
-export * as MockTerminal from './MockTerminal.js';
+export * as MockConsole from './MockConsole.ts';
+export * as MockTerminal from './MockTerminal.ts';

@@ -4,7 +4,7 @@ import { ReadableStream } from 'node:stream/web';
 import {
   type TaggedErrorClassWithNoContextAndNoCause,
   buildTaggedErrorClassVerifyingCause,
-} from './TaggedErrorVerifyingCause.js';
+} from './TaggedErrorVerifyingCause.ts';
 
 export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
   gen(function* () {

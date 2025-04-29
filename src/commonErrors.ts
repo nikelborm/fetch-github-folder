@@ -3,7 +3,7 @@ import {
   buildTaggedErrorClassVerifyingCause,
   type TaggedErrorClassWithNoContext,
   type TaggedErrorClassWithNoStaticContext,
-} from './TaggedErrorVerifyingCause.js';
+} from './TaggedErrorVerifyingCause.ts';
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference

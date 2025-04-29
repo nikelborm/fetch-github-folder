@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/core';
 import type { UnknownException } from 'effect/Cause';
 import { type Effect, fail, gen } from 'effect/Effect';
-import type { FailedToCastDataToReadableStreamError } from './castToReadableStream.js';
+import type { FailedToCastDataToReadableStreamError } from './castToReadableStream.ts';
 import type {
   GitHubApiAuthRatelimitedError,
   GitHubApiBadCredentialsError,
@@ -11,26 +11,26 @@ import type {
   GitHubApiRatelimitedError,
   GitHubApiRepoIsEmptyError,
   GitHubApiThingNotExistsOrYouDontHaveAccessError,
-} from './commonErrors.js';
+} from './commonErrors.ts';
 import {
   provideSingleDownloadTargetConfig,
   type SingleTargetConfig,
-} from './configContext.js';
+} from './configContext.ts';
 import {
   type FailedToParseResponseFromRepoPathContentsMetaInfoAPIError,
   type InconsistentExpectedAndRealContentSizeError,
   PathContentsMetaInfo,
   RawStreamOfRepoPathContentsFromGitHubAPI,
-} from './getPathContents/index.js';
-import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.js';
+} from './getPathContents/index.ts';
+import { getReadableTarGzStreamOfRepoDirectory } from './getReadableTarGzStreamOfRepoDirectory.ts';
 import {
   type FailedToUnpackRepoFolderTarGzStreamToFsError,
   unpackRepoFolderTarGzStreamToFs,
-} from './unpackRepoFolderTarGzStreamToFs.js';
+} from './unpackRepoFolderTarGzStreamToFs.ts';
 import {
   type FailedToWriteFileStreamToDestinationPathError,
   writeFileStreamToDestinationPath,
-} from './writeFileStreamToDestinationPath.js';
+} from './writeFileStreamToDestinationPath.ts';
 
 const downloadEntityFromRepoWithoutContext = gen(function* () {
   const pathContentsMetaInfo = yield* PathContentsMetaInfo;

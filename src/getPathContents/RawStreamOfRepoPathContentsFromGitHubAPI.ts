@@ -1,5 +1,5 @@
-import { CastToReadableStream } from '../castToReadableStream.js';
-import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.js';
+import { CastToReadableStream } from '../castToReadableStream.ts';
+import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.ts';
 
 export const RawStreamOfRepoPathContentsFromGitHubAPI = CastToReadableStream(
   RepoPathContentsFromGitHubAPI('raw', true),

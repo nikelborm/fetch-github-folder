@@ -1,7 +1,7 @@
-export { PathContentsMetaInfo } from './PathContentsMetaInfo.js';
-export { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.js';
-export { FailedToParseResponseFromRepoPathContentsMetaInfoAPIError } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
+export { PathContentsMetaInfo } from './PathContentsMetaInfo.ts';
+export { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.ts';
+export { FailedToParseResponseFromRepoPathContentsMetaInfoAPIError } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.ts';
 export {
   FailedToParseGitLFSInfoError,
   InconsistentExpectedAndRealContentSizeError,
-} from './parseGitLFSObjectEither.js';
+} from './parseGitLFSObjectEither.ts';

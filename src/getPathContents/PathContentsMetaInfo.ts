@@ -1,8 +1,8 @@
 import { gen, succeed } from 'effect/Effect';
-import { CastToReadableStream } from '../castToReadableStream.js';
+import { CastToReadableStream } from '../castToReadableStream.ts';
 
-import { parseGitLFSObjectEither } from './parseGitLFSObjectEither.js';
-import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.js';
+import { parseGitLFSObjectEither } from './parseGitLFSObjectEither.ts';
+import { ParsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.ts';
 
 export const PathContentsMetaInfo = gen(function* () {
   const response = yield* ParsedMetaInfoAboutPathContentsFromGitHubAPI;

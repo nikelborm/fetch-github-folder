@@ -4,7 +4,6 @@
 [![NPM package version](https://badge.fury.io/js/fetch-github-folder.svg)](https://www.npmjs.com/package/fetch-github-folder)
 [![NPM downloads](https://img.shields.io/npm/dm/fetch-github-folder.svg?style=flat)](https://npmjs.org/package/fetch-github-folder)
 [![NPM Last Update](https://img.shields.io/npm/last-update/fetch-github-folder)](https://npmjs.org/package/fetch-github-folder)
-[![package.json Dependencies count](https://badgen.net/bundlephobia/dependency-count/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependencies)
 [![package.json Dependents count](https://badgen.net/npm/dependents/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependents)
 [![JSR package version](https://jsr.io/badges/@nikelborm/fetch-github-folder)](https://jsr.io/@nikelborm/fetch-github-folder)
 [![JSR package Score](https://jsr.io/badges/@nikelborm/fetch-github-folder/score)](https://jsr.io/@nikelborm/fetch-github-folder)
@@ -30,10 +29,14 @@
 [![Sonar Vulnerabilities Count](https://sonarcloud.io/api/project_badges/measure?project=nikelborm_fetch-github-folder&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=nikelborm_fetch-github-folder)
 ![OSS Lifecycle status](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fnikelborm%2Ffetch-github-folder%2Fblob%2Fmain%2FOSSMETADATA)
 
-<!-- Commented because there's some bug in effect library that prevents proper rendering of this badge -->
+<!-- Commented because there's some bug in effect library or in bundlephobia that prevents proper rendering of this badge -->
 <!-- [![npm minzipped bundle size](https://img.shields.io/bundlephobia/minzip/fetch-github-folder)](https://bundlephobia.com/package/fetch-github-folder) -->
+<!-- [![package.json Dependencies count](https://badgen.net/bundlephobia/dependency-count/fetch-github-folder)](https://www.npmjs.com/package/fetch-github-folder?activeTab=dependencies) -->
 
+<!-- commented because it seems that npms.io was acquired by somebody and is slowly dying -->
 <!-- [![npms.io](https://img.shields.io/npms-io/final-score/fetch-github-folder)](update_link_later) -->
+
+<!-- commented because I haven't started following it yet -->
 <!-- [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) -->
 
 <sup>(Don't judge me for my obsession with badges)</sup>

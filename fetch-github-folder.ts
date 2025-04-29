@@ -16,7 +16,7 @@ import {
   pathToEntityInRepoCLIOptionBackedByEnv,
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
-} from './src/index.js';
+} from './src/index.ts';
 
 // Those values updated automatically. If you edit names of constants or
 // move them to a different file, update ./scripts/build.sh
