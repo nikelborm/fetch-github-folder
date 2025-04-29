@@ -38,6 +38,7 @@
     "preserveWatchOutput": true,
     "outDir": "./dist",
     "allowUnreachableCode": false,
+    "noUnusedLocals": true,
     "baseUrl": "./",
     "incremental": true,
     "lib": ["ESNext"],

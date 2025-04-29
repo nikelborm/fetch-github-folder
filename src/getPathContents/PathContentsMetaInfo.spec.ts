@@ -3,7 +3,6 @@ import { Octokit } from '@octokit/core';
 import { RequestError } from '@octokit/request-error';
 import { UnknownException } from 'effect/Cause';
 import {
-  all,
   andThen,
   asVoid,
   die,
@@ -19,6 +18,7 @@ import { isRight } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { text } from 'node:stream/consumers';
 import { assert, typeGuard } from 'tsafe';
+import { allWithInheritedConcurrencyByDefault } from '../allWithInheritedConcurrency.ts';
 import { FailedToCastDataToReadableStreamError } from '../castToReadableStream.ts';
 import {
   GitHubApiAuthRatelimitedError,
@@ -35,7 +35,6 @@ import { OctokitLayer } from '../octokit.ts';
 import { UnparsedMetaInfoAboutPathContentsFromGitHubAPI } from './ParsedMetaInfoAboutPathContentsFromGitHubAPI.ts';
 import { PathContentsMetaInfo } from './PathContentsMetaInfo.ts';
 import { RawStreamOfRepoPathContentsFromGitHubAPI } from './RawStreamOfRepoPathContentsFromGitHubAPI.ts';
-import { allWithInheritedConcurrencyByDefault } from '../allWithInheritedConcurrency.ts';
 
 const defaultRepo = {
   owner: 'fetch-gh-stuff-tests',

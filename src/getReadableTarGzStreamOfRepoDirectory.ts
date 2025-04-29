@@ -3,11 +3,11 @@ import { UnknownException } from 'effect/Cause';
 import { gen, map, tryPromise } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { CastToReadableStream } from './castToReadableStream.ts';
-import { InputConfigTag } from './configContext.ts';
 import {
   GitHubApiGeneralUserError,
   parseCommonGitHubApiErrors,
 } from './commonErrors.ts';
+import { InputConfigTag } from './configContext.ts';
 import { OctokitTag } from './octokit.ts';
 
 export const getReadableTarGzStreamOfRepoDirectory = (

@@ -1,7 +1,7 @@
 import type { YieldableError } from 'effect/Cause';
-import type { Equals } from 'tsafe';
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
+import type { Equals } from 'tsafe';
 
 type VoidifyEmptyObject<O extends object> = Prettify<
   Equals<O, {}> extends true ? void : Readonly<O>

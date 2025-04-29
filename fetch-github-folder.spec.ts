@@ -10,10 +10,11 @@ import { CommandExecutor } from '@effect/platform/CommandExecutor';
 import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
-import { all, fn, gen, map, provide, withConcurrency } from 'effect/Effect';
+import { fn, gen, map, provide } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import { mergeAll, provideMerge } from 'effect/Layer';
 import { decodeText, runFold, type Stream } from 'effect/Stream';
+import { allWithInheritedConcurrencyByDefault } from './src/allWithInheritedConcurrency.ts';
 import {
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,
@@ -24,12 +25,6 @@ import {
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.ts';
 import { buildTaggedErrorClassVerifyingCause } from './src/TaggedErrorVerifyingCause.ts';
-import { allWithInheritedConcurrencyByDefault } from './src/allWithInheritedConcurrency.ts';
-
-const defaultRepo = {
-  owner: 'fetch-gh-stuff-tests',
-  name: 'public-repo',
-};
 
 const appCommand = CliCommand.make(
   'fetch-github-folder',

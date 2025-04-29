@@ -1,5 +1,3 @@
-export { downloadEntityFromRepo } from './downloadEntityFromRepo.ts';
-export { OctokitLayer } from './octokit.ts';
 export {
   destinationPathCLIOptionBackedByEnv,
   gitRefCLIOptionBackedByEnv,
@@ -7,3 +5,5 @@ export {
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
 } from './commandLineParams.ts';
+export { downloadEntityFromRepo } from './downloadEntityFromRepo.ts';
+export { OctokitLayer } from './octokit.ts';
