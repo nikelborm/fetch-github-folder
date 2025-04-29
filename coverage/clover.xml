@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745948062346" clover="3.2.0">
-  <project timestamp="1745948062346" name="All files">
+<coverage generated="1745949642927" clover="3.2.0">
+  <project timestamp="1745949642927" name="All files">
     <metrics statements="698" coveredstatements="584" conditionals="93" coveredconditionals="82" methods="31" coveredmethods="28" elements="822" coveredelements="694" complexity="0" loc="698" ncloc="698" packages="3" files="19" classes="19"/>
     <package name="fetch-github-folder">
       <metrics statements="49" coveredstatements="0" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
@@ -67,8 +67,8 @@
       <metrics statements="414" coveredstatements="364" conditionals="53" coveredconditionals="44" methods="23" coveredmethods="20"/>
       <file name="TaggedErrorVerifyingCause.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/TaggedErrorVerifyingCause.ts">
         <metrics statements="37" coveredstatements="37" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
+        <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
         <line num="179" count="1" type="stmt"/>
         <line num="180" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="181" count="40" type="cond" truecount="1" falsecount="0"/>
@@ -383,7 +383,7 @@
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="14" count="1" type="stmt"/>
@@ -639,7 +639,7 @@
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
