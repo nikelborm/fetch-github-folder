@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745707074187" clover="3.2.0">
-  <project timestamp="1745707074188" name="All files">
-    <metrics statements="687" coveredstatements="573" conditionals="92" coveredconditionals="81" methods="30" coveredmethods="27" elements="809" coveredelements="681" complexity="0" loc="687" ncloc="687" packages="3" files="18" classes="18"/>
+<coverage generated="1745948062346" clover="3.2.0">
+  <project timestamp="1745948062346" name="All files">
+    <metrics statements="698" coveredstatements="584" conditionals="93" coveredconditionals="82" methods="31" coveredmethods="28" elements="822" coveredelements="694" complexity="0" loc="698" ncloc="698" packages="3" files="19" classes="19"/>
     <package name="fetch-github-folder">
       <metrics statements="49" coveredstatements="0" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
       <file name="cli.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/cli.ts">
@@ -29,8 +29,7 @@
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
         <line num="28" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
@@ -44,11 +43,11 @@
         <line num="37" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
         <line num="48" count="0" type="stmt"/>
         <line num="49" count="0" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
@@ -57,14 +56,15 @@
         <line num="53" count="0" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
         <line num="58" count="0" type="stmt"/>
         <line num="59" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
       </file>
     </package>
     <package name="fetch-github-folder.src">
-      <metrics statements="403" coveredstatements="353" conditionals="52" coveredconditionals="43" methods="22" coveredmethods="19"/>
+      <metrics statements="414" coveredstatements="364" conditionals="53" coveredconditionals="44" methods="23" coveredmethods="20"/>
       <file name="TaggedErrorVerifyingCause.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/TaggedErrorVerifyingCause.ts">
         <metrics statements="37" coveredstatements="37" conditionals="11" coveredconditionals="11" methods="2" coveredmethods="2"/>
         <line num="3" count="1" type="stmt"/>
@@ -104,6 +104,17 @@
         <line num="226" count="40" type="stmt"/>
         <line num="228" count="40" type="stmt"/>
         <line num="229" count="40" type="stmt"/>
+      </file>
+      <file name="allWithInheritedConcurrency.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/allWithInheritedConcurrency.ts">
+        <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="4" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="19" count="12" type="stmt"/>
+        <line num="20" count="12" type="stmt"/>
+        <line num="22" count="12" type="stmt"/>
+        <line num="23" count="12" type="stmt"/>
+        <line num="24" count="12" type="stmt"/>
+        <line num="25" count="12" type="stmt"/>
       </file>
       <file name="castToReadableStream.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/castToReadableStream.ts">
         <metrics statements="24" coveredstatements="21" conditionals="7" coveredconditionals="6" methods="2" coveredmethods="2"/>
@@ -332,7 +343,8 @@
         <line num="46" count="1" type="stmt"/>
       </file>
       <file name="downloadEntityFromRepo.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/downloadEntityFromRepo.ts">
-        <metrics statements="29" coveredstatements="17" conditionals="3" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="30" coveredstatements="18" conditionals="3" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
@@ -427,8 +439,9 @@
         <line num="14" count="22" type="stmt"/>
       </file>
       <file name="unpackRepoFolderTarGzStreamToFs.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/unpackRepoFolderTarGzStreamToFs.ts">
-        <metrics statements="38" coveredstatements="37" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="3"/>
+        <metrics statements="39" coveredstatements="38" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -468,9 +481,10 @@
         <line num="54" count="1" type="stmt"/>
       </file>
       <file name="writeFileStreamToDestinationPath.ts" path="/home/runner/work/fetch-github-folder/fetch-github-folder/src/writeFileStreamToDestinationPath.ts">
-        <metrics statements="28" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="29" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
