@@ -119,13 +119,9 @@
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -144,12 +140,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -166,7 +156,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -187,7 +177,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">#!/usr/bin/env node
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { CliConfig } from '@effect/cli';</span>
+<span class="cstat-no" title="statement not covered" >import { CliConfig, Span } from '@effect/cli';</span>
 <span class="cstat-no" title="statement not covered" >import { make, run } from '@effect/cli/Command';</span>
 <span class="cstat-no" title="statement not covered" >import { layer as NodeFileSystemLayer } from '@effect/platform-node-shared/NodeFileSystem';</span>
 <span class="cstat-no" title="statement not covered" >import { layer as NodePathLayer } from '@effect/platform-node-shared/NodePath';</span>
@@ -195,6 +185,7 @@
 <span class="cstat-no" title="statement not covered" >import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';</span>
 <span class="cstat-no" title="statement not covered" >import { provide } from 'effect/Effect';</span>
 <span class="cstat-no" title="statement not covered" >import { pipe } from 'effect/Function';</span>
+<span class="cstat-no" title="statement not covered" >import pkg from './package.json' with { type: 'json' };</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,
@@ -205,14 +196,8 @@
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.ts';
 &nbsp;
-// Those values updated automatically. If you edit names of constants or
-// move them to a different file, update ./scripts/build.sh
-<span class="cstat-no" title="statement not covered" >const PACKAGE_VERSION = '0.1.22';</span>
-// TODO: read from ./package.json
-<span class="cstat-no" title="statement not covered" >const PACKAGE_NAME = 'fetch-github-folder';</span>
-&nbsp;
 <span class="cstat-no" title="statement not covered" >const appCommand = make(</span>
-<span class="cstat-no" title="statement not covered" >  PACKAGE_NAME,</span>
+<span class="cstat-no" title="statement not covered" >  pkg.name,</span>
 <span class="cstat-no" title="statement not covered" >  {</span>
 <span class="cstat-no" title="statement not covered" >    repo: {</span>
 <span class="cstat-no" title="statement not covered" >      owner: repoOwnerCLIOptionBackedByEnv,</span>
@@ -227,9 +212,9 @@
 <span class="cstat-no" title="statement not covered" >);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >const cli = run(appCommand, {</span>
-  // those values will be filled automatically from package.json
-<span class="cstat-no" title="statement not covered" >  name: PACKAGE_NAME,</span>
-<span class="cstat-no" title="statement not covered" >  version: PACKAGE_VERSION,</span>
+<span class="cstat-no" title="statement not covered" >  name: pkg.name,</span>
+<span class="cstat-no" title="statement not covered" >  version: pkg.version,</span>
+<span class="cstat-no" title="statement not covered" >  summary: Span.text(pkg.description),</span>
 <span class="cstat-no" title="statement not covered" >});</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >pipe(</span>
@@ -253,7 +238,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-29T18:17:39.957Z
+                at 2025-04-30T00:11:11.502Z
             </div>
         <script src="../prettify.js"></script>
         <script>
