@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { CliConfig } from '@effect/cli';
+import { CliConfig, Span } from '@effect/cli';
 import { make, run } from '@effect/cli/Command';
 import { layer as NodeFileSystemLayer } from '@effect/platform-node-shared/NodeFileSystem';
 import { layer as NodePathLayer } from '@effect/platform-node-shared/NodePath';
@@ -8,6 +8,7 @@ import { runMain } from '@effect/platform-node-shared/NodeRuntime';
 import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';
 import { provide } from 'effect/Effect';
 import { pipe } from 'effect/Function';
+import pkg from './package.json' with { type: 'json' };
 import {
   destinationPathCLIOptionBackedByEnv,
   downloadEntityFromRepo,
@@ -18,14 +19,8 @@ import {
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.ts';
 
-// Those values updated automatically. If you edit names of constants or
-// move them to a different file, update ./scripts/build.sh
-const PACKAGE_VERSION = '0.1.22';
-// TODO: read from ./package.json
-const PACKAGE_NAME = 'fetch-github-folder';
-
 const appCommand = make(
-  PACKAGE_NAME,
+  pkg.name,
   {
     repo: {
       owner: repoOwnerCLIOptionBackedByEnv,
@@ -40,9 +35,9 @@ const appCommand = make(
 );
 
 const cli = run(appCommand, {
-  // those values will be filled automatically from package.json
-  name: PACKAGE_NAME,
-  version: PACKAGE_VERSION,
+  name: pkg.name,
+  version: pkg.version,
+  summary: Span.text(pkg.description),
 });
 
 pipe(

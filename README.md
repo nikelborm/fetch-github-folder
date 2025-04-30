@@ -46,9 +46,9 @@
 > This project currently is not stable, but I'm actively working on writing tests and handling edge cases, such as support for Git-LFS and other.
 > Check out the `dev` branch to see the latest updates! 😉 (except that I currently don't care and just push to main)
 
-## What This Project Does
+## What this library+CLI does?
 
-This project allows you to download any folder inside a repo on github.
+It allows you to download any folder or a file from a repo on github.
 
 ## Requirements
 

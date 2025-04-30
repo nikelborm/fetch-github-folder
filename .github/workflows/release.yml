@@ -28,8 +28,7 @@ jobs:
         run: npm exec -c ./scripts/build.sh
 
       - name: 'Check if code follows JSR rules for packages'
-        # tree will be dirty because fetch-github-folder.ts will have bumped inlined version numbers
-        run: npx jsr publish --dry-run --allow-dirty
+        run: npx jsr publish --dry-run
 
       - name: 'Check if code passes tests'
         run: npm run test-once
@@ -48,7 +47,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_author: 'nikelborm <evadev@duck.com>'
-          file_pattern: 'deno.json package-lock.json fetch-github-folder.ts'
+          file_pattern: 'deno.json package-lock.json'
           commit_message: Auto-updated NPM package files
 
       - name: 'Publish to JSR'
