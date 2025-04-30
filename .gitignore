@@ -11,3 +11,4 @@ _
 fetch-github-folder-*
 /gh-page/coverage
 /gh-page/bundled_deps
+package-lock.json
