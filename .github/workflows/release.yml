@@ -33,14 +33,28 @@ jobs:
       - name: 'Check if code passes tests'
         run: npm run test-once
 
+      - name: 'Extract package info from package.json'
+        id: package_info
+        run: |
+          version=$(jq -r '.version' package.json)
+          name=$(jq -r '.name' package.json)
+          expected_package_archive_name=$name-$version.tgz
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "name=$name" >> $GITHUB_OUTPUT
+          echo "expected_package_archive_name=$expected_package_archive_name" >> $GITHUB_OUTPUT
+
+      - name: 'Create package archive'
+        run: npm pack
+
       - name: 'Publish to default NPM registry'
-        run: npm publish
+        run: |
+          npm publish ${{ steps.package_info.outputs.expected_package_archive_name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
       - name: 'Prepare deno.json for publishing to JSR'
         run: |
-          jq -s '.[1] + {version: .[0].version}' package.json deno.json > _ && mv _ deno.json
+          jq '.version = ${{ steps.package_info.outputs.version }}' deno.json > _ && mv _ deno.json
           npx prettier deno.json --write
 
       - name: 'Commit updated deno.json after npm install'
@@ -55,7 +69,7 @@ jobs:
 
       - name: "Prepare package.json for publishing to GitHub's NPM registry"
         run: |
-          jq '. + {name: ("@nikelborm/" + .name)}' package.json > _ && mv _ package.json
+          jq '.name = "@nikelborm/" + .name' package.json > _ && mv _ package.json
 
       - name: "Publish to GitHub's NPM registry"
         run: |
@@ -67,8 +81,52 @@ jobs:
       - name: 'Upload bundled CLI as a release artifact'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: nightly-${{github.sha}}
+          tag_name: experiment-${{ steps.package_info.outputs.version }}
           fail_on_unmatched_files: true
+          prerelease: true
           files: |
-            ./dist/minified/fetch-github-folder.js
+            ${{ steps.package_info.outputs.expected_package_archive_name }}
+            ./dist/minified/${{ steps.package_info.outputs.name }}.js
             ./template.env
+          body: |
+            # Yay! 🎉
+
+            ## Files in this release
+
+            - `${{ steps.package_info.outputs.expected_package_archive_name }}` contains package archive which was published to NPM
+            - `${{ steps.package_info.outputs.name }}.js` contains a light js CLI script with inlined dependencies that allow you to avoid using any package managers
+            - `template.env` has all env variables that are supported by this script
+
+            ## Usage
+
+            ### Invoke immediately
+
+            If you already know the supported arguments (e.g. `--help` to print all supported arguments of the script), you can pipe the script to node directly and pass them after `node -`:
+
+            ```bash
+            curl -sL https://github.com/nikelborm/${{ steps.package_info.outputs.name }}/releases/download/${{ steps.package_info.outputs.version }}/${{ steps.package_info.outputs.name }}.js | node - --repoOwner apache --repoName superset
+            ```
+
+            The script also supports interactive mode, where you will be asked to pass arguments sequentially and interactively. Since it requires user input, it can't be piped and needs to be saved to a temporary file:
+
+            ```bash
+            tmp_js=$(mktemp --suffix .js) && \
+            curl -sLo $tmp_js https://github.com/nikelborm/${{ steps.package_info.outputs.name }}/releases/download/${{ steps.package_info.outputs.version }}/${{ steps.package_info.outputs.name }}.js && \
+            node $tmp_js --wizard && \
+            rm $tmp_js
+            ```
+
+            ### Install into the system directly
+
+            Running this:
+
+            ```bash
+            sudo curl -sLo /usr/bin/${{ steps.package_info.outputs.name }} https://github.com/nikelborm/${{ steps.package_info.outputs.name }}/releases/download/${{ steps.package_info.outputs.version }}/${{ steps.package_info.outputs.name }}.js
+            sudo chmod +x /usr/bin/${{ steps.package_info.outputs.name }}
+            ```
+
+            ...will allow you to use the script like this later:
+
+            ```bash
+            ${{ steps.package_info.outputs.name }} --repoOwner apache --repoName superset
+            ```
