@@ -18,12 +18,12 @@
     "watch-docs": "find src/ cli.ts index.ts errors.ts | entr -can ./scripts/generate_docs.sh"
   },
   "dependencies": {
-    "@effect/cli": "^0.60.0",
-    "@effect/platform": "^0.81.0",
-    "@effect/platform-node": "^0.78.0",
+    "@effect/cli": "^0.60.1",
+    "@effect/platform": "^0.81.1",
+    "@effect/platform-node": "^0.78.1",
     "@octokit/core": "^6.1.5",
     "@octokit/request-error": "^6.1.8",
-    "effect": "^3.14.21",
+    "effect": "^3.14.22",
     "outdent": "^0.8.0",
     "tar-fs": "^3.0.8",
     "tsafe": "^1.8.5",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@effect/language-service": "^0.11.0",
-    "@effect/vitest": "^0.21.4",
+    "@effect/vitest": "^0.21.5",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
