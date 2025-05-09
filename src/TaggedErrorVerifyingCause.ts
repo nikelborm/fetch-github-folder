@@ -3,191 +3,21 @@ import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
 import type { Equals } from 'tsafe';
 
-type VoidifyEmptyObject<O extends object> = Prettify<
-  Equals<O, {}> extends true ? void : Readonly<O>
->;
-
-type CauseArgTupleGen<
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-> = [ExpectedCauseClass] extends [WideErrorConstructor]
-  ? [cause: InstanceType<ExpectedCauseClass>]
-  : [];
-
-export type ConstructorArgsGen<
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  DynamicContext extends Record<string, unknown>,
-> = [
-  ...CauseArgTupleGen<ExpectedCauseClass>,
-  dynamicContext: VoidifyEmptyObject<DynamicContext>,
-];
-
-export type MessageRendererArgsGen<
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  DynamicContext extends Record<string, unknown>,
-  StaticContext extends Record<string, unknown>,
-> = [
-  ...CauseArgTupleGen<ExpectedCauseClass>,
-  fullContext: VoidifyEmptyObject<DynamicContext & StaticContext>,
-];
-
-// Classes
-
-export type TaggedErrorClass<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record<string, unknown> = {},
-  DynamicContext extends Record<string, unknown> = {},
-> = new (
-  ...args: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>
-) => YieldableError &
-  Readonly<
-    {
-      message: string;
-      _tag: ErrorName;
-      name: ErrorName;
-    } & DynamicContext &
-      StaticContext &
-      ([ExpectedCauseClass] extends [WideErrorConstructor]
-        ? // To improve TS performance I wrap it in GetSimpleFormError
-          {
-            cause: InstanceType<ExpectedCauseClass>;
-          }
-        : {})
-  >;
-
-export type TaggedErrorClassWithUnknownCauseAndNoStaticContext<
-  ErrorName extends string,
-  DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClass<
-  ErrorName,
-  undefined,
-  {},
-  {
-    cause: unknown;
-  } & DynamicContext
->;
-
-export type TaggedErrorClassWithUnknownCauseAndNoContext<
-  ErrorName extends string,
-> = TaggedErrorClass<ErrorName, undefined, {}, { cause: unknown }>;
-
-export type TaggedErrorClassWithNoCause<
-  ErrorName extends string,
-  StaticContext extends Record<string, unknown>,
-  DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClass<ErrorName, undefined, StaticContext, DynamicContext>;
-
-export type TaggedErrorClassWithNoStaticContextAndNoCause<
-  ErrorName extends string,
-  DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClass<ErrorName, undefined, {}, DynamicContext>;
-
-export type TaggedErrorClassWithNoContextAndNoCause<ErrorName extends string> =
-  TaggedErrorClass<ErrorName, undefined>;
-
-export type TaggedErrorClassWithNoContext<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-> = TaggedErrorClass<ErrorName, ExpectedCauseClass>;
-
-export type TaggedErrorClassWithNoStaticContext<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  DynamicContext extends Record<string, unknown>,
-> = TaggedErrorClass<ErrorName, ExpectedCauseClass, {}, DynamicContext>;
-
-// Instances
-
-export type TaggedErrorInstance<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record<string, unknown> = {},
-  DynamicContext extends Record<string, unknown> = {},
-> = InstanceType<
-  TaggedErrorClass<ErrorName, ExpectedCauseClass, StaticContext, DynamicContext>
->;
-
-export type TaggedErrorInstanceWithUnknownCauseAndNoStaticContext<
-  ErrorName extends string,
-  DynamicContext extends Record<string, unknown>,
-> = InstanceType<
-  TaggedErrorClassWithUnknownCauseAndNoStaticContext<ErrorName, DynamicContext>
->;
-
-export type TaggedErrorInstanceWithUnknownCauseAndNoContext<
-  ErrorName extends string,
-> = InstanceType<TaggedErrorClassWithUnknownCauseAndNoContext<ErrorName>>;
-
-export type TaggedErrorInstanceWithNoCause<
-  ErrorName extends string,
-  StaticContext extends Record<string, unknown>,
-  DynamicContext extends Record<string, unknown>,
-> = InstanceType<
-  TaggedErrorClassWithNoCause<ErrorName, StaticContext, DynamicContext>
->;
-
-export type TaggedErrorInstanceWithNoStaticContextAndNoCause<
-  ErrorName extends string,
-  DynamicContext extends Record<string, unknown>,
-> = InstanceType<
-  TaggedErrorClassWithNoStaticContextAndNoCause<ErrorName, DynamicContext>
->;
-
-export type TaggedErrorInstanceWithNoContextAndNoCause<
-  ErrorName extends string,
-> = InstanceType<TaggedErrorClassWithNoContextAndNoCause<ErrorName>>;
-
-export type TaggedErrorInstanceWithNoContext<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-> = InstanceType<TaggedErrorClassWithNoContext<ErrorName, ExpectedCauseClass>>;
-
-export type TaggedErrorInstanceWithNoStaticContext<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  DynamicContext extends Record<string, unknown>,
-> = InstanceType<
-  TaggedErrorClassWithNoStaticContext<
-    ErrorName,
-    ExpectedCauseClass,
-    DynamicContext
-  >
->;
-
-// Other
-
-export type TaggedErrorVerifyingCauseTypes<
-  ErrorName extends string,
-  ExpectedCauseClass extends WideErrorConstructor | undefined,
-  StaticContext extends Record<string, unknown> = {},
-  DynamicContext extends Record<string, unknown> = {},
-> = {
-  MessageRendererArgs: MessageRendererArgsGen<
-    ExpectedCauseClass,
-    DynamicContext,
-    StaticContext
-  >;
-  TaggedErrorClass: TaggedErrorClass<
-    ErrorName,
-    ExpectedCauseClass,
-    StaticContext,
-    DynamicContext
-  >;
-  ConstructorArgs: ConstructorArgsGen<ExpectedCauseClass, DynamicContext>;
-};
+const removeLastIfItIsEmptyObject = (arr: Array<unknown>) =>
+  Object.keys(arr.at(-1) ?? {}).length ? arr : arr.slice(0, -1);
 
 export const buildTaggedErrorClassVerifyingCause =
   <const DynamicContext extends Record<string, unknown> = {}>() =>
   <
     const ErrorName extends string,
-    ExpectedCauseClass extends WideErrorConstructor | undefined,
-    Types extends TaggedErrorVerifyingCauseTypes<
-      ErrorName,
-      ExpectedCauseClass,
-      StaticContext,
-      DynamicContext
-    >,
+    Types extends TaggedErrorVerifyingCauseTypes<{
+      ErrorName: ErrorName;
+      ExpectedCauseClass: ExpectedCauseClass;
+      StaticContext: StaticContext;
+      DynamicContext: DynamicContext;
+    }>,
     const StaticContext extends Record<string, unknown> = {},
+    ExpectedCauseClass extends WideErrorConstructor | undefined = undefined,
   >(
     errorName: ErrorName,
     customMessage: string | ((...args: Types['MessageRendererArgs']) => string),
@@ -207,11 +37,11 @@ export const buildTaggedErrorClassVerifyingCause =
             }" class. Expected cause class: "${expectedCauseClass.name}"`,
           );
 
-        const customMessageRendererArgs = (expectedCauseClass
-          ? [args[0], { ...args[1], ...staticContext }]
-          : [
-              { ...args[0], ...staticContext },
-            ]) as unknown as Types['MessageRendererArgs'];
+        const customMessageRendererArgs = removeLastIfItIsEmptyObject(
+          expectedCauseClass
+            ? [args[0], { ...(args[1] ?? {}), ...staticContext }]
+            : [{ ...(args[0] ?? {}), ...staticContext }],
+        ) as unknown as Types['MessageRendererArgs'];
 
         super({
           name: errorName,
@@ -220,7 +50,7 @@ export const buildTaggedErrorClassVerifyingCause =
             : customMessage,
           ...(!!expectedCauseClass && { cause: args[0] }),
           ...staticContext,
-          ...args[+!!expectedCauseClass], // dynamic context
+          ...(args[+!!expectedCauseClass] ?? {}), // dynamic context
         });
       }
     }
@@ -228,8 +58,86 @@ export const buildTaggedErrorClassVerifyingCause =
     return Base as Types['TaggedErrorClass'];
   };
 
-export type Prettify<T> = T extends object
-  ? { [K in keyof T]: Prettify<T[K]> }
-  : T;
+export type TaggedErrorVerifyingCauseTypes<Config extends ConfigTemplate> = {
+  MessageRendererArgs: MessageRendererArgsGen<Config>;
+  TaggedErrorClass: TaggedErrorClass<Config>;
+  ConstructorArgs: ConstructorArgsGen<Config>;
+};
 
-type WideErrorConstructor = new (...args: any[]) => Error;
+export type TaggedErrorClass<Config extends ConfigTemplate> = [string] extends [
+  Config['ErrorName'],
+]
+  ? 'ErrorName should be a string literal'
+  : new (...args: ConstructorArgsGen<Config>) => YieldableError &
+      Readonly<
+        {
+          message: string;
+          _tag: Config['ErrorName'];
+          name: Config['ErrorName'];
+        } & GetValueByKey<Config, 'DynamicContext', {}> &
+          GetValueByKey<Config, 'StaticContext', {}> &
+          IsExpectedCauseClassManuallySpecified<
+            Config,
+            { cause: GetCauseInstance<Config> },
+            {}
+          >
+      >;
+
+export type ConstructorArgsGen<Config extends ConfigTemplate> =
+  CauseArgTupleGen<Config, GetValueByKey<Config, 'DynamicContext', {}>>;
+
+export type MessageRendererArgsGen<Config extends ConfigTemplate> =
+  CauseArgTupleGen<
+    Config,
+    GetValueByKey<Config, 'DynamicContext', {}> &
+      GetValueByKey<Config, 'StaticContext', {}>
+  >;
+
+export type ConfigTemplate = {
+  ErrorName: string;
+  ExpectedCauseClass?: WideErrorConstructor | undefined;
+  StaticContext?: Record<string, unknown> | undefined;
+  DynamicContext?: Record<string, unknown> | undefined;
+};
+
+export type CauseArgTupleGen<Config extends ConfigTemplate, Context> = [
+  ...IsExpectedCauseClassManuallySpecified<
+    Config,
+    [cause: GetCauseInstance<Config>],
+    []
+  >,
+  ...(Equals<Context, {}> extends true ? [] : [context: Readonly<Context>]),
+];
+
+export type IsExpectedCauseClassManuallySpecified<
+  Config extends ConfigTemplate,
+  IfTrue,
+  IfFalse,
+> =
+  GetValueByKey<
+    Config,
+    'ExpectedCauseClass',
+    WideErrorConstructor | undefined
+  > extends infer ExpectedCauseClass
+    ? [ExpectedCauseClass] extends [WideErrorConstructor]
+      ? IfTrue
+      : IfFalse
+    : never;
+
+export type GetCauseInstance<Config extends ConfigTemplate> = InstanceType<
+  Exclude<Config['ExpectedCauseClass'], undefined>
+>;
+
+export type GetValueByKey<
+  Config extends Record<string, unknown>,
+  Key extends string,
+  Default,
+> = [Key] extends [keyof Config]
+  ? Exclude<Config[Key], undefined> extends infer TargetValue
+    ? [TargetValue] extends [never]
+      ? Default
+      : TargetValue
+    : Default
+  : Default;
+
+export type WideErrorConstructor = new (...args: any[]) => Error;

@@ -1,10 +1,11 @@
 import { describe, it } from '@effect/vitest';
+import { type Equals, assert } from 'tsafe';
 import { right } from 'effect/Either';
 import { ParseError, Unexpected } from 'effect/ParseResult';
 import { outdent } from 'outdent';
 import { FailedToParseGitLFSInfoError } from './getPathContents/index.ts';
 import { InconsistentExpectedAndRealContentSizeError } from './getPathContents/parseGitLFSObjectEither.ts';
-import { buildTaggedErrorClassVerifyingCause } from './TaggedErrorVerifyingCause.ts';
+import { buildTaggedErrorClassVerifyingCause, type GetValueByKey } from './TaggedErrorVerifyingCause.ts';
 
 describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
   it('Should have expected fields from both contexts: dynamic and static ', ctx => {
@@ -176,3 +177,38 @@ describe('TaggedErrorVerifyingCause', { concurrent: true }, () => {
     });
   });
 });
+
+assert<Equals<GetValueByKey<{}, 'StaticContext', 'default'>, 'default'>>;
+assert<Equals<GetValueByKey<{ StaticContext: never }, 'StaticContext', 'default'>, 'default'>>;
+assert<Equals<GetValueByKey<{ StaticContext?: never }, 'StaticContext', 'default'>, 'default'>>;
+assert<Equals<GetValueByKey<{ StaticContext: {} }, 'StaticContext', 'default'>, {}>>;
+assert<Equals<GetValueByKey<{ StaticContext?: {} }, 'StaticContext', 'default'>, {}>>;
+assert<Equals<GetValueByKey<{ StaticContext: {} | undefined }, 'StaticContext', 'default'>,{}>>;
+assert<Equals<GetValueByKey<{ StaticContext?: {} | undefined }, 'StaticContext', 'default'>,{}>>;
+assert<Equals<GetValueByKey<{ StaticContext: Record<string, unknown> },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ StaticContext?: Record<string, unknown> },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ StaticContext: Record<string, unknown> | undefined },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ StaticContext?: Record<string, unknown> | undefined },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ StaticContext: undefined }, 'StaticContext', 'default'>,'default'>>;
+assert<Equals<GetValueByKey<{ StaticContext?: undefined }, 'StaticContext', 'default'>,'default'>>;
+assert<Equals<GetValueByKey<{ StaticContext: { asd: 123 } }, 'StaticContext', 'default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ StaticContext?: { asd: 123 } }, 'StaticContext', 'default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ StaticContext: { asd: 123 } | undefined },'StaticContext','default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ StaticContext?: { asd: 123 } | undefined },'StaticContext','default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; }, 'StaticContext', 'default'>, 'default'>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: never },'StaticContext','default'>,'default'>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: never },'StaticContext','default'>,'default'>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: {} },'StaticContext','default'>,{}>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: {} },'StaticContext','default'>,{}>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: {} | undefined },'StaticContext','default'>,{}>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: {} | undefined },'StaticContext','default'>,{}>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: Record<string, unknown> },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: Record<string, unknown> },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: Record<string, unknown> | undefined },'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: Record<string, unknown> | undefined;},'StaticContext','default'>,Record<string, unknown>>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: undefined },'StaticContext','default'>,'default'>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: undefined },'StaticContext','default'>,'default'>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: { asd: 123 } },'StaticContext','default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: { asd: 123 } },'StaticContext','default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext: { asd: 123 } | undefined },'StaticContext','default'>,{ asd: 123 }>>;
+assert<Equals<GetValueByKey<{ irrelevant: 'str'; StaticContext?: { asd: 123 } | undefined },'StaticContext','default'>,{ asd: 123 }>>;

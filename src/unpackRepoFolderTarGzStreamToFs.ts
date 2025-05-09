@@ -5,7 +5,7 @@ import { createGunzip } from 'node:zlib';
 import { extract } from 'tar-fs';
 import { OutputConfigTag } from './configContext.ts';
 import {
-  type TaggedErrorClassWithUnknownCauseAndNoContext,
+  type TaggedErrorClass,
   buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.ts';
 
@@ -43,12 +43,12 @@ export const unpackRepoFolderTarGzStreamToFs = <E, R>(
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-const _1: TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToUnpackRepoFolderTarGzStreamToFsError'> =
-  buildTaggedErrorClassVerifyingCause<{
-    cause: unknown;
-  }>()(
-    'FailedToUnpackRepoFolderTarGzStreamToFsError',
-    'Error: Failed to unpack to fs received from GitHub .tar.gz stream of repo folder contents',
-  );
+const _1: TaggedErrorClass<{
+  ErrorName: 'FailedToUnpackRepoFolderTarGzStreamToFsError';
+  DynamicContext: { cause: unknown };
+}> = buildTaggedErrorClassVerifyingCause<{ cause: unknown }>()(
+  'FailedToUnpackRepoFolderTarGzStreamToFsError',
+  'Error: Failed to unpack to fs received from GitHub .tar.gz stream of repo folder contents',
+);
 
 export class FailedToUnpackRepoFolderTarGzStreamToFsError extends _1 {}

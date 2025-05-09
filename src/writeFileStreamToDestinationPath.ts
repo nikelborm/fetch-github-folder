@@ -4,7 +4,7 @@ import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { OutputConfigTag } from './configContext.ts';
 import {
-  type TaggedErrorClassWithUnknownCauseAndNoContext,
+  type TaggedErrorClass,
   buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.ts';
 
@@ -30,12 +30,12 @@ export const writeFileStreamToDestinationPath = <E, R>(
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-const _1: TaggedErrorClassWithUnknownCauseAndNoContext<'FailedToWriteFileStreamToDestinationPathError'> =
-  buildTaggedErrorClassVerifyingCause<{
-    cause: unknown;
-  }>()(
-    'FailedToWriteFileStreamToDestinationPathError',
-    'Error: Failed to write file stream to destination path',
-  );
+const _1: TaggedErrorClass<{
+  ErrorName: 'FailedToWriteFileStreamToDestinationPathError';
+  DynamicContext: { cause: unknown };
+}> = buildTaggedErrorClassVerifyingCause<{ cause: unknown }>()(
+  'FailedToWriteFileStreamToDestinationPathError',
+  'Error: Failed to write file stream to destination path',
+);
 
 export class FailedToWriteFileStreamToDestinationPathError extends _1 {}

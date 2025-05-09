@@ -5,7 +5,7 @@
       "url": "https://json.schemastore.org/tsconfig"
     }
   ],
-  "cSpell.words": ["Dont", "Voidify"],
+  "cSpell.words": ["Dont"],
   "github-actions.workflows.pinned.workflows": [
     ".github/workflows/release.yml",
     ".github/workflows/test.yml"

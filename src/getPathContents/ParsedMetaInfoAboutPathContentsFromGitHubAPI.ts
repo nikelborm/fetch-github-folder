@@ -11,7 +11,7 @@ import {
   Union,
 } from 'effect/Schema';
 import {
-  type TaggedErrorClassWithNoStaticContext,
+  type TaggedErrorClass,
   buildTaggedErrorClassVerifyingCause,
 } from '../TaggedErrorVerifyingCause.ts';
 import { RepoPathContentsFromGitHubAPI } from './RepoPathContentsFromGitHubAPI.ts';
@@ -68,11 +68,11 @@ const decodeResponse = decodeUnknownEither(ResponseSchema, {
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
 
-const _1: TaggedErrorClassWithNoStaticContext<
-  'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
-  typeof ParseError,
-  { response: unknown }
-> = buildTaggedErrorClassVerifyingCause<{ response: unknown }>()(
+const _1: TaggedErrorClass<{
+  ErrorName: 'FailedToParseResponseFromRepoPathContentsMetaInfoAPI';
+  ExpectedCauseClass: typeof ParseError;
+  DynamicContext: { response: unknown };
+}> = buildTaggedErrorClassVerifyingCause<{ response: unknown }>()(
   'FailedToParseResponseFromRepoPathContentsMetaInfoAPI',
   `Failed to parse response from repo path contents meta info API`,
   ParseError,

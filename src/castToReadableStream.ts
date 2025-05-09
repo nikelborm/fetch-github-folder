@@ -2,7 +2,7 @@ import { type Effect, gen } from 'effect/Effect';
 import { Readable } from 'node:stream';
 import { ReadableStream } from 'node:stream/web';
 import {
-  type TaggedErrorClassWithNoContextAndNoCause,
+  type TaggedErrorClass,
   buildTaggedErrorClassVerifyingCause,
 } from './TaggedErrorVerifyingCause.ts';
 
@@ -27,10 +27,11 @@ export const CastToReadableStream = <E, R>(self: Effect<unknown, E, R>) =>
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-const _1: TaggedErrorClassWithNoContextAndNoCause<'FailedToCastDataToReadableStreamError'> =
-  buildTaggedErrorClassVerifyingCause()(
-    'FailedToCastDataToReadableStreamError',
-    'Error: Failed to cast data to Readable stream, type of argument is not familiar',
-  );
+const _1: TaggedErrorClass<{
+  ErrorName: 'FailedToCastDataToReadableStreamError';
+}> = buildTaggedErrorClassVerifyingCause()(
+  'FailedToCastDataToReadableStreamError',
+  'Error: Failed to cast data to Readable stream, type of argument is not familiar',
+);
 
 export class FailedToCastDataToReadableStreamError extends _1 {}

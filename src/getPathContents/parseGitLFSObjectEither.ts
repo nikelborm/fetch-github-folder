@@ -8,8 +8,7 @@ import {
 } from 'effect/Schema';
 import { outdent } from 'outdent';
 import {
-  type TaggedErrorClassWithNoCause,
-  type TaggedErrorClassWithNoStaticContext,
+  type TaggedErrorClass,
   buildTaggedErrorClassVerifyingCause,
 } from '../TaggedErrorVerifyingCause.ts';
 
@@ -88,12 +87,11 @@ const decodeGitLFSInfoSchema = decodeUnknownEither(GitLFSInfoSchema, {
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export type FailedToParseGitLFSInfoErrorClass =
-  TaggedErrorClassWithNoStaticContext<
-    'FailedToParseGitLFSInfoError',
-    typeof ParseError,
-    { partOfContentThatCouldBeGitLFSInfo: string }
-  >;
+export type FailedToParseGitLFSInfoErrorClass = TaggedErrorClass<{
+  ErrorName: 'FailedToParseGitLFSInfoError';
+  ExpectedCauseClass: typeof ParseError;
+  DynamicContext: { partOfContentThatCouldBeGitLFSInfo: string };
+}>;
 
 const _1: FailedToParseGitLFSInfoErrorClass =
   buildTaggedErrorClassVerifyingCause<{
@@ -115,18 +113,18 @@ type InconsistentSizesDynamicContext = {
       oidSha256: string;
       size: number;
     }>,
-    FailedToParseGitLFSInfoErrorClass
+    InstanceType<FailedToParseGitLFSInfoErrorClass>
   >;
 };
 
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
 
-export const _2: TaggedErrorClassWithNoCause<
-  'InconsistentExpectedAndRealContentSizeError',
-  { comment: string },
-  InconsistentSizesDynamicContext
-> = buildTaggedErrorClassVerifyingCause<InconsistentSizesDynamicContext>()(
+export const _2: TaggedErrorClass<{
+  ErrorName: 'InconsistentExpectedAndRealContentSizeError';
+  StaticContext: { comment: string };
+  DynamicContext: InconsistentSizesDynamicContext;
+}> = buildTaggedErrorClassVerifyingCause<InconsistentSizesDynamicContext>()(
   'InconsistentExpectedAndRealContentSizeError',
   ctx =>
     `Got file with size ${ctx.actual} bytes while expecting ${ctx.expected} bytes`,
