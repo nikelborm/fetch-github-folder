@@ -57,15 +57,25 @@ It allows you to download any folder or a file from a repo on github.
 
 ## Installation
 
-We support various installation options which you way want.
+We support various installation options. Regardless of what you choose, if you want to make
+CLIs written in JS run faster, I highly recommend adding this line to your `.bashrc`:
 
-### Package with CLI and functions from [default NPM registry](https://www.npmjs.com/package/fetch-github-folder)
+```bash
+export NODE_COMPILE_CACHE=~/.cache/nodejs-compile-cache
+```
+
+### Install package with CLI and functions from [default NPM registry](https://www.npmjs.com/package/fetch-github-folder)
 
 ```bash
 npm i fetch-github-folder
 ```
 
-### Package with only functions from [JSR](https://jsr.io/@nikelborm/fetch-github-folder)
+<details>
+<summary>
+
+### Install package with only functions from [JSR](https://jsr.io/@nikelborm/fetch-github-folder)
+
+</summary>
 
 Unfortunately JSR doesn't support publishing executables yet, so you can install
 only script library with functions that will allow you to fetch github folder
@@ -75,7 +85,13 @@ from other scripts.
 npx jsr add @nikelborm/fetch-github-folder
 ```
 
-### Package with CLI and functions from [GitHub's NPM registry](https://github.com/nikelborm/fetch-github-folder/pkgs/npm/fetch-github-folder)
+</details>
+<details>
+<summary>
+
+### Install package with CLI and functions from [GitHub's NPM registry](https://github.com/nikelborm/fetch-github-folder/pkgs/npm/fetch-github-folder)
+
+</summary>
 
 1. [Generate `Personal access token (classic)` with `read:packages` scope](https://github.com/settings/tokens/new?description=Install%20packages%20from%20GitHub%20NPM%20registry&scopes=read:packages&default_expires_at=none)
 2. Login to Github's NPM registry (yes you need to do it, even if the package is public):
@@ -95,17 +111,30 @@ npx jsr add @nikelborm/fetch-github-folder
    npm i @nikelborm/fetch-github-folder
    ```
 
-### Package with CLI and functions from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+</details>
+<details>
+<summary>
+
+### Install package with CLI and functions from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+</summary>
 
 ```bash
 PACKAGE=fetch-github-folder
 
+# Either set specific tag
 TAG=0.1.27 && npm i https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.tgz
-# or
+# or download the latest
 npm i https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.tgz
 ```
 
-### Only CLI directly into the system from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+</details>
+<details open>
+<summary>
+
+### Install only the CLI directly into the system from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+</summary>
 
 ```bash
 set -euo pipefail
@@ -113,14 +142,21 @@ PACKAGE=fetch-github-folder
 
 path_to_the_script=/usr/bin/$PACKAGE
 
+# Either set specific tag
 TAG=0.1.27 && sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
-# or
+# or download the latest
 sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js
 
 sudo chmod +x $path_to_the_script
 ```
 
-### Local development
+</details>
+<details>
+<summary>
+
+### Setup the repo for local development
+
+</summary>
 
 ```bash
 git clone -b main git@github.com:nikelborm/fetch-github-folder.git
@@ -131,12 +167,7 @@ read -sp 'Enter github access token: ' gh_token; echo;
 sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 ```
 
-Also it's recommended to add this string to your .bashrc, if you want faster
-CLIs written in JS
-
-```bash
-export NODE_COMPILE_CACHE=~/.cache/nodejs-compile-cache
-```
+</details>
 
 ## Usage
 
@@ -160,7 +191,7 @@ import {
 
 ### Execution of CLI installed with NPM
 
-The easiest way to execute the CLI (preliminary installation is not required) is
+The **easiest way** to execute the CLI (preliminary installation is not required) is
 like this:
 
 ```bash
@@ -173,7 +204,12 @@ Also there's a shorter form available (preliminary installation is required):
 npx fgf --repoOwner apache --repoName superset
 ```
 
+<details>
+<summary>
+
 ### Non-interactive CLI execution on the fly from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+</summary>
 
 If you already know the supported arguments (e.g. `--help` to print them all),
 you can pipe the bundled and minified script version into node directly and pass
@@ -187,7 +223,13 @@ TAG=0.1.27 && curl -sL https://github.com/nikelborm/$PACKAGE/releases/download/$
 curl -sL https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js | node - --repoOwner apache --repoName superset
 ```
 
+</details>
+<details>
+<summary>
+
 ### Interactive CLI execution from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+</summary>
 
 The script also supports interactive mode (`--wizard`), where you will be asked
 to pass arguments sequentially and interactively. Since it requires user input,
@@ -205,11 +247,19 @@ node $tmp_js --wizard
 rm $tmp_js
 ```
 
+</details>
+<details open>
+<summary>
+
 ### Execution of CLI installed directly into the system
+
+</summary>
 
 ```bash
 fetch-github-folder --repoOwner apache --repoName superset
 ```
+
+</details>
 
 ## Environment Variables
 
