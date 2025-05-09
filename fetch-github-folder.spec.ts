@@ -47,7 +47,7 @@ const cli = (args: ReadonlyArray<string>) =>
     name: 'fetch-github-folder-test',
     version: '0.0.1-dev',
   })([
-    '/home/nikel/.nvm/versions/node/v23.3.0/bin/node',
+    '/home/nikel/.local/share/mise/installs/node/23.11.0/bin/node',
     './fetch-github-folder-test.ts',
     ...args,
   ]);
