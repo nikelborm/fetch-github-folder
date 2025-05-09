@@ -218,8 +218,9 @@ your arguments after `node -`:
 ```bash
 set -euo pipefail
 
+# Either set specific tag
 TAG=0.1.27 && curl -sL https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js | node - --repoOwner apache --repoName superset
-# or
+# or download the latest
 curl -sL https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js | node - --repoOwner apache --repoName superset
 ```
 
@@ -239,8 +240,9 @@ it can't be piped and needs to be saved to a temporary file:
 set -euo pipefail
 tmp_js=$(mktemp --suffix .js)
 
+# Either set specific tag
 TAG=0.1.27 && curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
-# or
+# or download the latest
 curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js
 
 node $tmp_js --wizard
@@ -284,6 +286,6 @@ explicitly.
 - `DESTINATION_PATH`: If entity at `PATH_TO_ENTITY_IN_REPO` is a file, then
   destination path is a path to downloaded file. If it's a directory, then all
   files and directories from target directory of remote repository at
-  `PATH_TO_ENTITY_IN_REPO` will be put into a directory with path from
-  `DESTINATION_PATH`. If the directory doesn't exist, it will be automatically
-  created.
+  `PATH_TO_ENTITY_IN_REPO` will be put into a directory having
+  `DESTINATION_PATH` path. If the directory doesn't exist, it will be
+  automatically created.
