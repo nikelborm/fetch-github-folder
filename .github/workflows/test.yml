@@ -5,7 +5,6 @@ on:
     branches: [main, dev]
     paths:
       - 'src/**'
-      - 'testMocks/**'
       - '*.spec.ts'
       - 'vite.config.ts'
       - 'rollup.config.js'

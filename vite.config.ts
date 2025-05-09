@@ -14,7 +14,6 @@ export default defineConfig({
       exclude: [
         ...coverageConfigDefaults.exclude,
         'destination/**',
-        'testMocks/**',
         'tmp/**',
         'errors.[jt]s',
         'cli.[jt]s',
