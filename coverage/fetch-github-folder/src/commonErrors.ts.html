@@ -201,10 +201,8 @@
 <a name='L136'></a><a href='#L136'>136</a>
 <a name='L137'></a><a href='#L137'>137</a>
 <a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L139'></a><a href='#L139'>139</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -344,16 +342,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RequestError } from '@octokit/request-error';
 import {
   buildTaggedErrorClassVerifyingCause,
-  type TaggedErrorClassWithNoContext,
-  type TaggedErrorClassWithNoStaticContext,
+  type TaggedErrorClass,
 } from './TaggedErrorVerifyingCause.ts';
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _1: TaggedErrorClassWithNoContext&lt;
-  'GitHubApiGeneralServerError',
-  typeof RequestError
-&gt; = buildTaggedErrorClassVerifyingCause()(
+export const _1: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiGeneralServerError';
+  ExpectedCauseClass: typeof RequestError;
+}&gt; = buildTaggedErrorClassVerifyingCause()(
   'GitHubApiGeneralServerError',
   'GitHub API Error: Bad server',
   RequestError,
@@ -363,11 +360,11 @@ export class GitHubApiGeneralServerError extends _1 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _2: TaggedErrorClassWithNoStaticContext&lt;
-  'GitHubApiGeneralUserError',
-  typeof RequestError,
-  { readonly notes?: string }
-&gt; = buildTaggedErrorClassVerifyingCause&lt;{ readonly notes?: string }&gt;()(
+export const _2: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiGeneralUserError';
+  ExpectedCauseClass: typeof RequestError;
+  DynamicContext: { readonly notes?: string };
+}&gt; = buildTaggedErrorClassVerifyingCause&lt;{ readonly notes?: string }&gt;()(
   'GitHubApiGeneralUserError',
   'GitHub API Error: Bad user, invalid request',
   RequestError,
@@ -377,10 +374,10 @@ export class GitHubApiGeneralUserError extends _2 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-const _3: TaggedErrorClassWithNoContext&lt;
-  'GitHubApiThingNotExistsOrYouDontHaveAccessError',
-  typeof RequestError
-&gt; = buildTaggedErrorClassVerifyingCause()(
+const _3: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiThingNotExistsOrYouDontHaveAccessError';
+  ExpectedCauseClass: typeof RequestError;
+}&gt; = buildTaggedErrorClassVerifyingCause()(
   'GitHubApiThingNotExistsOrYouDontHaveAccessError',
   "GitHub API Error: Either repo, owner, path in repo, or specified ref don't exist or you don't have permissions to access it",
   RequestError,
@@ -390,10 +387,10 @@ export class GitHubApiThingNotExistsOrYouDontHaveAccessError extends _3 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _4: TaggedErrorClassWithNoContext&lt;
-  'GitHubApiRepoIsEmptyError',
-  typeof RequestError
-&gt; = buildTaggedErrorClassVerifyingCause()(
+export const _4: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiRepoIsEmptyError';
+  ExpectedCauseClass: typeof RequestError;
+}&gt; = buildTaggedErrorClassVerifyingCause()(
   'GitHubApiRepoIsEmptyError',
   'GitHub API Error: This Repo is empty',
   RequestError,
@@ -403,11 +400,11 @@ export class GitHubApiRepoIsEmptyError extends _4 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _5: TaggedErrorClassWithNoStaticContext&lt;
-  'GitHubApiNoCommitFoundForGitRefError',
-  typeof RequestError,
-  { gitRef: string }
-&gt; = buildTaggedErrorClassVerifyingCause&lt;{ gitRef: string }&gt;()(
+export const _5: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiNoCommitFoundForGitRefError';
+  ExpectedCauseClass: typeof RequestError;
+  DynamicContext: { gitRef: string };
+}&gt; = buildTaggedErrorClassVerifyingCause&lt;{ gitRef: string }&gt;()(
   'GitHubApiNoCommitFoundForGitRefError',
   'GitHub API Error: No commit found for this git ref',
   RequestError,
@@ -417,10 +414,10 @@ export class GitHubApiNoCommitFoundForGitRefError extends _5 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _6: TaggedErrorClassWithNoContext&lt;
-  'GitHubApiBadCredentialsError',
-  typeof RequestError
-&gt; = buildTaggedErrorClassVerifyingCause()(
+export const _6: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiBadCredentialsError';
+  ExpectedCauseClass: typeof RequestError;
+}&gt; = buildTaggedErrorClassVerifyingCause()(
   'GitHubApiBadCredentialsError',
   "GitHub API Error: Token you're using is invalid.",
   RequestError,
@@ -430,10 +427,10 @@ export class GitHubApiBadCredentialsError extends _6 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _7: TaggedErrorClassWithNoContext&lt;
-  'GitHubApiAuthRatelimitedError',
-  typeof RequestError
-&gt; = buildTaggedErrorClassVerifyingCause()(
+export const _7: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiAuthRatelimitedError';
+  ExpectedCauseClass: typeof RequestError;
+}&gt; = buildTaggedErrorClassVerifyingCause()(
   'GitHubApiAuthRatelimitedError',
   'GitHub API Error: Too many invalid auth attempts. Chillout pal',
   RequestError,
@@ -443,10 +440,10 @@ export class GitHubApiAuthRatelimitedError extends _7 {}
 &nbsp;
 // Extracting to a separate type is required by JSR, so that consumers of the
 // library will have much faster type inference
-export const _8: TaggedErrorClassWithNoContext&lt;
-  'GitHubApiRatelimitedError',
-  typeof RequestError
-&gt; = buildTaggedErrorClassVerifyingCause()(
+export const _8: TaggedErrorClass&lt;{
+  ErrorName: 'GitHubApiRatelimitedError';
+  ExpectedCauseClass: typeof RequestError;
+}&gt; = buildTaggedErrorClassVerifyingCause()(
   'GitHubApiRatelimitedError',
   'GitHub API Error: Too many requests. Chillout pal',
   RequestError,
@@ -487,7 +484,7 @@ export type GitHubApiCommonErrors =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-09T03:19:26.906Z
+                at 2025-05-09T10:12:11.169Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
