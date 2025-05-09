@@ -80,7 +80,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Upload bundled CLI as a release artifact'
+      - name: 'Upload bundled CLI and NPM package archive as release artifacts'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.package_info.outputs.version }}
