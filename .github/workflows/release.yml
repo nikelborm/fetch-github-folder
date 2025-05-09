@@ -36,25 +36,27 @@ jobs:
       - name: 'Extract package info from package.json'
         id: package_info
         run: |
+          set -euo pipefail
           version=$(jq -r '.version' package.json)
           name=$(jq -r '.name' package.json)
           expected_package_archive_name=$name-$version.tgz
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "name=$name" >> $GITHUB_OUTPUT
           echo "expected_package_archive_name=$expected_package_archive_name" >> $GITHUB_OUTPUT
+          echo "url_of_released_minified_script=https://github.com/nikelborm/$name/releases/download/$version/$name.js" >> $GITHUB_OUTPUT
 
       - name: 'Create package archive'
         run: npm pack
 
       - name: 'Publish to default NPM registry'
-        run: |
-          npm publish ${{ steps.package_info.outputs.expected_package_archive_name }}
+        run: npm publish ./${{ steps.package_info.outputs.expected_package_archive_name }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
       - name: 'Prepare deno.json for publishing to JSR'
         run: |
-          jq '.version = ${{ steps.package_info.outputs.version }}' deno.json > _ && mv _ deno.json
+          set -euo pipefail
+          jq '.version = "${{ steps.package_info.outputs.version }}"' deno.json > _ && mv _ deno.json
           npx prettier deno.json --write
 
       - name: 'Commit updated deno.json after npm install'
@@ -68,11 +70,11 @@ jobs:
         run: npx jsr publish
 
       - name: "Prepare package.json for publishing to GitHub's NPM registry"
-        run: |
-          jq '.name = "@nikelborm/" + .name' package.json > _ && mv _ package.json
+        run: jq '.name = "@nikelborm/" + .name' package.json > _ && mv _ package.json
 
       - name: "Publish to GitHub's NPM registry"
         run: |
+          set -euo pipefail
           sed -i 's/registry.npmjs.org/npm.pkg.github.com/' /home/runner/work/_temp/.npmrc
           npm publish
         env:
@@ -81,9 +83,8 @@ jobs:
       - name: 'Upload bundled CLI as a release artifact'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: experiment-${{ steps.package_info.outputs.version }}
+          tag_name: ${{ steps.package_info.outputs.version }}
           fail_on_unmatched_files: true
-          prerelease: true
           files: |
             ${{ steps.package_info.outputs.expected_package_archive_name }}
             ./dist/minified/${{ steps.package_info.outputs.name }}.js
@@ -94,7 +95,7 @@ jobs:
             ## Files in this release
 
             - `${{ steps.package_info.outputs.expected_package_archive_name }}` contains package archive which was published to NPM
-            - `${{ steps.package_info.outputs.name }}.js` contains a light js CLI script with inlined dependencies that allow you to avoid using any package managers
+            - `${{ steps.package_info.outputs.name }}.js` contains a light js CLI script with inlined dependencies that allows you to avoid using any package managers
             - `template.env` has all env variables that are supported by this script
 
             ## Usage
@@ -104,15 +105,17 @@ jobs:
             If you already know the supported arguments (e.g. `--help` to print all supported arguments of the script), you can pipe the script to node directly and pass them after `node -`:
 
             ```bash
-            curl -sL https://github.com/nikelborm/${{ steps.package_info.outputs.name }}/releases/download/${{ steps.package_info.outputs.version }}/${{ steps.package_info.outputs.name }}.js | node - --repoOwner apache --repoName superset
+            set -euo pipefail
+            curl -sL ${{ steps.package_info.outputs.url_of_released_minified_script }} | node - --repoOwner apache --repoName superset
             ```
 
-            The script also supports interactive mode, where you will be asked to pass arguments sequentially and interactively. Since it requires user input, it can't be piped and needs to be saved to a temporary file:
+            The script also supports interactive mode (`--wizard`), where you will be asked to pass arguments sequentially and interactively. Since it requires user input, it can't be piped and needs to be saved to a temporary file:
 
             ```bash
-            tmp_js=$(mktemp --suffix .js) && \
-            curl -sLo $tmp_js https://github.com/nikelborm/${{ steps.package_info.outputs.name }}/releases/download/${{ steps.package_info.outputs.version }}/${{ steps.package_info.outputs.name }}.js && \
-            node $tmp_js --wizard && \
+            set -euo pipefail
+            tmp_js=$(mktemp --suffix .js)
+            curl -sLo $tmp_js ${{ steps.package_info.outputs.url_of_released_minified_script }}
+            node $tmp_js --wizard
             rm $tmp_js
             ```
 
@@ -121,8 +124,10 @@ jobs:
             Running this:
 
             ```bash
-            sudo curl -sLo /usr/bin/${{ steps.package_info.outputs.name }} https://github.com/nikelborm/${{ steps.package_info.outputs.name }}/releases/download/${{ steps.package_info.outputs.version }}/${{ steps.package_info.outputs.name }}.js
-            sudo chmod +x /usr/bin/${{ steps.package_info.outputs.name }}
+            set -euo pipefail
+            path_to_the_script=/usr/bin/${{ steps.package_info.outputs.name }}
+            sudo curl -sLo $path_to_the_script ${{ steps.package_info.outputs.url_of_released_minified_script }}
+            sudo chmod +x $path_to_the_script
             ```
 
             ...will allow you to use the script like this later:
