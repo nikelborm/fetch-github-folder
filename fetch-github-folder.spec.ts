@@ -1,18 +1,13 @@
-import { Command as CliCommand } from '@effect/cli';
+import { Command as CliCommand, Span } from '@effect/cli';
 import { Command as PlatformCommand } from '@effect/platform';
-import {
-  NodeCommandExecutor,
-  NodeFileSystem,
-  NodePath,
-  NodeTerminal,
-} from '@effect/platform-node';
+import { NodeContext } from '@effect/platform-node';
 import { CommandExecutor } from '@effect/platform/CommandExecutor';
 import { FileSystem } from '@effect/platform/FileSystem';
 import { Path } from '@effect/platform/Path';
 import { describe, it } from '@effect/vitest';
 import { fn, gen, map, provide } from 'effect/Effect';
 import { pipe } from 'effect/Function';
-import { mergeAll, provideMerge } from 'effect/Layer';
+import { merge } from 'effect/Layer';
 import { decodeText, runFold, type Stream } from 'effect/Stream';
 import { allWithInheritedConcurrencyByDefault } from './src/allWithInheritedConcurrency.ts';
 import {
@@ -24,10 +19,11 @@ import {
   repoNameCLIOptionBackedByEnv,
   repoOwnerCLIOptionBackedByEnv,
 } from './src/index.ts';
+import pkg from './package.json' with { type: 'json' };
 import { buildTaggedErrorClassVerifyingCause } from './src/TaggedErrorVerifyingCause.ts';
 
 const appCommand = CliCommand.make(
-  'fetch-github-folder',
+  pkg.name,
   {
     repo: {
       owner: repoOwnerCLIOptionBackedByEnv,
@@ -43,22 +39,12 @@ const appCommand = CliCommand.make(
 
 const cli = (args: ReadonlyArray<string>) =>
   CliCommand.run(appCommand, {
-    // those values will be filled automatically from package.json
-    name: 'fetch-github-folder-test',
-    version: '0.0.1-dev',
-  })([
-    '/home/nikel/.local/share/mise/installs/node/23.11.0/bin/node',
-    './fetch-github-folder-test.ts',
-    ...args,
-  ]);
+    name: pkg.name,
+    version: pkg.version,
+    summary: Span.text(pkg.description),
+  })(['node', '-', ...args]);
 
-const MainLive = mergeAll(
-  NodePath.layer,
-  NodeTerminal.layer,
-  NodeCommandExecutor.layer,
-  OctokitLayer(),
-  // setConsole(console),
-).pipe(provideMerge(NodeFileSystem.layer));
+const MainLive = merge(NodeContext.layer, OctokitLayer());
 
 type Params = {
   gitRepoName: string;
@@ -206,7 +192,7 @@ const fetchAndHashBothDirs = fn('fetchAndHashBothDirs')(function* (
   });
 });
 
-describe('fetch-github-folder-cli', { concurrent: true }, () => {
+describe('CLI', { concurrent: true }, () => {
   // Commented because since the repo has big git lfs file, I quickly hit bandwidth limits
 
   // it.scoped(
@@ -232,7 +218,7 @@ describe('fetch-github-folder-cli', { concurrent: true }, () => {
   // );
 
   it.scoped(
-    `Git Repo nikelborm/nikelborm fetched by our cli, should be the same as repo cloned by git itself`,
+    'Git Repo nikelborm/nikelborm fetched by our cli, should be the same as repo cloned by git itself',
     ctx =>
       gen(function* () {
         const { hashOfOriginalGitRepo, hashOfGitRepoFetchedUsingOurCLI } =

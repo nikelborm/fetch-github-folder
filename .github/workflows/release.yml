@@ -39,14 +39,16 @@ jobs:
           set -euo pipefail
           version=$(jq -r '.version' package.json)
           name=$(jq -r '.name' package.json)
-          expected_package_archive_name=$name-$version.tgz
+          expected_package_archive_name=$name.tgz
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "name=$name" >> $GITHUB_OUTPUT
           echo "expected_package_archive_name=$expected_package_archive_name" >> $GITHUB_OUTPUT
           echo "url_of_released_minified_script=https://github.com/nikelborm/$name/releases/download/$version/$name.js" >> $GITHUB_OUTPUT
 
       - name: 'Create package archive'
-        run: npm pack
+        run: |
+          set -euo pipefail
+          mv ./$(npm pack) ./${{ steps.package_info.outputs.expected_package_archive_name }}
 
       - name: 'Publish to default NPM registry'
         run: npm publish ./${{ steps.package_info.outputs.expected_package_archive_name }}
@@ -102,7 +104,8 @@ jobs:
 
             ### Invoke immediately
 
-            If you already know the supported arguments (e.g. `--help` to print all supported arguments of the script), you can pipe the script to node directly and pass them after `node -`:
+            If you already know the supported arguments (e.g. `--help` to print them all),
+            you can pipe the script to node directly and pass your arguments after `node -`:
 
             ```bash
             set -euo pipefail

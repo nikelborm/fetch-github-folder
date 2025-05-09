@@ -52,77 +52,188 @@ It allows you to download any folder or a file from a repo on github.
 
 ## Requirements
 
-You need to have installed latest node, git, npm
+1. Latest Node.js (You can install it easily via [mise](https://github.com/jdx/mise))
+2. Git for development
 
 ## Installation
 
-### From [default NPM registry](https://www.npmjs.com/package/fetch-github-folder)
+We support various installation options which you way want.
+
+### Package with CLI and functions from [default NPM registry](https://www.npmjs.com/package/fetch-github-folder)
 
 ```bash
 npm i fetch-github-folder
 ```
 
-### From [JSR](https://jsr.io/@nikelborm/fetch-github-folder)
+### Package with only functions from [JSR](https://jsr.io/@nikelborm/fetch-github-folder)
 
-Unfortunately JSR doesn't support publishing executables yet, so you can install only script library with functions that will allow you to fetch github folder from other scripts.
+Unfortunately JSR doesn't support publishing executables yet, so you can install
+only script library with functions that will allow you to fetch github folder
+from other scripts.
 
 ```bash
 npx jsr add @nikelborm/fetch-github-folder
 ```
 
-### From [GitHub's NPM registry](https://github.com/nikelborm/fetch-github-folder/pkgs/npm/fetch-github-folder)
+### Package with CLI and functions from [GitHub's NPM registry](https://github.com/nikelborm/fetch-github-folder/pkgs/npm/fetch-github-folder)
 
 1. [Generate `Personal access token (classic)` with `read:packages` scope](https://github.com/settings/tokens/new?description=Install%20packages%20from%20GitHub%20NPM%20registry&scopes=read:packages&default_expires_at=none)
-2. Save the token
-3. Login to Github's NPM registry (yes you need to do it, even if the package is public):
+2. Login to Github's NPM registry (yes you need to do it, even if the package is public):
 
-   ```bash
-   npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com
-   ```
+   1. Run the following command (Info about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)):
 
-   You can also read more about `--auth-type=legacy` [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
+      ```bash
+      npm login --scope=@nikelborm --auth-type=legacy --registry=https://npm.pkg.github.com
+      ```
 
-4. Enter your username when asked
-5. Paste the token as password value
-6. Then install the package by executing:
+   2. Enter your username when asked
+   3. Paste the access token as password value
+
+3. Install the package by executing:
 
    ```bash
    npm i @nikelborm/fetch-github-folder
    ```
 
-### For local development
+### Package with CLI and functions from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
 
 ```bash
-# Clone this repo:
-git clone -b main https://github.com/nikelborm/fetch-github-folder.git
-# cd to it:
+PACKAGE=fetch-github-folder
+
+TAG=0.1.27 && npm i https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.tgz
+# or
+npm i https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.tgz
+```
+
+### Only CLI directly into the system from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+```bash
+set -euo pipefail
+PACKAGE=fetch-github-folder
+
+path_to_the_script=/usr/bin/$PACKAGE
+
+TAG=0.1.27 && sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
+# or
+sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js
+
+sudo chmod +x $path_to_the_script
+```
+
+### Local development
+
+```bash
+git clone -b main git@github.com:nikelborm/fetch-github-folder.git
 cd fetch-github-folder
-# Install dependencies:
 npm install
-# Create .env file:
 cp template.env .env
-# Ask for token
 read -sp 'Enter github access token: ' gh_token; echo;
-# And immediately put it into .env
 sed -i "s/\(GITHUB_ACCESS_TOKEN\)='.*'/\1='$gh_token'/" .env
 ```
 
-Also it's recommended to add this string to your .bashrc, if you want faster CLIs written in JS
+Also it's recommended to add this string to your .bashrc, if you want faster
+CLIs written in JS
 
 ```bash
 export NODE_COMPILE_CACHE=~/.cache/nodejs-compile-cache
 ```
 
+## Usage
+
+### EcmaScript module
+
+```ts
+import {
+  downloadEntityFromRepo,
+  OctokitLayer,
+  FailedToParseGitLFSInfoError,
+  GitHubApiBadCredentialsError,
+  type InputConfig,
+  type OutputConfig,
+  type SingleTargetConfig,
+  repoNameCLIOptionBackedByEnv,
+  repoOwnerCLIOptionBackedByEnv,
+  // etc...
+} from 'fetch-github-folder';
+// or '@nikelborm/fetch-github-folder' for non-default installation methods
+```
+
+### Execution of CLI installed with NPM
+
+The easiest way to execute the CLI (preliminary installation is not required) is
+like this:
+
+```bash
+npx fetch-github-folder --repoOwner apache --repoName superset
+```
+
+Also there's a shorter form available (preliminary installation is required):
+
+```bash
+npx fgf --repoOwner apache --repoName superset
+```
+
+### Non-interactive CLI execution on the fly from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+If you already know the supported arguments (e.g. `--help` to print them all),
+you can pipe the bundled and minified script version into node directly and pass
+your arguments after `node -`:
+
+```bash
+set -euo pipefail
+
+TAG=0.1.27 && curl -sL https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js | node - --repoOwner apache --repoName superset
+# or
+curl -sL https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js | node - --repoOwner apache --repoName superset
+```
+
+### Interactive CLI execution from [Github Releases](https://github.com/nikelborm/fetch-github-folder/releases)
+
+The script also supports interactive mode (`--wizard`), where you will be asked
+to pass arguments sequentially and interactively. Since it requires user input,
+it can't be piped and needs to be saved to a temporary file:
+
+```bash
+set -euo pipefail
+tmp_js=$(mktemp --suffix .js)
+
+TAG=0.1.27 && curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
+# or
+curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js
+
+node $tmp_js --wizard
+rm $tmp_js
+```
+
+### Execution of CLI installed directly into the system
+
+```bash
+fetch-github-folder --repoOwner apache --repoName superset
+```
+
 ## Environment Variables
 
-- `GITHUB_ACCESS_TOKEN`: This is your personal access token from GitHub. It is used to authenticate your requests to the GitHub API. You can generate one [here](https://github.com/settings/tokens/new?description=Read%20repo%20contents%20access%20to%20fetch-github-folder&scopes=public_repo&default_expires_at=none).
-- `REPO_OWNER`: This is the username of the owner of the repository you are trying to download from. For example, if the repository's URL is `https://github.com/apache/superset`, the owner is `apache`.
-- `REPO_NAME`: This is the name of the repository you are trying to download from. In the example above, the repository name is `superset`.
-- `PATH_TO_ENTITY_IN_REPO`: This is the path to the directory you want to download. It can be directory that lies inside root of repo like `docker` or it can be some nested directory like `docker/nginx`.
-- `GIT_REF`: This is the commit SHA hash, branch name, or tag name you want to download from. If you don't specify it, the default branch in the repository will be used.
-- `DESTINATION_PATH`: If entity at `PATH_TO_ENTITY_IN_REPO` is a file, then destination path is a path to downloaded file. If it's a directory, then all files and directories from target directory of remote repository at `PATH_TO_ENTITY_IN_REPO` will be put into a directory with path from `DESTINATION_PATH`. If the directory doesn't exist, it will be automatically created.
+If you often use the CLI, you can permanently set the arguments via env
+variables, and they will be used as a backup if arguments weren't provided
+explicitly.
 
-## How to use
-
-1. Set env variables in `.env` file
-2. Run `npm start`
+- `GITHUB_ACCESS_TOKEN`: This is your personal access token from GitHub. It is
+  used to authenticate your requests to the GitHub API. You can generate one
+  [here](https://github.com/settings/tokens/new?description=Read%20repo%20contents%20access%20to%20fetch-github-folder&scopes=public_repo&default_expires_at=none).
+- `REPO_OWNER`: This is the username of the owner of the repository you are
+  trying to download from. For example, if the repository's URL is
+  `https://github.com/apache/superset`, the owner is `apache`.
+- `REPO_NAME`: This is the name of the repository you are trying to download
+  from. In the example above, the repository name is `superset`.
+- `PATH_TO_ENTITY_IN_REPO`: This is the path to the directory you want to
+  download. It can be directory that lies inside root of repo like `docker` or
+  it can be some nested directory like `docker/nginx`.
+- `GIT_REF`: This is the commit SHA hash, branch name, or tag name you want to
+  download from. If you don't specify it, the default branch in the repository
+  will be used.
+- `DESTINATION_PATH`: If entity at `PATH_TO_ENTITY_IN_REPO` is a file, then
+  destination path is a path to downloaded file. If it's a directory, then all
+  files and directories from target directory of remote repository at
+  `PATH_TO_ENTITY_IN_REPO` will be put into a directory with path from
+  `DESTINATION_PATH`. If the directory doesn't exist, it will be automatically
+  created.

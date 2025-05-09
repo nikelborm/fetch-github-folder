@@ -5,7 +5,7 @@ _
 destination
 dist
 docker
-fetch-github-folder-*.tgz
+fetch-github-folder*.tgz
 node_modules
 package-lock.json
 scratchpad.ts
