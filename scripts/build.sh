@@ -24,4 +24,4 @@ tsc
 mkdir -p ./dist/minified
 rollup -c ./rollup.config.js
 cli_name=$(jq -r '.name' package.json)
-chmod +x ./$cli_name.js ./dist/$cli_name.js ./dist/minified/$cli_name.js
+chmod +x ./$cli_name.ts ./dist/$cli_name.js ./dist/minified/$cli_name.js
