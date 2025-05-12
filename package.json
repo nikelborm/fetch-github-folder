@@ -20,7 +20,7 @@
   "dependencies": {
     "@effect/cli": "^0.60.1",
     "@effect/platform": "^0.81.1",
-    "@effect/platform-node": "^0.78.1",
+    "@effect/platform-node": "^0.80.0",
     "@octokit/core": "^6.1.5",
     "@octokit/request-error": "^6.1.8",
     "effect": "^3.14.22",
