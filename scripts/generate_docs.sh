@@ -17,19 +17,23 @@ cp -rf src package.json package-lock.json deno.json tmp/.
 
 cd tmp
 
-grep -vEi 'errors.js|cli.js' index.ts >tmp.ts && mv tmp.ts index.ts
+# This option will add proper categories to all_symbols page but will break
+# outcoming linking from index's pages
+# grep -vEi 'errors.ts|cli.ts' index.ts >tmp.ts && mv tmp.ts index.ts
 
 ln -sf ../node_modules node_modules
 
 cli_name=$(jq -r '.name' package.json)
 
-deno doc --html --name=$cli_name --output=docs index.ts cli.ts errors.ts
+# This option will add proper categories to all_symbols page but will break
+# outcoming linking from index's pages
+# deno doc --html --name=$cli_name --output=docs index.ts cli.ts errors.ts
+
+deno doc --html --name=$cli_name --output=docs index.ts
 
 cd docs
-mv index/~/* index/.
-rmdir index/~
 
-find . -type f -exec sed -i 's/index\/~/index/g' {} +
-find . -type f -exec sed -i 's/index&#x2F;~/index/g' {} +
+find ./index -type f -exec sed -i 's_\.\./_../../_g' {} +
+find ./index -type f -exec sed -i 's_\.\.&#x2F;_../../_g' {} +
 
 # npx http-server -c-1 -o=index.html
