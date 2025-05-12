@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node --env-file=.env ./fetch-github-folder.ts",
-    "scratchpad": "node --env-file=.env ./scratchpad.ts",
+    "scratchpad": "node --use-strict --env-file=.env ./scratchpad.ts",
     "test": "vitest --watch",
     "format": "prettier . --write",
     "coverage": "vitest run --coverage",
