@@ -5,8 +5,9 @@ import { make, run } from '@effect/cli/Command';
 import { layer as NodeFileSystemLayer } from '@effect/platform-node-shared/NodeFileSystem';
 import { layer as NodePathLayer } from '@effect/platform-node-shared/NodePath';
 import { runMain } from '@effect/platform-node-shared/NodeRuntime';
+import { prettyPrint } from 'effect-errors';
 import { layer as NodeTerminalLayer } from '@effect/platform-node-shared/NodeTerminal';
-import { provide } from 'effect/Effect';
+import { catchAll, fail, provide, sandbox, withSpan } from 'effect/Effect';
 import { pipe } from 'effect/Function';
 import pkg from './package.json' with { type: 'json' };
 import {
@@ -52,5 +53,19 @@ pipe(
       // auth: getEnvVarOrFail('GITHUB_ACCESS_TOKEN'),
     }),
   ),
-  runMain,
+  sandbox,
+  catchAll(e => {
+    console.error(prettyPrint(e));
+
+    return fail(e);
+  }),
+  withSpan('cli', {
+    attributes: {
+      name: pkg.name,
+      version: pkg.version,
+    },
+  }),
+  runMain({
+    disableErrorReporting: true,
+  }),
 );

@@ -123,7 +123,7 @@ npx jsr add @nikelborm/fetch-github-folder
 PACKAGE=fetch-github-folder
 
 # Either set specific tag
-TAG=0.1.27 && npm i https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.tgz
+TAG=0.1.28 && npm i https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.tgz
 # or download the latest
 npm i https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.tgz
 ```
@@ -143,7 +143,7 @@ PACKAGE=fetch-github-folder
 path_to_the_script=/usr/bin/$PACKAGE
 
 # Either set specific tag
-TAG=0.1.27 && sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
+TAG=0.1.28 && sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
 # or download the latest
 sudo curl -sLo $path_to_the_script https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js
 
@@ -219,7 +219,7 @@ your arguments after `node -`:
 set -euo pipefail
 
 # Either set specific tag
-TAG=0.1.27 && curl -sL https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js | node - --repoOwner apache --repoName superset
+TAG=0.1.28 && curl -sL https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js | node - --repoOwner apache --repoName superset
 # or download the latest
 curl -sL https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js | node - --repoOwner apache --repoName superset
 ```
@@ -241,7 +241,7 @@ set -euo pipefail
 tmp_js=$(mktemp --suffix .js)
 
 # Either set specific tag
-TAG=0.1.27 && curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
+TAG=0.1.28 && curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/download/$TAG/$PACKAGE.js
 # or download the latest
 curl -sLo $tmp_js https://github.com/nikelborm/$PACKAGE/releases/latest/download/$PACKAGE.js
 
