@@ -66,14 +66,6 @@
     "noStrictGenericChecks": false,
     "plugins": [{ "name": "@effect/language-service" }]
   },
-  "include": [
-    "fetch-github-folder.ts",
-    "fetch-github-folder.spec.ts",
-    "scratchpad.ts",
-    "reset.d.ts",
-    "src/**/*",
-    "cli.ts",
-    "errors.ts",
-    "index.ts"
-  ]
+  "include": ["*.ts"],
+  "exclude": ["vite.config.ts"]
 }
