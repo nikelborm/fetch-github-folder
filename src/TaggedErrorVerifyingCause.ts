@@ -124,7 +124,7 @@ type GetCauseInstance<Config extends ConfigTemplate> = InstanceType<
   Exclude<Config['ExpectedCauseClass'], undefined>
 >;
 
-type GetValueByKey<
+export type GetValueByKey<
   Config extends Record<string, unknown>,
   Key extends string,
   Default,
