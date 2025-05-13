@@ -202,11 +202,7 @@
 <a name='L137'></a><a href='#L137'>137</a>
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L140'></a><a href='#L140'>140</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,6 +228,7 @@
 <span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -344,11 +341,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { YieldableError } from 'effect/Cause';
 import { TaggedError } from 'effect/Data';
 import { isFunction } from 'effect/Predicate';
@@ -361,26 +353,27 @@ export const buildTaggedErrorClassVerifyingCause =
   &lt;const DynamicContext extends Record&lt;string, unknown&gt; = {}&gt;() =&gt;
   &lt;
     const ErrorName extends string,
-    Types extends TaggedErrorVerifyingCauseTypes&lt;{
+    Config extends {
       ErrorName: ErrorName;
       ExpectedCauseClass: ExpectedCauseClass;
       StaticContext: StaticContext;
       DynamicContext: DynamicContext;
-    }&gt;,
+    },
     const StaticContext extends Record&lt;string, unknown&gt; = {},
     ExpectedCauseClass extends WideErrorConstructor | undefined = undefined,
   &gt;(
     errorName: ErrorName,
-    customMessage: string | ((...args: Types['MessageRendererArgs']) =&gt; string),
+    customMessage: string | ((...args: MessageRendererArgs&lt;Config&gt;) =&gt; string),
     expectedCauseClass?: ExpectedCauseClass,
     staticContext?: StaticContext,
-  ): Types['TaggedErrorClass'] =&gt; {
+  ): TaggedErrorClass&lt;Config&gt; =&gt; {
+    // TODO: Consider using Schema.TaggedError instead of Data.TaggedError
     const CustomTaggedErrorClass = TaggedError(errorName)&lt;
       Record&lt;'message' | '_tag' | 'name', unknown&gt;
     &gt;;
 &nbsp;
     class Base extends CustomTaggedErrorClass {
-      constructor(...args: Types['ConstructorArgs']) {
+      constructor(...args: ConstructorArgs&lt;Config&gt;) {
         if (expectedCauseClass &amp;&amp; !(args[0] instanceof expectedCauseClass))
           throw new Error(
             `Provided cause of incorrect type to "${
@@ -392,7 +385,7 @@ export const buildTaggedErrorClassVerifyingCause =
           expectedCauseClass
             ? [args[0], { ...(args[1] ?? {}), ...staticContext }]
             : [{ ...(args[0<span class="branch-0 cbranch-no" title="branch not covered" >] ?? {}), .</span>..staticContext }],
-        ) as unknown as Types['MessageRendererArgs'];
+        ) as MessageRendererArgs&lt;Config&gt;;
 &nbsp;
         super({
           name: errorName,
@@ -406,20 +399,14 @@ export const buildTaggedErrorClassVerifyingCause =
       }
     }
 &nbsp;
-    return Base as Types['TaggedErrorClass'];
+    return Base as TaggedErrorClass&lt;Config&gt;;
   };
-&nbsp;
-export type TaggedErrorVerifyingCauseTypes&lt;Config extends ConfigTemplate&gt; = {
-  MessageRendererArgs: MessageRendererArgsGen&lt;Config&gt;;
-  TaggedErrorClass: TaggedErrorClass&lt;Config&gt;;
-  ConstructorArgs: ConstructorArgsGen&lt;Config&gt;;
-};
 &nbsp;
 export type TaggedErrorClass&lt;Config extends ConfigTemplate&gt; = [string] extends [
   Config['ErrorName'],
 ]
   ? 'ErrorName should be a string literal'
-  : new (...args: ConstructorArgsGen&lt;Config&gt;) =&gt; YieldableError &amp;
+  : new (...args: ConstructorArgs&lt;Config&gt;) =&gt; YieldableError &amp;
       Readonly&lt;
         {
           message: string;
@@ -434,24 +421,25 @@ export type TaggedErrorClass&lt;Config extends ConfigTemplate&gt; = [string] ext
           &gt;
       &gt;;
 &nbsp;
-export type ConstructorArgsGen&lt;Config extends ConfigTemplate&gt; =
-  CauseArgTupleGen&lt;Config, GetValueByKey&lt;Config, 'DynamicContext', {}&gt;&gt;;
+type ConstructorArgs&lt;Config extends ConfigTemplate&gt; = CauseArgTuple&lt;
+  Config,
+  GetValueByKey&lt;Config, 'DynamicContext', {}&gt;
+&gt;;
 &nbsp;
-export type MessageRendererArgsGen&lt;Config extends ConfigTemplate&gt; =
-  CauseArgTupleGen&lt;
-    Config,
-    GetValueByKey&lt;Config, 'DynamicContext', {}&gt; &amp;
-      GetValueByKey&lt;Config, 'StaticContext', {}&gt;
-  &gt;;
+type MessageRendererArgs&lt;Config extends ConfigTemplate&gt; = CauseArgTuple&lt;
+  Config,
+  GetValueByKey&lt;Config, 'DynamicContext', {}&gt; &amp;
+    GetValueByKey&lt;Config, 'StaticContext', {}&gt;
+&gt;;
 &nbsp;
-export type ConfigTemplate = {
+type ConfigTemplate = {
   ErrorName: string;
   ExpectedCauseClass?: WideErrorConstructor | undefined;
   StaticContext?: Record&lt;string, unknown&gt; | undefined;
   DynamicContext?: Record&lt;string, unknown&gt; | undefined;
 };
 &nbsp;
-export type CauseArgTupleGen&lt;Config extends ConfigTemplate, Context&gt; = [
+type CauseArgTuple&lt;Config extends ConfigTemplate, Context&gt; = [
   ...IsExpectedCauseClassManuallySpecified&lt;
     Config,
     [cause: GetCauseInstance&lt;Config&gt;],
@@ -460,7 +448,7 @@ export type CauseArgTupleGen&lt;Config extends ConfigTemplate, Context&gt; = [
   ...(Equals&lt;Context, {}&gt; extends true ? [] : [context: Readonly&lt;Context&gt;]),
 ];
 &nbsp;
-export type IsExpectedCauseClassManuallySpecified&lt;
+type IsExpectedCauseClassManuallySpecified&lt;
   Config extends ConfigTemplate,
   IfTrue,
   IfFalse,
@@ -475,7 +463,7 @@ export type IsExpectedCauseClassManuallySpecified&lt;
       : IfFalse
     : never;
 &nbsp;
-export type GetCauseInstance&lt;Config extends ConfigTemplate&gt; = InstanceType&lt;
+type GetCauseInstance&lt;Config extends ConfigTemplate&gt; = InstanceType&lt;
   Exclude&lt;Config['ExpectedCauseClass'], undefined&gt;
 &gt;;
 &nbsp;
@@ -491,7 +479,7 @@ export type GetValueByKey&lt;
     : Default
   : Default;
 &nbsp;
-export type WideErrorConstructor = new (...args: any[]) =&gt; Error;
+type WideErrorConstructor = new (...args: any[]) =&gt; Error;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -499,7 +487,7 @@ export type WideErrorConstructor = new (...args: any[]) =&gt; Error;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-09T14:33:00.479Z
+                at 2025-05-13T00:52:35.336Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
