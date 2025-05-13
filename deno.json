@@ -6,8 +6,11 @@
   "exports": {
     ".": "./index.ts",
     "./index": "./index.ts",
+    "./index.ts": "./index.ts",
     "./errors": "./errors.ts",
-    "./cli": "./cli.ts"
+    "./errors.ts": "./errors.ts",
+    "./cli": "./cli.ts",
+    "./cli.ts": "./cli.ts"
   },
   "publish": {
     "include": [

@@ -15,6 +15,7 @@
     "build": "./scripts/build.sh",
     "doc": "./scripts/generate_docs.sh",
     "docs": "./scripts/generate_docs.sh",
+    "print-important-ts-files": "find . -type f -name '*.ts' |grep -vE '^./(node_modules|tmp|dist|(vite\\.config|.*\\.spec|scratchpad)\\.ts)'",
     "watch-docs": "find src/ cli.ts index.ts errors.ts ./scripts/generate_docs.sh | entr -can ./scripts/generate_docs.sh"
   },
   "dependencies": {
