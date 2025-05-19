@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node --env-file=.env ./fetch-github-folder.ts",
     "scratchpad": "node --use-strict --env-file=.env ./scratchpad.ts",
-    "test": "vitest --watch",
+    "test": "vitest --typecheck --watch",
     "format": "prettier . --write",
     "coverage": "vitest run --coverage",
     "test-once": "vitest --run",

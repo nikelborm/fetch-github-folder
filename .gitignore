@@ -2,6 +2,7 @@ _
 .env
 /gh-page/bundled_deps
 /gh-page/coverage
+bun.lockb
 destination
 dist
 docker

@@ -16,5 +16,9 @@
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.preferences.importModuleSpecifierEnding": "js",
   "javascript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.preferences.preferTypeOnlyAutoImports": true
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "/home/nikel/.local/share/mise/shims/node"
+  },
+  "python.defaultInterpreterPath": "/home/nikel/.local/share/mise/installs/python/3.7.17/bin/python"
 }

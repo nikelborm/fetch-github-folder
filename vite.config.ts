@@ -6,7 +6,12 @@ import {
 
 export default defineConfig({
   test: {
-    exclude: [...defaultExclude, 'tmp/**'],
+    exclude: [
+      ...defaultExclude,
+      'tmp/**',
+      'destination/**',
+      '**/*{helper,types,tstyche}.spec[.][jt]s',
+    ],
     coverage: {
       enabled: true,
       provider: 'v8',
