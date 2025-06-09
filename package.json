@@ -19,7 +19,7 @@
     "watch-docs": "find src/ cli.ts index.ts errors.ts ./scripts/generate_docs.sh | entr -can ./scripts/generate_docs.sh"
   },
   "dependencies": {
-    "@effect/cli": "^0.61.2",
+    "@effect/cli": "^0.63.9",
     "@effect/platform": "^0.84.4",
     "@effect/platform-node": "^0.85.11",
     "@octokit/core": "^7.0.2",
