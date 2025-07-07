@@ -21,7 +21,7 @@
   "dependencies": {
     "@effect/cli": "^0.64.0",
     "@effect/platform": "^0.87.1",
-    "@effect/platform-node": "^0.88.3",
+    "@effect/platform-node": "^0.89.2",
     "@octokit/core": "^7.0.2",
     "@octokit/request-error": "^7.0.0",
     "effect": "^3.15.1",
