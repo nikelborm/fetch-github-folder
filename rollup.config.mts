@@ -3,6 +3,7 @@ import json from '@rollup/plugin-json';
 import { visualizer } from 'rollup-plugin-visualizer';
 import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
+import { RollupOptions } from 'rollup';
 
 export default {
   input: 'dist/fetch-github-folder.js',
@@ -22,4 +23,4 @@ export default {
     }),
     terser(),
   ],
-};
+} satisfies RollupOptions;
